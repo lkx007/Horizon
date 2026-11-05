@@ -1075,7 +1075,7 @@ docker compose run --rm --entrypoint uv horizon run horizon-wechat test --lang z
 
 ## Static Site
 
-Horizon writes generated summaries to `data/summaries/` (or `<data-dir>/summaries/` when `--data-dir` is set) and copies publishable Markdown into `docs/` for the GitHub Pages site. The repository includes a disabled daily workflow template at [`.github/workflows/daily-summary.yml.disabled`](../.github/workflows/daily-summary.yml.disabled). Configure it for your deployment and rename it to `daily-summary.yml` to enable scheduled generation.
+Horizon writes generated summaries to `data/summaries/` (or `<data-dir>/summaries/` when `--data-dir` is set) and copies publishable Markdown into `docs/` for the GitHub Pages site. This fork runs scheduled generation with [`.github/workflows/daily-summary.yml`](../.github/workflows/daily-summary.yml) on weekdays at 08:38 Asia/Shanghai. See [DEPLOY.md](../DEPLOY.md) for the required secrets and Pages setup.
 
 To use GitHub Pages, enable Pages for the repository and run the scheduled workflow or trigger it manually. The generated site is built from the `docs/` directory.
 

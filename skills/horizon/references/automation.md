@@ -36,13 +36,14 @@ of the user-facing transcript.
 
 ## GitHub Actions
 
-Read `.github/workflows/daily-summary.yml.disabled` and
-`.github/workflows/deploy-docs.yml`. The former is a disabled generation template;
-the latter deploys docs on pushes and does not itself generate news.
+Read `.github/workflows/daily-summary.yml` and
+`.github/workflows/deploy-docs.yml`. The former is the scheduled generation
+workflow; the latter deploys docs on pushes and does not itself generate news.
 
-- Adapt the disabled template into an active `.yml` workflow for the user's
-  repository. Configure its actual config file, secret names, extras, permissions,
-  and Pages destination. Preserve existing unrelated jobs.
+- Keep the active daily workflow for this repository. On a fresh checkout that
+  only has the disabled template, copy it to `daily-summary.yml` and configure
+  its config file, secret names, extras, permissions, and Pages destination.
+  Preserve existing unrelated jobs.
 - Use the default branch for scheduled events and keep `workflow_dispatch` for a
   one-off check. Set a concurrency group so two runs do not publish simultaneously.
 - Interpret the cron expression itself, not an old comment. With no timezone

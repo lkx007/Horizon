@@ -304,7 +304,7 @@ docker compose run --rm horizon [OPTIONS]
 
 ### 4. Automate (Optional)
 
-Schedule Horizon with **GitHub Actions** using the [daily workflow template](.github/workflows/daily-summary.yml.disabled). The template is disabled in this repository; configure it for your deployment and rename it to `daily-summary.yml` to enable it.
+Schedule Horizon with **GitHub Actions** using the [daily workflow](.github/workflows/daily-summary.yml). This fork runs it on weekday mornings (08:38 Asia/Shanghai). See [DEPLOY.md](DEPLOY.md) for secrets and GitHub Pages.
 
 ## Supported Sources
 
