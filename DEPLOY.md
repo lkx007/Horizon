@@ -14,16 +14,16 @@ The job copies `data/config.github.json` to `data/config.json`, then runs `uv ru
 
 ## Model / 模型
 
-`data/config.github.json` uses DeepSeek, the provider originally shipped upstream:
+`data/config.github.json` uses Alibaba DashScope (通义, provider `ali`) through Horizon's OpenAI-compatible client. Model and endpoint match `AI_PROVIDER_DEFAULTS` for `ali`:
 
-- `provider`: `deepseek`
-- `model`: `deepseek-v4-flash`
-- `base_url`: `https://api.deepseek.com`
-- `api_key_env`: `DEEPSEEK_API_KEY`
+- `provider`: `ali`
+- `model`: `qwen-plus`
+- `base_url`: `https://dashscope.aliyuncs.com/compatible-mode/v1`
+- `api_key_env`: `DASHSCOPE_API_KEY`
 
-Cursor dashboard API keys (`crsr_…`) cannot drive Horizon's LLM. Store a real DeepSeek key as the `DEEPSEEK_API_KEY` Actions secret.
+Cursor dashboard API keys (`crsr_…`) cannot drive Horizon's LLM. Store a DashScope API key from Alibaba Cloud / 百炼 as the `DASHSCOPE_API_KEY` Actions secret.
 
-Cursor 控制台的 `crsr_…` 密钥不能当作 Horizon 的对话模型密钥。请使用 DeepSeek 的 API key。
+Cursor 控制台的 `crsr_…` 密钥不能当作 Horizon 的对话模型密钥。请使用阿里云百炼（DashScope）的 API key。
 
 ## Secrets
 
@@ -33,7 +33,7 @@ Add these under **Settings → Secrets and variables → Actions**. Do not commi
 
 | Secret | Needed | Why |
 | --- | --- | --- |
-| `DEEPSEEK_API_KEY` | Required / 必填 | Current provider is `deepseek` (`api_key_env`). Must be a real DeepSeek key, not a `crsr_…` Cursor key. |
+| `DASHSCOPE_API_KEY` | Required / 必填 | Current provider is `ali` (`api_key_env`). DashScope API key from Alibaba Cloud / 百炼, not a `crsr_…` Cursor key. |
 | `LWN_KEY` | Optional / 可选 | LWN full-text feed is enabled in `config.github.json`. |
 | `OPENAI_API_KEY` | Unused / 未使用 | Mapped only so a later provider switch does not require a workflow edit. |
 | `ANTHROPIC_API_KEY` | Unused / 未使用 | Same as OpenAI. |
