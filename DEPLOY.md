@@ -14,16 +14,16 @@ The job copies `data/config.github.json` to `data/config.json`, then runs `uv ru
 
 ## Model / 模型
 
-`data/config.github.json` uses an OpenAI-compatible client:
+`data/config.github.json` uses DeepSeek, the provider originally shipped upstream:
 
-- `provider`: `openai`
-- `model`: `gpt-4.1-mini` (cheap/fast default; the repo example elsewhere is `gpt-4`)
-- `api_key_env`: `OPENAI_API_KEY`
-- `base_url` is omitted, so the client uses the official OpenAI endpoint. Set `ai.base_url` only when pointing at another OpenAI-compatible host. Do not leave an unset `${VAR}` there; Horizon keeps the literal `${...}` if the variable is missing.
+- `provider`: `deepseek`
+- `model`: `deepseek-v4-flash`
+- `base_url`: `https://api.deepseek.com`
+- `api_key_env`: `DEEPSEEK_API_KEY`
 
-Cursor dashboard API keys (`crsr_…`) are **not** OpenAI-compatible and cannot drive Horizon's LLM. Use a real model-provider key (OpenAI, Anthropic, Gemini, or another compatible API) and store it as a GitHub Actions secret.
+Cursor dashboard API keys (`crsr_…`) cannot drive Horizon's LLM. Store a real DeepSeek key as the `DEEPSEEK_API_KEY` Actions secret.
 
-Cursor 控制台的 `crsr_…` 密钥不能当作 Horizon 的对话模型密钥。请使用真实模型服务商的 API key。
+Cursor 控制台的 `crsr_…` 密钥不能当作 Horizon 的对话模型密钥。请使用 DeepSeek 的 API key。
 
 ## Secrets
 
@@ -33,12 +33,13 @@ Add these under **Settings → Secrets and variables → Actions**. Do not commi
 
 | Secret | Needed | Why |
 | --- | --- | --- |
-| `OPENAI_API_KEY` | Required / 必填 | Current provider is `openai`. Must be a real provider key, not a `crsr_…` Cursor key. |
+| `DEEPSEEK_API_KEY` | Required / 必填 | Current provider is `deepseek` (`api_key_env`). Must be a real DeepSeek key, not a `crsr_…` Cursor key. |
 | `LWN_KEY` | Optional / 可选 | LWN full-text feed is enabled in `config.github.json`. |
-| `ANTHROPIC_API_KEY` | Unused / 未使用 | Mapped only so a later provider switch does not require a workflow edit. |
-| `GOOGLE_API_KEY` | Unused / 未使用 | Same as Anthropic. |
+| `OPENAI_API_KEY` | Unused / 未使用 | Mapped only so a later provider switch does not require a workflow edit. |
+| `ANTHROPIC_API_KEY` | Unused / 未使用 | Same as OpenAI. |
+| `GOOGLE_API_KEY` | Unused / 未使用 | Same as OpenAI. |
 
-`DEEPSEEK_API_KEY` is not used. Feishu is off, so `HORIZON_WEBHOOK_URL` is not used. Do not add `EMAIL_PASSWORD`; this job does not send SMTP mail.
+Feishu is off, so `HORIZON_WEBHOOK_URL` is not used. Do not add `EMAIL_PASSWORD`; this job does not send SMTP mail.
 
 ## Delivery / 投递
 
