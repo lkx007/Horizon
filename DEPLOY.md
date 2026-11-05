@@ -12,6 +12,19 @@ GitHub Actions workflow: [`.github/workflows/daily-summary.yml`](.github/workflo
 
 The job copies `data/config.github.json` to `data/config.json`, then runs `uv run horizon --hours 24`, and publishes `docs/` to the `gh-pages` branch.
 
+## Model / 模型
+
+`data/config.github.json` uses an OpenAI-compatible client:
+
+- `provider`: `openai`
+- `model`: `gpt-4.1-mini` (cheap/fast default; the repo example elsewhere is `gpt-4`)
+- `api_key_env`: `OPENAI_API_KEY`
+- `base_url` is omitted, so the client uses the official OpenAI endpoint. Set `ai.base_url` only when pointing at another OpenAI-compatible host. Do not leave an unset `${VAR}` there; Horizon keeps the literal `${...}` if the variable is missing.
+
+Cursor dashboard API keys (`crsr_…`) are **not** OpenAI-compatible and cannot drive Horizon's LLM. Use a real model-provider key (OpenAI, Anthropic, Gemini, or another compatible API) and store it as a GitHub Actions secret.
+
+Cursor 控制台的 `crsr_…` 密钥不能当作 Horizon 的对话模型密钥。请使用真实模型服务商的 API key。
+
 ## Secrets
 
 Add these under **Settings → Secrets and variables → Actions**. Do not commit keys.
@@ -20,11 +33,20 @@ Add these under **Settings → Secrets and variables → Actions**. Do not commi
 
 | Secret | Needed | Why |
 | --- | --- | --- |
-| `DEEPSEEK_API_KEY` | Required / 必填 | `data/config.github.json` uses the DeepSeek provider (`api_key_env`). |
-| `HORIZON_WEBHOOK_URL` | Optional / 可选 | Feishu / 飞书 webhook. Omit it to publish Pages only. |
+| `OPENAI_API_KEY` | Required / 必填 | Current provider is `openai`. Must be a real provider key, not a `crsr_…` Cursor key. |
 | `LWN_KEY` | Optional / 可选 | LWN full-text feed is enabled in `config.github.json`. |
+| `ANTHROPIC_API_KEY` | Unused / 未使用 | Mapped only so a later provider switch does not require a workflow edit. |
+| `GOOGLE_API_KEY` | Unused / 未使用 | Same as Anthropic. |
 
-`OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, and `GOOGLE_API_KEY` are mapped by the workflow and are unused by the current GitHub config.
+`DEEPSEEK_API_KEY` is not used. Feishu is off, so `HORIZON_WEBHOOK_URL` is not used. Do not add `EMAIL_PASSWORD`; this job does not send SMTP mail.
+
+## Delivery / 投递
+
+This Actions job only publishes the Markdown summary to GitHub Pages. `webhook.enabled` is `false` (no Feishu / 飞书). Horizon email is not configured.
+
+Gmail and QQ delivery, in the style of the old Researchy 日报, is a separate Grok Bot routine. That bot reads the published Pages summary (or the Markdown on `gh-pages`) and sends it. Do not turn on Horizon SMTP in this workflow for the first version.
+
+本工作流只把日报发到 GitHub Pages。飞书已关闭，也不在 Actions 里配 Horizon 的 SMTP。Gmail 与 QQ 双通道由单独的 Grok Bot 读取已发布页面后再发送。
 
 ## GitHub Pages
 
