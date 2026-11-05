@@ -35,10 +35,11 @@ jobs:
 
       - name: Run Horizon
         env:
-          # config.github.json uses provider "openai" (api_key_env OPENAI_API_KEY).
-          # No base_url: the OpenAI client default is used unless you set ai.base_url.
-          # ANTHROPIC_API_KEY and GOOGLE_API_KEY are unused until the provider changes.
+          # config.github.json uses provider "deepseek" (api_key_env DEEPSEEK_API_KEY,
+          # base_url https://api.deepseek.com, model deepseek-v4-flash).
+          # OPENAI_API_KEY, ANTHROPIC_API_KEY, and GOOGLE_API_KEY are unused until the provider changes.
           # Feishu is disabled, so HORIZON_WEBHOOK_URL is not mapped.
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
