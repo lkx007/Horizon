@@ -299,7 +299,7 @@ docker compose run --rm horizon [OPTIONS]
 
 ### 4. 自動化（オプション）
 
-**GitHub Actions**でHorizonを定期実行できます。このフォークでは[日次ワークフロー](.github/workflows/daily-summary.yml)が有効で、平日の上海時間 08:38 に実行されます。シークレットと GitHub Pages の手順は [DEPLOY.md](DEPLOY.md) を参照してください。
+**GitHub Actions**でHorizonを定期実行できます。このフォークでは[日次ワークフロー](.github/workflows/daily-summary.yml)が有効で、平日の上海時間 08:52 に実行されます。当日分がまだ公開されていなければ 09:07 に再試行します。シークレットと GitHub Pages の手順は [DEPLOY.md](DEPLOY.md) を参照してください。
 
 ## サポートされている情報源
 

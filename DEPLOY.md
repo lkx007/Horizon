@@ -6,9 +6,20 @@ GitHub Actions workflow: [`.github/workflows/daily-summary.yml`](.github/workflo
 
 ## Schedule / 时间
 
-- Cron: `38 0 * * 1-5` (UTC). That is **08:38 Asia/Shanghai on weekdays** (UTC 00:38 Mon–Fri).
-- 工作日北京时间 **08:38**（UTC 周一至周五 00:38）。GitHub 定时任务按 UTC 计算，实际开始时间可能略有延迟。
-- Manual run / 手动运行: **Actions → Daily Horizon Summary → Run workflow**.
+Weekdays / 工作日, `timezone: "Asia/Shanghai"`:
+
+| Slot | Asia/Shanghai | UTC | Cron | What it does |
+| --- | --- | --- | --- | --- |
+| Primary / 主槽 | **08:52** | 00:52 Mon–Fri | `52 8 * * 1-5` | First attempt. Minute 52 avoids the top of the hour. A full run takes about 5 minutes, so an on-time start finishes near 08:57, before the ~09:15 mail routine. |
+| Fallback / 补跑 | **09:07** | 01:07 Mon–Fri | `7 9 * * 1-5` | Runs only when today's `_posts/YYYY-MM-DD-summary-<lang>.md` files are not all already on `gh-pages`. 01:07 UTC is outside the overloaded midnight-UTC hour. An on-time start finishes near 09:12. |
+
+08:52 是第一次尝试，分钟设在 52，躲开每小时开头；正常大约 5 分钟跑完，09:00 前结束。09:07 是补跑，只有当天各语言的 Pages 帖子还没齐时才会真正调用 Horizon，从而避开 DashScope 一天两次。01:07 UTC 不在最拥堵的午夜 UTC 小时里，正常大约 09:12 结束。
+
+GitHub may still start a slot late. The earlier cron (`38 0 * * 1-5`, 08:38 Shanghai / 00:38 UTC) often never created a run: the 2026-11-05 schedule appeared 6h42m late, and the 2026-11-06 00:38 UTC slot created none. Do not move the trigger earlier than 08:00 Shanghai. Horizon names the page with the UTC date, so 07:xx Shanghai would publish the previous day's filename.
+
+GitHub 仍可能晚点启动。原先的 `38 0 * * 1-5`（北京时间 08:38 / UTC 00:38）经常根本不创建 run。不要把触发改到北京时间 08:00 以前：Horizon 用 UTC 日期给页面命名，07:xx 会写成前一天。
+
+Manual run / 手动运行: **Actions → Daily Horizon Summary → Run workflow**. A manual run always generates, even if today's page already exists. / 手动运行总会重新生成，即使当天页面已经存在。
 
 The job copies `data/config.github.json` to `data/config.json`, then runs `uv run horizon --hours 24`, and publishes `docs/` to the `gh-pages` branch.
 
