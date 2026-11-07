@@ -293,7 +293,7 @@ docker compose run --rm horizon [OPTIONS]
 
 ### 4. 自动化（可选）
 
-可使用 **GitHub Actions** 定时运行 Horizon。本仓库已启用[每日工作流](.github/workflows/daily-summary.yml)，工作日北京时间 08:38 运行。密钥与 GitHub Pages 步骤见 [DEPLOY.md](DEPLOY.md)。
+可使用 **GitHub Actions** 定时运行 Horizon。本仓库已启用[每日工作流](.github/workflows/daily-summary.yml)，工作日北京时间 08:52 运行；若当天页面还没有，09:07 再补一次。密钥与 GitHub Pages 步骤见 [DEPLOY.md](DEPLOY.md)。
 
 ## 支持的信息源
 

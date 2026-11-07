@@ -2,13 +2,127 @@ name: Daily Horizon Summary
 
 on:
   schedule:
-    # GitHub Actions cron is UTC. This is Asia/Shanghai 08:38 on weekdays
-    # (UTC 00:38 Mon–Fri).
-    - cron: '38 0 * * 1-5'
+    # 08:52 Asia/Shanghai on weekdays (00:52 UTC). Minute 52 stays clear of
+    # the top of the hour. This slot is still inside the busy 00:00 UTC hour,
+    # so the 09:07 slot below covers a delay or a dropped run.
+    #
+    # Do not move this earlier than 08:00 Shanghai. Horizon names Pages posts
+    # with datetime.now(timezone.utc); a 07:xx Shanghai run is still the
+    # previous UTC date and would publish yesterday's filename.
+    #
+    # Recent full runs finish in about 5 minutes, so an on-time start lands
+    # near 08:57, before the ~09:15 Asia/Shanghai mail routine.
+    - cron: '52 8 * * 1-5'
+      timezone: "Asia/Shanghai"
+    # 09:07 Asia/Shanghai (01:07 UTC). Outside the midnight-UTC hour, and not
+    # minute 0. No-ops when today's Pages posts are already on gh-pages.
+    - cron: '7 9 * * 1-5'
+      timezone: "Asia/Shanghai"
   workflow_dispatch:      # Allow manual trigger
 
+# If the early slot is delayed into the fallback, run one publish at a time.
+concurrency:
+  group: daily-horizon-summary
+  cancel-in-progress: false
+
 jobs:
+  already-published:
+    name: Already published today?
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      run: ${{ steps.gate.outputs.run }}
+    steps:
+      - name: Skip a schedule slot when today's Pages posts exist
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -u
+
+          emit() {
+            echo "run=$1" >> "$GITHUB_OUTPUT"
+            printf '%s\n' "$2"
+          }
+
+          if [ "${GITHUB_EVENT_NAME}" != "schedule" ]; then
+            emit true "workflow_dispatch always generates a digest."
+            exit 0
+          fi
+
+          shanghai_today="$(TZ=Asia/Shanghai date +%Y-%m-%d)"
+          utc_today="$(date -u +%Y-%m-%d)"
+          # These crons are after 00:00 UTC, so the dates match on an on-time
+          # run. Horizon's filename uses the UTC date. If a delay crosses
+          # midnight in Shanghai, generate rather than skip the wrong day.
+          if [ "$shanghai_today" != "$utc_today" ]; then
+            emit true "Shanghai date ${shanghai_today} != UTC date ${utc_today}; not skipping."
+            exit 0
+          fi
+
+          if [ -z "${GH_TOKEN:-}" ]; then
+            emit true "GITHUB_TOKEN is empty; generating."
+            exit 0
+          fi
+
+          tmp="$(mktemp)"
+          config_code="000"
+          if config_code="$(curl -sS --max-time 20 -o "$tmp" -w '%{http_code}' \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            -H "Accept: application/vnd.github.raw" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/contents/data/config.github.json?ref=${GITHUB_SHA}")"; then
+            :
+          else
+            config_code="000"
+          fi
+
+          if [ "$config_code" != "200" ]; then
+            emit true "Could not read config.github.json (HTTP ${config_code}); generating."
+            exit 0
+          fi
+
+          if ! langs="$(jq -r '.ai.languages[]' "$tmp")"; then
+            emit true "Could not parse ai.languages; generating."
+            exit 0
+          fi
+
+          if [ -z "$langs" ]; then
+            emit true "No languages configured; generating."
+            exit 0
+          fi
+
+          missing=0
+          while IFS= read -r lang; do
+            [ -n "$lang" ] || continue
+            path="_posts/${utc_today}-summary-${lang}.md"
+            code="000"
+            if code="$(curl -sS --max-time 20 -o /dev/null -w '%{http_code}' \
+              -H "Authorization: Bearer ${GH_TOKEN}" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              "https://api.github.com/repos/${GITHUB_REPOSITORY}/contents/${path}?ref=gh-pages")"; then
+              :
+            else
+              code="000"
+            fi
+            printf '%s -> HTTP %s\n' "$path" "$code"
+            if [ "$code" != "200" ]; then
+              missing=1
+            fi
+          done <<< "$langs"
+
+          if [ "$missing" = "0" ]; then
+            emit false "All ${utc_today} summary posts are already on gh-pages; skipping Horizon."
+          else
+            emit true "Today's summary is not fully published; running Horizon."
+          fi
+
   daily-summary:
+    needs: already-published
+    if: needs.already-published.outputs.run == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Needed to commit changes
