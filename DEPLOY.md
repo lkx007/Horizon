@@ -10,14 +10,15 @@ Weekdays / 工作日, `timezone: "Asia/Shanghai"`:
 
 | Slot | Asia/Shanghai | UTC | Cron | What it does |
 | --- | --- | --- | --- | --- |
-| Primary / 主槽 | **08:52** | 00:52 Mon–Fri | `52 8 * * 1-5` | First attempt. Minute 52 avoids the top of the hour. A full run takes about 5 minutes, so an on-time start finishes near 08:57, before the ~09:15 mail routine. |
-| Fallback / 补跑 | **09:07** | 01:07 Mon–Fri | `7 9 * * 1-5` | Runs only when today's `_posts/YYYY-MM-DD-summary-<lang>.md` files are not all already on `gh-pages`. 01:07 UTC is outside the overloaded midnight-UTC hour. An on-time start finishes near 09:12. |
+| Morning / 早间 | **08:52** | 00:52 Mon–Fri | `52 8 * * 1-5` | First attempt. Minute 52 avoids the top of the hour. A full run takes about 5 minutes, so an on-time start finishes near 08:57, before the ~09:15 mail routine. This UTC hour has been ~6.5h late on this repo. |
+| Midday / 午间 | **12:17** | 04:17 Mon–Fri | `17 12 * * 1-5` | Catch-up outside the 00:xx and 01:xx UTC hours. Skips Horizon when today's `_posts/YYYY-MM-DD-summary-<lang>.md` files are already on `gh-pages`. |
+| Afternoon / 午后 | **15:23** | 07:23 Mon–Fri | `23 15 * * 1-5` | Same-day catch-up in a later UTC hour, so a dropped morning slot can still publish by mid-afternoon. Skips Horizon when today's posts already exist. |
 
-08:52 是第一次尝试，分钟设在 52，躲开每小时开头；正常大约 5 分钟跑完，09:00 前结束。09:07 是补跑，只有当天各语言的 Pages 帖子还没齐时才会真正调用 Horizon，从而避开 DashScope 一天两次。01:07 UTC 不在最拥堵的午夜 UTC 小时里，正常大约 09:12 结束。
+08:52 是早间第一次尝试，分钟设在 52；正常大约 5 分钟跑完，赶在约 09:15 的邮件检查之前。12:17 和 15:23 是同一天的补跑，只有当天各语言的 Pages 帖子还没齐时才会调用 Horizon。15:23（07:23 UTC）离开已经测到会晚约 6.5 小时的 00 点和 01 点 UTC。
 
-GitHub may still start a slot late. The earlier cron (`38 0 * * 1-5`, 08:38 Shanghai / 00:38 UTC) often never created a run: the 2026-11-05 schedule appeared 6h42m late, and the 2026-11-06 00:38 UTC slot created none. Do not move the trigger earlier than 08:00 Shanghai. Horizon names the page with the UTC date, so 07:xx Shanghai would publish the previous day's filename.
+`timezone: "Asia/Shanghai"` is honored. The 2026-11-09 runs were created at 07:16Z and 07:52Z, before 08:52 UTC, so those crons were not read as UTC. Moving the minute inside 00:xx UTC did not help (`38 0` → 07:20Z on 2026-11-05 and 07:18Z on 2026-11-06). The 09:07 Shanghai slot is 01:07 UTC; the second 2026-11-09 run was 07:52Z, still about six hours late, so that slot is gone. Do not move any trigger earlier than 08:00 Shanghai. Horizon names the page with the UTC date, so an on-time 07:xx Shanghai start would publish the previous day's filename.
 
-GitHub 仍可能晚点启动。原先的 `38 0 * * 1-5`（北京时间 08:38 / UTC 00:38）经常根本不创建 run。不要把触发改到北京时间 08:00 以前：Horizon 用 UTC 日期给页面命名，07:xx 会写成前一天。
+`timezone: "Asia/Shanghai"` 会生效，不是被忽略。不要把触发改到北京时间 08:00 以前：Horizon 用 UTC 日期给页面命名，07:xx 会写成前一天。
 
 Manual run / 手动运行: **Actions → Daily Horizon Summary → Run workflow**. A manual run always generates, even if today's page already exists. / 手动运行总会重新生成，即使当天页面已经存在。
 

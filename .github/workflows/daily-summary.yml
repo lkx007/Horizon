@@ -2,25 +2,53 @@ name: Daily Horizon Summary
 
 on:
   schedule:
-    # 08:52 Asia/Shanghai on weekdays (00:52 UTC). Minute 52 stays clear of
-    # the top of the hour. This slot is still inside the busy 00:00 UTC hour,
-    # so the 09:07 slot below covers a delay or a dropped run.
+    # Weekdays, Asia/Shanghai (no DST). GitHub honors timezone on each cron
+    # (workflow syntax; GA March 2026). It is not ignored here: the 2026-11-09
+    # runs were created at 07:16Z and 07:52Z, which is before 08:52 UTC, so
+    # `52 8` / `7 9` were not evaluated as UTC. Equivalent UTC times are noted
+    # on each slot below.
     #
-    # Do not move this earlier than 08:00 Shanghai. Horizon names Pages posts
-    # with datetime.now(timezone.utc); a 07:xx Shanghai run is still the
-    # previous UTC date and would publish yesterday's filename.
+    # Do not add a slot before 08:00 Asia/Shanghai. Horizon names Pages posts
+    # with datetime.now(timezone.utc) (docs/_posts/YYYY-MM-DD-summary-<lang>.md).
+    # An on-time 07:xx Shanghai start is still the previous UTC date and would
+    # publish yesterday's filename. Every cron below is 08:52 or later.
     #
-    # Recent full runs finish in about 5 minutes, so an on-time start lands
-    # near 08:57, before the ~09:15 Asia/Shanghai mail routine.
+    # Schedules in the 00:xx and 01:xx UTC hours have been created about 6.5h
+    # late on this repo, and the job itself then finishes in about 5 minutes
+    # (createdAt ≈ startedAt; the delay is schedule dispatch, not DashScope):
+    #   00:38 UTC → 2026-11-05 07:20Z (+6h42m), 2026-11-06 07:18Z (+6h40m)
+    #   00:52 and 01:07 UTC → 2026-11-09 07:16Z and 07:52Z (about +6.5h).
+    #   Those runs did not record github.event.schedule; in schedule order
+    #   that is +6h24m and +6h45m. Either pairing is still a 6–7h delay.
+    # Moving the minute inside the midnight hour did not help, and the 09:07
+    # Shanghai / 01:07 UTC fallback was in the same delay bucket, so it missed
+    # the ~09:15 mail check too. Later slots are separate schedule events
+    # outside those two hours. The already-published gate skips Horizon once
+    # today's gh-pages posts exist, so a catch-up does not call DashScope again.
+    #
+    # 08:52 Shanghai (00:52 UTC). Morning attempt. Minute 52 stays off :00.
+    # On time, the run finishes near 08:57, before the ~09:15 mail routine.
+    # In the slow queue this slot has landed mid-afternoon; it stays so a
+    # fast day still makes the morning check.
     - cron: '52 8 * * 1-5'
       timezone: "Asia/Shanghai"
-    # 09:07 Asia/Shanghai (01:07 UTC). Outside the midnight-UTC hour, and not
-    # minute 0. No-ops when today's Pages posts are already on gh-pages.
-    - cron: '7 9 * * 1-5'
+    # 12:17 Shanghai (04:17 UTC). Midday catch-up, outside the 00:xx and 01:xx
+    # UTC hours measured above, and not minute 0. If this hour is not in that
+    # same queue, the digest is published around midday. If it is queued with
+    # the morning slot, the gate no-ops once that slot has published.
+    - cron: '17 12 * * 1-5'
+      timezone: "Asia/Shanghai"
+    # 15:23 Shanghai (07:23 UTC). Same-afternoon catch-up in a later UTC hour
+    # (public schedule measurements treat 07:00 UTC onward as quieter than
+    # 00:00–06:59). Covers a dropped 08:52 and a dropped 12:17, and still
+    # publishes the same afternoon when it starts near on time. If an earlier
+    # slot already published, the gate skips Horizon.
+    - cron: '23 15 * * 1-5'
       timezone: "Asia/Shanghai"
   workflow_dispatch:      # Allow manual trigger
 
-# If the early slot is delayed into the fallback, run one publish at a time.
+# A delayed morning run can overlap a later catch-up. Publish one at a time;
+# the waiter then sees today's posts and skips.
 concurrency:
   group: daily-horizon-summary
   cancel-in-progress: false
@@ -38,6 +66,7 @@ jobs:
         id: gate
         env:
           GH_TOKEN: ${{ github.token }}
+          EVENT_SCHEDULE: ${{ github.event.schedule }}
         shell: bash
         run: |
           set -u
@@ -46,6 +75,8 @@ jobs:
             echo "run=$1" >> "$GITHUB_OUTPUT"
             printf '%s\n' "$2"
           }
+
+          printf 'event=%s schedule=%s\n' "$GITHUB_EVENT_NAME" "${EVENT_SCHEDULE:-}"
 
           if [ "${GITHUB_EVENT_NAME}" != "schedule" ]; then
             emit true "workflow_dispatch always generates a digest."
