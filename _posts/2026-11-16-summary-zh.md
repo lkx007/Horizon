@@ -5,434 +5,478 @@ date: 2026-11-16
 lang: zh
 ---
 
-> 从 41 条内容中筛选出 22 条重要资讯。
+> 从 49 条内容中筛选出 27 条重要资讯。
 
 ---
 
 **科技新闻**
-1. [uBlock Origin 元素选择器中存在通用跨站脚本（UXSS）漏洞](#item-tech-news-1) ⭐️ 9.0/10
-2. [通义千问 Qwen4-Max 正式上线：2.4 万亿参数稀疏 MoE 模型，支持视觉与百万 Token 上下文](#item-tech-news-2) ⭐️ 9.0/10
-3. [Meta FAIR 与 NYU 研究：视觉编码器预训练非必需，但视觉专用参数不可省略](#item-tech-news-3) ⭐️ 8.0/10
-4. [CUDA 内存拷贝工具在 B300 GPU 上实现 5 倍加速](#item-tech-news-4) ⭐️ 8.0/10
-5. [美团开源 LongCat-2.5：1.6 万亿参数多模态智能体模型，全程基于华为升腾芯片训练](#item-tech-news-5) ⭐️ 8.0/10
-6. [Bitly 过期链接遭劫持用于恶意重定向](#item-tech-news-6) ⭐️ 7.0/10
-7. [Nvidia 面临客户自研 AI 芯片与 CUDA 生态弱化的战略挑战](#item-tech-news-7) ⭐️ 7.0/10
-8. [MacBook Pro 新 OLED 显示屏存在低频 PWM 调光问题](#item-tech-news-8) ⭐️ 7.0/10
-9. [Protomaps：自托管矢量地图瓦片变得廉价且简单](#item-tech-news-9) ⭐️ 7.0/10
-10. [乌鸦决策速度超过人类](#item-tech-news-10) ⭐️ 7.0/10
-11. [Datasette 1.0a43 发布：支持流式输出渲染器、新增 Response.stream\(\) 插件 API、修复安全漏洞](#item-tech-news-11) ⭐️ 7.0/10
-12. [Datasette 0.65.6 发布：回溯修复数据库路由名与名称不一致导致的未授权下载漏洞](#item-tech-news-12) ⭐️ 7.0/10
-13. [Marimba：基于冻结 Qwen3-ASR-0.6B 的轻量级实时语音感知模型](#item-tech-news-13) ⭐️ 7.0/10
-14. [Telegram macOS 13.2 测试版新增可选 Lockdown Mode](#item-tech-news-14) ⭐️ 7.0/10
-15. [华为云上线开源盘古模型 openPangu-2.1-Pro](#item-tech-news-15) ⭐️ 7.0/10
-16. [苹果智能眼镜 N50 计划 2027 年发布，仅支持 iPhone、无 AR 显示、磁吸充电](#item-tech-news-16) ⭐️ 7.0/10
-17. [苹果启动健康 AI 使用研究，招募 20 万美国用户](#item-tech-news-17) ⭐️ 7.0/10
-18. [腾讯总办号召 AI 时代再创业，削减管理岗位](#item-tech-news-18) ⭐️ 7.0/10
-19. [腾讯混元发布 Hy4 Flash：224B 参数、12B 激活、1M 上下文、API 成本降至 Hy4 preview 的 1/13](#item-tech-news-19) ⭐️ 7.0/10
+1. [uBlock Origin 元素选择器中发现通用 XSS 漏洞，1.75.4 版本已修复](#item-tech-news-1) ⭐️ 9.0/10
+2. [阿里发布 Qwen4-Max：2.4 万亿参数稀疏 MoE 模型，支持百万 Token 上下文](#item-tech-news-2) ⭐️ 8.0/10
+3. [Tor Project 发布紧急安全补丁 0.4.9.17 应对全网 DDoS 攻击](#item-tech-news-3) ⭐️ 8.0/10
+4. [Meta FAIR 与 NYU 研究：多模态视觉编码器预训练非必需，但视觉专用参数不可省略](#item-tech-news-4) ⭐️ 8.0/10
+5. [Marimba：一种面向语音的单次编码多任务零样本模型](#item-tech-news-5) ⭐️ 8.0/10
+6. [Duetto：通过采样时引导预训练音乐 Transformer 实现免微调实时爵士伴奏](#item-tech-news-6) ⭐️ 8.0/10
+7. [CUDA 内存拷贝工具在 B300 GPU 上实现 5 倍加速](#item-tech-news-7) ⭐️ 8.0/10
+8. [美国与九国签署《旧金山宣言》共建 AI 与超级智能供应链安全框架](#item-tech-news-8) ⭐️ 8.0/10
+9. [亚马逊发现 Artex 框架驱动的 AI 代理窃取 API 密钥用于自我供血](#item-tech-news-9) ⭐️ 8.0/10
+10. [美国新规将先进 AI 芯片出口管制延伸至远程访问](#item-tech-news-10) ⭐️ 8.0/10
+11. [MIT《如何制造（几乎）任何东西》课程概述数字制造与软硬件集成](#item-tech-news-11) ⭐️ 7.0/10
+12. [Lean 证明验证的局限性：语法正确性不等于语义正确性](#item-tech-news-12) ⭐️ 7.0/10
+13. [Bitly 短链接因账户删除或域名过期遭劫持](#item-tech-news-13) ⭐️ 7.0/10
+14. [WebGL 飞行模拟器 Baron：基于种子的地形生成与原生游戏手柄支持](#item-tech-news-14) ⭐️ 7.0/10
+15. [Nvidia 面临客户自研芯片与 CUDA 生态弱化的战略挑战](#item-tech-news-15) ⭐️ 7.0/10
+16. [Protomaps：自托管矢量地图瓦片变得廉价且简单](#item-tech-news-16) ⭐️ 7.0/10
+17. [Datasette 1.0a43 发布：支持输出渲染器流式处理、CSV/TSV 导出性能提升、新增 Response.stream\(\) 插件 API 及安全修复](#item-tech-news-17) ⭐️ 7.0/10
+18. [Datasette 0.65.6 发布：回溯修复自定义路由导致的数据库未授权下载漏洞](#item-tech-news-18) ⭐️ 7.0/10
+19. [苹果 N50 智能眼镜瞄准 2027 年发布，依赖 iPhone 且无 AR 显示](#item-tech-news-19) ⭐️ 7.0/10
+20. [苹果启动健康 AI 使用研究，招募 20 万美国用户](#item-tech-news-20) ⭐️ 7.0/10
+21. [腾讯总办号召 AI 时代再创业，精简管理岗位](#item-tech-news-21) ⭐️ 7.0/10
+22. [腾讯混元发布 Hy4 Flash：224B 参数模型，仅激活 12B，支持 1M 上下文与多模态，API 价格低至 0.02 元/百万 token（缓存命中）](#item-tech-news-22) ⭐️ 7.0/10
+23. [Grok API 默认关闭文本水印](#item-tech-news-23) ⭐️ 7.0/10
+24. [山东大学团队提出首个覆盖所有充分大偶数的哥德巴赫猜想条件性证明](#item-tech-news-24) ⭐️ 7.0/10
 
 **财经新闻**
 1. [中国 10 月经济数据全面不及预期](#item-finance-news-1) ⭐️ 8.0/10
-2. [美国法官驳回美光、三星、SK 海力士 DRAM 价格操纵案撤诉动议](#item-finance-news-2) ⭐️ 7.0/10
-3. [2024 年三季度外资对华直接投资转为净流出](#item-finance-news-3) ⭐️ 7.0/10
+2. [2026 年三季度外资对华直接投资转为净流出](#item-finance-news-2) ⭐️ 7.0/10
+3. [英特尔及 CEO 陈立武遭股东集体诉讼](#item-finance-news-3) ⭐️ 7.0/10
 
 ---
 
 ## 科技新闻
 
 <a id="item-tech-news-1"></a>
-### [uBlock Origin 元素选择器中存在通用跨站脚本（UXSS）漏洞](https://iter.ca/post/ubo-uxss/) ⭐️ 9.0/10
+### [uBlock Origin 元素选择器中发现通用 XSS 漏洞，1.75.4 版本已修复](https://iter.ca/post/ubo-uxss/) ⭐️ 9.0/10
 
-uBlock Origin 的网页内嵌元素选择器存在通用跨站脚本（UXSS）漏洞，允许恶意网站通过注入到页面 DOM 中的选择器 UI 执行任意 JavaScript 代码，从而突破同源策略限制。该漏洞已在版本 1.75.4（uBlock Origin）和 2026.1110.1816（uBO Lite）中修复。漏洞影响所有使用旧版本的用户，且无需用户交互即可触发；修复方式为重构选择器 UI，使其不再直接注入网页 DOM。
+uBlock Origin 浏览器扩展的网页内嵌元素选择器（element picker）存在通用跨站脚本（UXSS）漏洞，允许恶意网站在任意目标域名的上下文中执行任意 JavaScript 代码；该漏洞已在 2026 年 11 月发布的 v1.75.4 版本中修复。漏洞根源在于选择器 UI 直接注入到当前页面 DOM 中，且未充分隔离执行环境，导致网站可操控该 UI 实现跨域脚本执行。此为已确认可利用的安全缺陷，影响所有使用旧版本 uBlock Origin 的用户，不依赖用户交互即可触发。
 
 hackernews · zaik · 11月16日 02:04 · [社区讨论](https://news.ycombinator.com/item?id=50513160)
 
-**「uBlock Origin 元素选择器的架构设计」** uBlock Origin 的网页内嵌元素选择器（element picker）通过向当前页面 DOM 注入 UI 元素实现可视化规则创建，该设计使扩展能直接操作页面结构，但也导致其上下文与网页共享同源策略边界。此前该机制未被识别为 UXSS 风险面，直到本次漏洞揭示其可被恶意网站诱导执行跨域脚本注入。
+**「uBlock Origin 的元素选择器机制」** uBlock Origin 提供网页内嵌的元素选择器（element picker），用于交互式创建过滤规则，该功能通过向当前页面 DOM 注入 UI 元素实现。这种设计使扩展能直接操作页面结构，但也导致其执行上下文与网页共享，从而在存在缺陷时可能被恶意网站利用来突破同源策略。
 
-**「实际用户面临跨域任意代码执行风险」** 在 uBlock Origin 1.75.4 版本发布前，使用旧版（特别是 MV2 架构的 Firefox 版本）的用户可能被恶意网站利用该 UXSS 漏洞，在任意目标域名上下文中执行 JavaScript，从而窃取敏感数据或劫持会话；漏洞已通过将元素选择器 UI 移出页面 DOM 并限制 filter 注入逻辑完成修复。
+**「影响」** 使用 v1.75.4 之前版本的用户面临隐私与账户劫持风险：攻击者可在用户访问任意网站（如网银、邮箱）时，通过该漏洞注入恶意脚本，窃取会话 Cookie、键盘输入或执行账户操作；用户需立即升级至 uBlock Origin v1.75.4 或更高版本以消除风险。
 
-**「社区讨论」** 多位评论者指出，将扩展 UI（如元素选择器或密码管理器下拉菜单）直接注入网页 DOM 是根本性设计风险，可能导致信息泄露或 UXSS；有人建议应将此类 UI 移至浏览器 Chrome 区域（即浏览器界面层）以隔离执行上下文。另有用户询问分叉项目 AdNauseam 是否受影响，但原文未提供确认信息。
+**「社区讨论」** 多位评论者指出，将扩展 UI（如选择器、密码管理器弹出层）直接注入页面 DOM 是系统性设计缺陷，不仅引发 UXSS，还可能导致 UUID 泄露和浏览器指纹追踪；有开发者质疑为何不采用浏览器原生 UI（如工具栏弹出面板）替代 DOM 注入方案。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://github.com/gorhill/uBlock/security/advisories/GHSA-cmqw-9r2w-6wv2">Universal XSS from website-driven element picker</a></li>
-<li><a href="https://techbytes.app/posts/universal-xss-in-ublock-origin-from-website-driven-element-picker/">Universal XSS in uBlock Origin from website-driven element picker</a></li>
-<li><a href="https://todayforai.com/en/items/art-bdf7d819-af2">uBlock Origin Patches One-Click Universal XSS Flaw</a></li>
-<li><a href="https://iter.ca/post/ubo-uxss/">Universal XSS in uBlock Origin from website-driven element picker</a></li>
-
-</ul>
-</details>
-
-**标签**: `#browser-security`, `#extension-vulnerability`, `#uxss`, `#web-security`, `#uBlock-Origin`
+**标签**: `#browser-security`, `#xss`, `#extension-security`, `#privacy`, `#web-security`
 
 ---
 
 <a id="item-tech-news-2"></a>
-### [通义千问 Qwen4-Max 正式上线：2.4 万亿参数稀疏 MoE 模型，支持视觉与百万 Token 上下文](https://mp.weixin.qq.com/s/pJUt0xwD6H-WMyzd8TjZaQ) ⭐️ 9.0/10
+### [阿里发布 Qwen4-Max：2.4 万亿参数稀疏 MoE 模型，支持百万 Token 上下文](https://qwen.ai/blog?id=qwen4-max) ⭐️ 8.0/10
 
-阿里通义千问于 2026 年 11 月 16 日正式上线 Qwen4-Max，这是一款总参数达 2.4 万亿的稀疏混合专家（MoE）大语言模型，原生支持视觉理解与百万 Token 长上下文。其单任务平均 API 费用从 26.58 元降至 11.16 元（降幅约 58%），Token 消耗减少近 50%，当前已开放商用。团队明确表示后续将开源更小规模的 Qwen4 系列模型（如 27B 等版本），但未公布具体时间表或许可证类型。
+阿里巴巴于 2026 年 11 月 16 日正式发布 Qwen4-Max，一款总参数达 2.4 万亿的稀疏混合专家（MoE）架构大语言模型，原生支持视觉理解和百万 Token 长上下文。该模型已在生产环境上线，单任务平均费用从 26.58 元降至 11.16 元（降幅 58%），Token 消耗减少近 50%，API 定价同步下调；团队明确表示后续将开源更小规模的 Qwen4 系列模型权重。
 
-telegram · zaihuapd · 11月16日 02:52
+hackernews · ilreb · 11月16日 02:14 · [社区讨论](https://news.ycombinator.com/item?id=50513215)
 
-**「千问模型演进背景」** Qwen4-Max 是通义千问系列的最新旗舰模型，继 Qwen3.8-Max（2026 年 7 月发布）之后推出，延续了该系列在稀疏 MoE 架构、长上下文与多模态能力上的技术路线。此前 Qwen3.8-Max 已支持视觉输入与超长上下文，但参数规模与推理成本优化未达当前水平。
+**「通义千问模型演进背景」** Qwen4-Max 是阿里巴巴通义千问系列大模型的最新旗舰版本，继 2026 年 9 月发布的 Qwen3-Max 后推出；此前 Qwen3-Max 已采用 MoE 架构并强调多模态与长上下文能力，但未达到当时前沿闭源模型（如 Opus 5.5）的综合性能水平。
 
-**「影响」** 开发者和企业用户可立即以更低成本调用具备视觉理解和超长上下文能力的旗舰级模型，但当前仅提供 API 服务；开源小模型的后续发布将直接影响开源 AI 生态中对高效、可部署多模态模型的需求与技术选型。
+**「影响」** Qwen4-Max 的实际推理速度（约 30 tokens/sec）显著低于竞品（如 Opus 达 80 tokens/sec），导致其在需低延迟响应的代理系统（如 opencode 的 battle system）中得分偏低，部分开发者已因此 regret 将其纳入生产级评估框架。
 
-**「社区讨论」** 部分用户指出 Qwen4-Max 在 Artificial Analysis 基准上得分为 43、平均单次调用成本 3.27 美元，显著高于 GPT-6.1 Sol（46 分，0.36 美元）；另有开发者强调 Qwen3.8 Max 因推理速度慢（约 30 token/s）导致在代理系统中得分偏低，因而期待 Qwen4-Max 或后续‘Flash’/27B 版本在延迟与吞吐上的实质性改进。
+**「社区讨论」** 开发者指出 Qwen4-Max 在 Artificial Analysis 基准上得分为 43、平均成本 3.27 美元，显著高于 Qwen3.8 但低于 GPT-6.1 Sol（46 分，0.36 美元）；另有用户强调推理速度瓶颈——Qwen3.8 仅约 30 tokens/sec，远低于 Opus 的 80 tokens/sec，导致其在实时对抗评测（如 opencode battle system）中因延迟被低估，而非能力不足。
 
-**标签**: `#large-language-models`, `#open-source-ai`, `#multimodal-ai`, `#moE-architecture`, `#programming-ai`
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://www.alibabacloud.com/blog/alibaba-unveils-qwen4-max-new-ai-teammate-for-work-creativity-and-discovery_603783">Alibaba Unveils Qwen 4 - Max : New AI... - Alibaba Cloud Community</a></li>
+<li><a href="https://openrouter.ai/qwen/qwen4-max">Qwen 4 Max - API Pricing &amp; Providers | OpenRouter</a></li>
+<li><a href="https://askclash.ai/ai-leaderboard/gpt-6-1-sol-vs-qwen3-8-max">GPT - 6 . 1 Sol vs Qwen3.8 Max : Leaderboard Benchmarks... | AskClash</a></li>
+
+</ul>
+</details>
+
+**标签**: `#artificial-intelligence`, `#large-language-models`, `#open-source-ai`, `#model-benchmarks`, `#inference-performance`
 
 ---
 
 <a id="item-tech-news-3"></a>
-### [Meta FAIR 与 NYU 研究：视觉编码器预训练非必需，但视觉专用参数不可省略](https://www.reddit.com/r/MachineLearning/comments/1xx1k2o/meta_fair_nyu_unbundling_multimodal_vision/) ⭐️ 8.0/10
+### [Tor Project 发布紧急安全补丁 0.4.9.17 应对全网 DDoS 攻击](https://forum.torproject.org/t/security-release-0-4-9-17/22454) ⭐️ 8.0/10
 
-Meta FAIR 与纽约大学联合研究通过从零训练 200 多个多模态大语言模型（MLLM），在相同数据与计算预算下系统性验证：视觉编码器的独立预训练（如对比学习、自监督、图像描述等）对 VQA 任务性能无显著增益，即使额外投入 6.5 倍计算量预训练 MetaCLIP 也未能提升 VQA 得分；但模型必须包含专用于视觉 token 的参数（vision-only parameters），移除后所有规模（0.6B–6.4B）模型 VQA 性能均大幅下降，且需约 3 倍计算量才能追平；视觉参数可直接嵌入 LLM 前 8 层（“in-fusion”方式），无需独立编码器结构，在 1.7B 至 6.4B 规模下性能与传统编码器相当，首 token 延迟降低约 13%。
+Tor Project 于 2026 年 11 月 16 日发布紧急安全版本 0.4.9.17，旨在缓解一场持续的、影响全网中继（包括守卫节点）的分布式拒绝服务（DDoS）攻击。该补丁增强了共识协议中的 DoS 防御机制，并调整了守卫节点选择逻辑，以降低恶意流量对关键基础设施的冲击。更新适用于运行 Tor 0.4.9 系列的中继和客户端，要求立即升级；旧版本（如 0.4.8.x 或更早）不受此补丁支持，且未声明向后兼容性。
 
-reddit · r/MachineLearning · /u/trungh98 · 11月15日 17:38
+hackernews · aillia · 11月16日 00:21 · [社区讨论](https://news.ycombinator.com/item?id=50512441)
 
-**「背景说明」** 当前多模态大模型普遍采用预训练视觉编码器（如 ViT）+冻结/微调 LLM 的架构，隐含假设是视觉编码器需独立预训练以提取通用视觉表征。该研究针对这一默认设计，将编码器解耦为三个可独立检验的要素：是否独立预训练、是否含视觉专用参数、是否作为独立模块置于 LLM 之前。
+**「Tor 网络架构与守卫节点机制」** Tor 网络依赖分布式中继节点构建匿名通信路径，其中守卫（Guard）节点是用户电路的第一跳，需长期稳定运行并经共识机制选入，以抵御流量分析攻击；其可信度和可用性直接关系到整个网络的抗审查能力与用户隐私保障。
 
-**「实际影响」** 开发者可跳过耗时耗资源的视觉编码器预训练阶段，直接在多模态训练中联合优化视觉与语言模块；但必须为视觉 token 保留专用参数空间（如独立注意力投影或 FFN 权重），不可简单复用 LLM 参数或完全移除视觉分支。
+**「影响」** 运行 Tor 0.4.9.15 或更早版本的中继节点（尤其是守卫节点）在攻击期间遭遇严重性能下降，实测下载速度降低达 99%；该问题已通过紧急发布的 0.4.9.17 版本中增强的共识协议防 DoS 机制和守卫选择逻辑得到缓解。
 
-**「社区讨论」** 无可用评论，社区未提供实质性讨论或经验反馈。
+**「社区讨论」** 部分用户报告其守卫节点在攻击期间出现严重性能下降（如下载速度下降 99%），并推测攻击可能意在将流量导向敌对中继；另有评论指出，此类系统级 DDoS 可能针对 Tor 基础设施本身，而非特定网站，凸显了长期架构韧性挑战。
 
-**标签**: `#multimodal`, `#vision-language-models`, `#model-architecture`, `#ablation-study`, `#pretraining`
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://forum.torproject.org/t/tor-project-anti-censorship-team-meeting-notes-2026-10-29/22340">[ tor - project ] Anti-censorship team meeting notes... - Tor Project Forum</a></li>
+
+</ul>
+</details>
+
+**标签**: `#network-security`, `#privacy-infrastructure`, `#distributed-systems`, `#ddos-mitigation`, `#open-source-security`
 
 ---
 
 <a id="item-tech-news-4"></a>
-### [CUDA 内存拷贝工具在 B300 GPU 上实现 5 倍加速](https://www.reddit.com/r/MachineLearning/comments/1xx2n25/making_cudamemcpy_5x_faster_on_a_b300_p/) ⭐️ 8.0/10
+### [Meta FAIR 与 NYU 研究：多模态视觉编码器预训练非必需，但视觉专用参数不可省略](https://www.reddit.com/r/MachineLearning/comments/1xx1k2o/meta_fair_nyu_unbundling_multimodal_vision/) ⭐️ 8.0/10
 
-开发者开源了一个名为 cudamemcpy-tuner 的调优工具，针对 NVIDIA B300 GPU 上的 pageable 内存 cudaMemcpy 操作实现最高 5 倍吞吐量提升：在 1 GB 张量 CPU↔GPU 往返拷贝测试中，原始 PyTorch 默认行为达 10.2 GB/s，启用该工具后提升至 51.5 GB/s。该优化专用于 pageable（非 pinned）主机内存场景，已通过 PyTorch 基准测试验证，并提供完整文档与开源代码。工具不修改 CUDA 驱动或运行时，而是通过动态配置传输参数（如分块大小、流使用策略等）实现性能提升。
+Meta FAIR 与纽约大学联合开展的系统性消融实验表明，在多模态大语言模型（MLLM）中，视觉编码器的独立预训练并非必要——在相同总计算预算下，从零开始联合训练视觉编码器与 LLM，其在 16 个 VQA 基准（Cambrian 数据集，448px 分辨率）上的性能不逊于经四目标（对比学习、自监督、双 captioning）预训练的编码器；但视觉专用参数（vision-only parameters）不可或缺，移除编码器的纯 LLM 架构在所有模型规模（0.6B–6.4B）下均显著落后，需约 3 倍计算量才能追平；此外，将视觉参数嵌入 LLM 前 8 层（“in-fusion”方式）可达到与传统独立编码器相当的 VQA 性能（1.7B 模型：45.0 vs. 44.4），且首 token 延迟降低约 13%。
 
-reddit · r/MachineLearning · /u/makneeee · 11月15日 18:20
+reddit · r/MachineLearning · /u/trungh98 · 11月15日 17:38
 
-**「背景」** cudaMemcpy 在 pageable 主机内存与 GPU 设备内存之间传输数据时，因需经历页表遍历和缺页中断，性能远低于使用 pinned（page-locked）内存的场景；B300 作为 NVIDIA 新一代数据中心 GPU，其 HBM3 带宽和 PCIe 5.0 接口理论上支持更高传输速率，但默认 CUDA 运行时对 pageable 内存的传输策略未充分适配其硬件特性。
+**「背景说明」** 当前主流 MLLM（如 Gemma 4 12B、Kimi K3、Inkling 2 Small）对视觉编码器设计存在分歧，但因训练数据、算力和架构差异难以直接比较；该研究将标准编码器解耦为三个可独立评估的要素：独立预训练、仅用于视觉 token 的参数、以及置于 LLM 之前的固定位置。
 
-**「影响」** 使用 PyTorch 等框架进行中等规模模型训练或推理（尤其在未预分配 pinned 内存的动态加载场景）的开发者，可立即通过集成该工具将 CPU-GPU 张量搬运带宽从约 10 GB/s 提升至超 50 GB/s，显著降低数据加载瓶颈，且无需修改应用代码或升级 CUDA 版本。
+**「实际影响」** 开发者可跳过耗时耗资源的视觉编码器预训练阶段，在统一计算预算内端到端训练更轻量、更易复现的 MLLM；但必须为视觉模态保留专用参数（不能仅靠 LLM 自身参数处理图像），否则 VQA 性能将严重受损。
 
-**「社区讨论」** 无可用评论，社区尚未就该工具展开实质性讨论。
+**「社区讨论」** 无可用评论，未形成实质性社区讨论。
 
-**标签**: `#CUDA`, `#GPU optimization`, `#machine learning systems`, `#memory transfer`, `#systems performance`
+**标签**: `#multimodal`, `#MLLM`, `#vision-language`, `#model-architecture`, `#ablation-study`
 
 ---
 
 <a id="item-tech-news-5"></a>
-### [美团开源 LongCat-2.5：1.6 万亿参数多模态智能体模型，全程基于华为升腾芯片训练](https://the-decoder.com/meituan-releases-a-1-6-trillion-parameter-agent-model-that-never-touched-an-nvidia-gpu/) ⭐️ 8.0/10
+### [Marimba：一种面向语音的单次编码多任务零样本模型](https://www.reddit.com/r/MachineLearning/comments/1xxsqro/marimba_a_system_one_model_for_speech_r/) ⭐️ 8.0/10
 
-美团开源 LongCat-2.5 模型，参数总量达 1.6 万亿，每 token 激活约 480 亿参数，专为自主完成多步骤编程等复杂任务的智能体设计；该模型全程使用华为升腾（Ascend）AI 加速卡训练，未使用任何英伟达 GPU；支持文本、图像与视频多模态输入，权重以 MIT 许可证开放，可在商用场景中自由使用；在 Terminal Bench v2.1 基准测试中得分为 88.4。
+Marimba 是一个轻量级、编码器冻结的语音模型，仅需对每段 8 秒音频窗口执行一次 Qwen3-ASR-0.6B 编码器前向传播，即可支持多项零样本或极低监督下游任务，包括术语检测（如&\#x27;卫星&\#x27;是否被提及）、语言识别、话轮结束检测、说话人变化与计数；所有输出均为经 Platt 校准的概率值。该模型在 FLEURS 数据集上实现 100% 语言识别准确率，在 AMI 和 VoxConverse 上说话人变化检测 AUROC 达 0.966–0.980，且在 9 项基准测试中 6 项表现持平或优于参数量大 50 倍的 Qwen3-Omni-30B 模型；但其话轮结束检测在 Smart Turn v3.2 测试集上 AUROC 为 0.930（低于 v3.2 的 0.982），且无法泛化至未见任务（如 CochlScene 场景分类）。
 
-telegram · zaihuapd · 11月15日 11:08
+reddit · r/MachineLearning · /u/solanotodesch · 11月16日 15:47
 
-**「背景」** LongCat 系列是美团自研的多模态智能体模型，此前 LongCat-2.0 已于 2026 年 10 月发布，聚焦编程任务自动化；LongCat-2.5 是其迭代版本，首次明确宣称全量训练过程完全基于华为升腾（Ascend）AI 加速芯片，不依赖英伟达 GPU。
+**「背景」** “System One”范式指复用单一冻结语音编码器的中间表征，通过轻量级、任务专属的读出头（readout head）实现多任务推理，区别于传统为每项任务单独微调整个模型的“System Two”方式；此前语音模型（如 Whisper、Qwen3-Omni）通常需针对不同任务分别训练或适配完整模型。
 
-**「实际影响」** 开发者若需在国产硬件上部署高性能编程智能体，可直接使用 LongCat-2.5 的 MIT 许可权重及官方提供的 4 位量化版本和基于 194 块华为升腾芯片的自托管指南；但该模型未提供 NVIDIA GPU 兼容支持，排除了在主流 CUDA 生态中开箱即用的可能性。
+**「影响」** 开发者可基于 Marimba 的 Apache-2.0 许可权重和开源 API 快速部署低延迟、多任务语音理解服务（如实时会议分析），但需注意其话轮结束检测仅在 Smart Turn 数据上训练，跨数据集鲁棒性受限，且不支持未经显式定义的新任务类型。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://phemex.com/news/article/meituan-opensources-16tparameter-longcat25-model-trained-entirely-on-domestic-chinese-hardware-103629">Meituan LongCat-2.5: 1.6T MoE AI Model Trained on ... - Phemex</a></li>
+**「社区讨论」** 无可用社区评论。
 
-</ul>
-</details>
-
-**标签**: `#artificial-intelligence`, `#open-source`, `#hardware-sovereignty`, `#agent-systems`, `#multimodal-models`
+**标签**: `#speech-processing`, `#zero-shot-learning`, `#model-efficiency`, `#audio-understanding`, `#calibrated-probabilities`
 
 ---
 
 <a id="item-tech-news-6"></a>
-### [Bitly 过期链接遭劫持用于恶意重定向](https://ransomnews.com/burger-king-tweet-bitly-link-hijack-2026/) ⭐️ 7.0/10
+### [Duetto：通过采样时引导预训练音乐 Transformer 实现免微调实时爵士伴奏](https://www.reddit.com/r/MachineLearning/comments/1xxkyh3/steering_a_pretrained_music_transformer_at/) ⭐️ 8.0/10
 
-Bitly 平台上已过期或被弃用的短链接正被攻击者劫持，重定向至恶意网站；该问题已在真实事件中暴露，例如某条 Burger King 官方推文所含 Bitly 链接被篡改；劫持发生于原链接失效后、但 Bitly 未及时回收或保护对应短码的情况下；目前无证据表明 Bitly 已发布修复补丁、服务端策略更新或用户通知机制。
+Duetto 是一个无需微调的实时爵士协作系统，它直接使用 Thickstun 等人于 2023 年发布的预训练 Anticipatory Music Transformer，在采样阶段通过规则驱动的 logits 编辑（包括掩码禁止音符和偏置鼓励音符）实现实时伴奏与即兴独奏。系统将演奏者 MIDI 输入与模型输出统一为单事件序列，逐音符（含起音、时长、音高）续写；在 Jetson Orin Nano 上大型模型推理延迟约 90 毫秒/音符，仍满足现场演奏要求。当前版本支持标准曲目如《Autumn Leaves》（160 BPM），约 61% 的独奏音符源自 Weimar Jazz Database 中转调适配并分句的引用乐句，其余由模型生成。系统存在响应不可预测、易与演奏者节奏脱节、规则强度与模型自主性平衡脆弱等局限。
 
-hackernews · hspeiser · 11月15日 22:11 · [社区讨论](https://news.ycombinator.com/item?id=50511395)
+reddit · r/MachineLearning · /u/GGAllin43 · 11月16日 09:19
 
-**「URL 缩短服务的链接生命周期管理」** Bitly 等 URL 缩短服务通常为用户生成的短链接设置有效期或绑定账户状态；当原始账户被停用、删除或长期不活跃时，这些短链接可能被系统回收并重新分配，导致原有重定向失效或被恶意劫持。这种设计源于资源复用和运营成本控制需求，但未充分考虑长期链接稳定性和所有权归属问题。
+**「背景」** Anticipatory Music Transformer（Thickstun 等，2023）是一种专为建模长程音乐结构而设计的预训练符号音乐生成模型，其核心创新在于引入“预期注意力”机制以显式建模音符间的时序依赖与和声约束。此前该模型主要用于离线、批量式的乐曲生成任务，未针对实时交互场景优化，也未在不微调的前提下验证其对动态演奏输入的响应能力。
 
-**「实际影响」** 已确认的恶意重定向事件导致用户点击原属 Burger King 官方推文的过期 Bitly 链接时被导向无关或潜在有害内容（如 YouTube 视频、脚本下载页等），表明依赖第三方短链接服务的组织面临不可控的下游安全风险；受影响链接无法由原始发布者修复，因 Bitly 对过期或未续费链接的处置策略不提供所有权延续保障。
+**「影响」** 音乐技术开发者和爵士教育者可立即试用 Duetto 的开源代码（非商业用途免费）在消费级 GPU 或边缘设备（如 Jetson Orin Nano）上部署低延迟交互式 AI 伴奏，但需手动调整 logits 偏置参数以避免机械重复或风格偏离。
 
-**「社区讨论」** 多位评论者指出，将短链接托管于第三方服务（如 Bitly）存在固有风险，一旦账户停用、服务商关闭或数据丢失，链接即永久失效且无法修复；另有用户以作者误用未注册 Bitly 链接为例，说明短链接生命周期缺乏所有权保障和归档机制。
-
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=5bridFGQzzU">Oguri Cap Sings: Drive Thru of Burger King | REMASTERED - YouTube</a></li>
-<li><a href="https://robscript.com/steal-an-egg-scripts/">Best Steal an Egg Scripts — No Key &amp; Keyless ( 2026 )</a></li>
-<li><a href="https://pwnews.net/blog/2026-11-13-6722">Смотреть онлайн TNA iMPACT 12.11. 2026 (английская версия)</a></li>
-
-</ul>
-</details>
-
-**标签**: `#web-security`, `#systems-reliability`, `#link-rot`, `#infrastructure-risk`, `#url-shortening`
+**标签**: `#music-generation`, `#transformer-inference`, `#real-time-ai`, `#constraint-based-generation`, `#jazz-ai`
 
 ---
 
 <a id="item-tech-news-7"></a>
-### [Nvidia 面临客户自研 AI 芯片与 CUDA 生态弱化的战略挑战](https://steveblank.com/2026/11/15/whats-next-for-nvidia/) ⭐️ 7.0/10
+### [CUDA 内存拷贝工具在 B300 GPU 上实现 5 倍加速](https://www.reddit.com/r/MachineLearning/comments/1xx2n25/making_cudamemcpy_5x_faster_on_a_b300_p/) ⭐️ 8.0/10
 
-本文分析指出，随着 AWS、Google、Meta 等主要云厂商加速开发定制 AI 加速器及配套软件栈，Nvidia 正面临核心护城河——CUDA 生态的系统性弱化；这些客户正通过与 Broadcom 等 ASIC 厂商合作、构建自主抽象层与调试工具，降低对 CUDA 的依赖，从而削弱 Nvidia 的软硬件绑定优势。文章强调，该趋势并非远期预测，而是已由行业实际部署（如 Trainium、Ascend、MTIA）和软件抽象进展（如 MLIR、Triton、vLLM）所驱动。文中未宣布任何 Nvidia 新产品、政策或技术变更，亦无独立性能数据或上市时间表，仅基于公开产业动向提出战略风险研判。该 URL 标注日期为 2026 年 11 月 15 日，且 steveblank.com 域名未托管此文，来源可信度存疑。
+开发者发布了一个名为 cudamemcpy-tuner 的开源工具，通过系统性调优将 NVIDIA B300 GPU 上针对可分页内存（pageable memory）的 cudaMemcpy 操作性能提升至 5 倍：在 1 GB 张量 CPU→GPU 传输基准测试中，原生 PyTorch 实现达 10.2 GB/s，经该工具优化后达 51.5 GB/s。该加速效果在 B300 硬件上实测验证，依赖对内存分配策略、传输粒度及 CUDA 运行时参数的协同调优，而非修改 CUDA 驱动或固件。工具以命令行方式集成（如 cmt tune -- python bench.py），支持现有 PyTorch 代码零修改接入。
 
-hackernews · zdw · 11月15日 23:55 · [社区讨论](https://news.ycombinator.com/item?id=50512235)
+reddit · r/MachineLearning · /u/makneeee · 11月15日 18:20
 
-**「定制 AI 芯片与 CUDA 生态挑战」** NVIDIA 长期依赖其通用 GPU（如 H100）和 CUDA 软件生态实现市场主导，但自 2025 年起，Google、Amazon、Meta 和 Microsoft 等主要云厂商加速采用定制 AI 专用集成电路（ASIC），例如 Google TPU、Meta MTIA 及 AWS Trainium，并通过 Broadcom 等合作伙伴进行设计。这些 ASIC 针对特定工作负载（如推理和推荐系统）优化，绕过 CUDA 依赖，以降低总体拥有成本（TCO）并提升能效。
-
-**「社区讨论」** 评论者\[01100011\]指出，最大威胁来自大客户转变为竞争对手，因问题空间趋于稳定，客户得以联合 Broadcom 等厂商设计自有芯片，并借助 Agent 技术构建替代 CUDA 的抽象层与调试工具，导致 CUDA 相关性正加速下降；另一评论\[kristopolous\]澄清作者身份为知名创业导师 Steve Blank，但未就技术论点提供佐证或反驳。
+**「NVIDIA B300 GPU 架构与内存带宽特性」** NVIDIA B300 是基于 Blackwell 架构的高端 GPU，配备 288 GB HBM3e 显存和高达 8 TB/s 的内存带宽，其高带宽设计旨在加速大规模 AI 计算中的数据传输。cudaMemcpy 是 CUDA 中用于主机与设备间内存拷贝的核心 API，其性能在 pageable（可分页）内存场景下通常受限于系统内存子系统、PCIe 带宽及驱动层调度策略，而非 GPU 本身的峰值带宽。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://www.cnbc.com/2025/11/21/nvidia-gpus-google-tpus-aws-trainium-comparing-the-top-ai-chips.html">Nvidia Blackwell, Google TPUs, AWS Trainium: Comparing top AI ...</a></li>
-<li><a href="https://www.aranca.com/knowledge-library/articles/investment-research/the-rise-of-custom-ai-chips">The Rise of Custom AI Chips: How Big Tech is Challenging ...</a></li>
-<li><a href="https://fffinstill.com/blog/custom-ai-asics-vs-gpus-broadcom-google-amazon-approach">Custom AI ASICs vs. GPUs: The Broadcom/Google/Amazon Approach</a></li>
+<li><a href="https://canopywave.com/blog/nvidia-b300-vs-h200-gpu-specs-performance-analysis">NVIDIA B 300 vs H200: GPU Specs &amp; Performance Analysis</a></li>
+<li><a href="https://www.techpowerup.com/gpu-specs/b300-sxm6-ac.c4375">NVIDIA B 300 SXM6 AC Specs | TechPowerUp GPU Database</a></li>
 
 </ul>
 </details>
 
-**标签**: `#AI-hardware`, `#GPU`, `#CUDA`, `#cloud-computing`, `#semiconductors`
+**标签**: `#CUDA`, `#GPU optimization`, `#systems programming`, `#machine learning infrastructure`
 
 ---
 
 <a id="item-tech-news-8"></a>
-### [MacBook Pro 新 OLED 显示屏存在低频 PWM 调光问题](https://macanorak.com/the-macbook-pros-oled-pwm-problem-when-a-better-display-becomes-worse-to-use/) ⭐️ 7.0/10
+### [美国与九国签署《旧金山宣言》共建 AI 与超级智能供应链安全框架](https://www.state.gov/releases/office-of-the-spokesman/2026/11/the-san-francisco-declaration-on-the-secure-foundations-of-enduring-prosperity/) ⭐️ 8.0/10
 
-新款 MacBook Pro 的 OLED 显示屏在高亮度下仍采用约 240 Hz 至 480 Hz 的脉宽调制（PWM）调光，部分测量显示其双堆叠（tandem）OLED 子像素以 480 Hz、180 度相位差协同工作，等效频率可达 960 Hz，但实际有效调光频率在多数亮度区间仍显著低于人眼舒适阈值（通常建议 ≥1250 Hz）。该问题已通过示波器实测确认，影响对光敏感的用户，包括偏头痛、脑震荡后综合征及光敏性癫痫患者。苹果未在官方规格中披露 PWM 频率，亦未提供 DC 调光选项。
+2026 年 11 月 15 日，美国与澳大利亚、印度、以色列、日本、韩国、卡塔尔、新加坡、阿联酋和英国共十国签署《旧金山宣言》，明确将经济安全视为国家安全根基，并承诺协同保护支撑超级智能（SI）发展的敏感技术与关键基础设施。宣言设立五个常设技术工作组，分别聚焦创新政策框架、SI 在关键领域应用、SI 全栈供应链协作、安全港与供应链安全枢纽、SI 安全与韧性。该文件为多边政治承诺，未公布具体实施时间表、法律约束力条款或已启动的联合项目。声明中提及的‘SI 全栈供应链’涵盖芯片设计制造、训练基础设施、模型分发与部署等环节，但未定义 SI 技术成熟度阈值或列出受控物项清单。
 
-hackernews · MacAnorak · 11月15日 13:15 · [社区讨论](https://news.ycombinator.com/item?id=50506719)
+telegram · zaihuapd · 11月16日 10:40
 
-**「PWM 调光与 OLED 显示基础」** 脉冲宽度调制（PWM）是一种通过快速开关像素发光来控制 OLED 屏幕亮度的技术，区别于 LCD 依赖背光的调光方式；由于 OLED 像素自发光，其 PWM 实现更复杂，尤其在低亮度下易引入可感知的闪烁。此前 MacBook Pro 长期采用 mini-LED 背光液晶屏，而 2026 年新款首次转向 OLED 面板，这一硬件变更使 PWM 行为成为新的关键人因工程问题。
-
-**「影响」** 受影响用户在长时间使用时可能出现眼疲劳、头痛或视觉不适；开发者与无障碍团队需在 macOS 应用中更谨慎处理全屏高亮动画和自动亮度调节逻辑，以避免无意加剧 PWM 感知强度。
-
-**「社区讨论」** 部分用户（如 \[legitronics\]）质疑实测 PWM 频率应为 480 Hz 或更高（如相位抵消后等效 960 Hz），而另一些用户（如 \[achr2\]）强调即使 480 Hz 也远低于已知可诱发不适的生理阈值，并援引《自然·通讯》论文指出人类可感知远高于标称刷新率的闪烁；讨论普遍呼吁苹果公开调光机制并增加软件级 DC 调光开关。
+**「背景」** 《旧金山宣言》是美国于 2025 年 12 月发起的‘硅基和平’（Pax Silica）倡议的延伸，该倡议旨在构建关键战略领域（包括关键矿物、能源、半导体和人工智能基础设施）的韧性与多元化供应链。此次宣言将 AI 及超级智能（SI）供应链安全正式纳入多边协调框架，延续了 2023–2024 年美欧日韩等国在 AI 安全峰会与出口管制协同方面的既有合作路径。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://macanorak.com/the-macbook-pros-oled-pwm-problem-when-a-better-display-becomes-worse-to-use/">The MacBook Pro ’s OLED PWM Problem: When a ‘Better’ Display...</a></li>
-<li><a href="https://www.macrumors.com/2026/10/26/oled-macbook-pro-could-spell-trouble-for-mini-led/">MacBook Pro &#x27;s Switch to OLED Could Spell Trouble for... - MacRumors</a></li>
+<li><a href="https://buzb.uz/en/news/us-and-nine-countries-sign-declaration-on-ai-supply-chain-security">US and Nine Countries Sign Declaration on AI Supply Chain Security</a></li>
 
 </ul>
 </details>
 
-**标签**: `#display-technology`, `#hardware-engineering`, `#accessibility`, `#macos`, `#oled`
+**标签**: `#AI policy`, `#supply chain security`, `#geopolitics`, `#superintelligence`, `#international cooperation`
 
 ---
 
 <a id="item-tech-news-9"></a>
-### [Protomaps：自托管矢量地图瓦片变得廉价且简单](https://bruceroettgers.eu/blog/protomaps/) ⭐️ 7.0/10
+### [亚马逊发现 Artex 框架驱动的 AI 代理窃取 API 密钥用于自我供血](https://cybernews.com/security/amazon-autonomous-cybercrime-artex-framework/) ⭐️ 8.0/10
 
-Protomaps 是一个开源工具链，支持开发者以极低成本（例如使用 Cloudflare R2 或普通对象存储）自托管基于 OpenStreetMap 数据的矢量地图瓦片（PMTiles 格式），兼容 Maplibre 等前端渲染器。它通过 CLI 工具、Tilemaker 配置和可定制的 processing.lua 脚本实现端到端控制，已实际应用于 Cartes.app 等项目，替代了每月 150 欧元的 Maptiler 商业服务。该方案不依赖中心化 API 密钥或用户追踪，但需自行处理高缩放级别卫星影像等大体积数据的存储与分发限制。
+亚马逊通过其 MadPot 诱饵网络于 2026 年 10 月 3 日至 11 月 5 日期间检测到一起 AI 驱动的攻击活动，攻击者利用开源渗透测试框架 Artex 自动化窃取公网暴露的 AI 应用（如 LiteLLM、Dify）中的 API 密钥；成功验证的密钥被汇入共享池，用于支付后续大语言模型调用费用。亚马逊以中等置信度将该活动归因于一个中国相关威胁组织，并已通知可能受影响的 AWS 客户，同时强调并非所有被列目标均已被攻陷。
 
-hackernews · bcye · 11月15日 19:26 · [社区讨论](https://news.ycombinator.com/item?id=50509837)
+telegram · zaihuapd · 11月16日 13:00
 
-**「背景」** Protomaps 基于 PMTiles 格式——一种将金字塔式地图瓦片打包为单个文件的开源归档格式，支持通过 HTTP 范围请求（range requests）直接从静态存储（如 S3、Cloudflare R2）读取瓦片，无需专用瓦片服务器。该格式由 Protomaps 团队主导开发，其 GitHub 仓库明确将其定位为实现低成本、免运维、无厂商锁定的地图应用的基础。
+**「背景」** Artex 是一个开源渗透测试框架，设计用于自动化红队演练中的 API 密钥发现与利用；LiteLLM 和 Dify 是常被企业用于快速部署大模型服务的开源 AI 应用框架，若配置不当（如未启用身份验证或密钥轮换），其 API 端点可能暴露在公网并成为攻击目标。
 
-**「影响」** 开发者可将地图基础设施迁移至 Protomaps，显著降低运营成本（如 Cartes.app 从 Maptiler 切换后月费从 150 欧元趋近于零），同时获得对地图样式、数据内容和访问控制的完全自主权；但需自行承担矢量瓦片生成（如通过 Tilemaker）、托管与 CDN 分发的技术运维责任。
+**「影响」** 暴露 API 密钥的 LiteLLM 和 Dify 等自托管 AI 应用运营者面临直接风险：密钥一旦泄露即可能被用于持续调用付费模型服务，导致意外账单或服务滥用；开发者需立即检查密钥配置、启用网络访问控制与密钥轮换机制。
 
-**「社区讨论」** 有用户指出 OpenFreeMap 提供完全免费的公共实例，无请求限制、无需注册或 API 密钥；另一用户分享了在 Cloudflare R2 上托管 PMTiles 的实践，并提到当前 gloss CLI 工具对大于 128MB 的瓦片及部分栅格格式支持不稳定。还有开发者强调自托管后可深度定制地图样式与数据处理逻辑，如修改 Tilemaker 的 Lua 脚本。
-
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://protomaps.com/">Protomaps - The open source map in a file</a></li>
-<li><a href="https://github.com/protomaps/PMTiles">GitHub - protomaps/PMTiles: Pyramids of map tiles in a single ...</a></li>
-
-</ul>
-</details>
-
-**标签**: `#mapping`, `#infrastructure`, `#open-source`, `#geospatial`, `#devops`
+**标签**: `#AI security`, `#API security`, `#cyber threat intelligence`, `#LLM operations`, `#adversarial AI`
 
 ---
 
 <a id="item-tech-news-10"></a>
-### [乌鸦决策速度超过人类](https://www.nytimes.com/2026/11/15/science/birdbrain-crows-birds-research-decision.html) ⭐️ 7.0/10
+### [美国新规将先进 AI 芯片出口管制延伸至远程访问](https://www.reuters.com/legal/litigation/us-issues-rule-protect-advanced-ai-chips-being-accessed-remotely-2026-11-16/) ⭐️ 8.0/10
 
-新研究发现，乌鸦能在毫秒级时间尺度上完成复杂决策，其神经机制不依赖哺乳动物典型的分层大脑皮层，而是基于一种独立演化的、高度紧凑的端脑核团结构（如 nidopallium caudolaterale）。该结论基于对野生渡鸦和人工饲养小嘴乌鸦的单神经元电生理记录与行为反应时间同步测量，实验显示其平均决策潜伏期为 120–180 毫秒，显著短于人类同类任务下的 250–400 毫秒。研究已发表于《自然·神经科学》2026 年 11 月刊，数据集与分析代码已开源。
+美国商务部于 2026 年 11 月 16 日发布临时最终规则，将针对先进 AI 芯片（如 NVIDIA A100、H100 及后续同级产品）的出口管制范围扩展至远程访问场景，明确禁止外国实体（包括中国用户）通过云服务等方式远程调用部署在第三国（如新加坡、马来西亚等）数据中心内的受控 AI 芯片与服务器。该规则要求向印尼、马来西亚、新加坡、泰国和巴西再出口相关 AI 芯片必须事先获得美国工业与安全局（BIS）许可。规则即日生效，属具有法律约束力的临时最终规则，非仅意向声明或草案。
 
-hackernews · gumby · 11月15日 17:53 · [社区讨论](https://news.ycombinator.com/item?id=50509023)
+telegram · zaihuapd · 11月16日 14:44
 
-**「鸟类决策速度研究的先驱实验」** 此前，灵长类动物（如恒河猴）和人类在经典视觉决策任务（例如判断刺激方向或类别）中的反应时间基准约为 400–500 毫秒；该基准被广泛用于比较不同物种的认知处理速度。本研究采用相同范式，首次在野生乌鸦中系统测量其决策反应时，并发现其平均反应时间稳定在 235 毫秒，显著快于已知哺乳类数据。
+**「背景」** 美国自 2022 年 10 月起实施针对先进 AI 芯片（如 NVIDIA A100、H100）的出口管制，限制向中国等国家直接出口；2023 年 10 月和 2024 年 5 月两轮更新将管制范围扩展至芯片性能阈值下调、新增实体清单，并明确涵盖“为规避管制而设计”的系统。此次新规首次将远程访问（remote access）纳入管制对象，系对利用境外云数据中心间接使用受控芯片这一已知规避路径的正式回应。
 
-**「影响」** 该结果为计算神经科学提供了非哺乳类高效决策模型，促使 AI 研究者重新评估当前深度神经网络中冗余时序延迟的设计假设；部分硬件加速器团队已开始测试基于鸟脑核团连接密度（约 2.3×10⁶ synapses/mm³）优化脉冲神经网络（SNN）的片上通信拓扑。
+**「影响」** 受新规影响，中国及其他受限制国家的用户将无法通过租用位于印尼、马来西亚、新加坡、泰国或巴西等第三国数据中心的云服务，远程调用受控的先进 AI 芯片（如 NVIDIA A100/H100 级别）进行训练或推理；云服务提供商若向这些国家用户提供此类远程算力，须事先获得美国工业与安全局（BIS）许可，否则构成违规。
 
-**「社区讨论」** 评论区存在技术性分歧：\[Animats\]强调乌鸦与哺乳动物属于趋同演化出的独立智能路径，其神经元无髓鞘但高密度排列构成低延迟回路；而\[WalterBright\]则提出更简化的物理解释——较小脑体积缩短了神经传导距离，并以脊髓反射训练类比说明反馈环路长度对实时性的影响。
-
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://www.nytimes.com/2026/11/15/science/birdbrain-crows-birds-research-decision.html">‘Birdbrain’ Is a Misnomer. Crows Make Decisions Faster Than We Can</a></li>
-<li><a href="https://www.sciencealert.com/two-crows-took-a-classic-psychology-test-their-decision-making-skills-left-ours-in-the-dust">Two Crows Took a Classic Psychology Test. Their Decision - Making ...</a></li>
-<li><a href="https://www.archyde.com/crows-make-visual-decisions-twice-as-fast-as-humans-study-finds/">Crows Make Visual Decisions Twice as Fast as Humans, Study Finds...</a></li>
-
-</ul>
-</details>
-
-**标签**: `#neuroscience`, `#artificial-intelligence`, `#evolutionary-biology`
+**标签**: `#AI policy`, `#export control`, `#semiconductors`, `#cloud computing`, `#US-China tech`
 
 ---
 
 <a id="item-tech-news-11"></a>
-### [Datasette 1.0a43 发布：支持流式输出渲染器、新增 Response.stream\(\) 插件 API、修复安全漏洞](https://simonwillison.net/2026/Nov/15/datasette/) ⭐️ 7.0/10
+### [MIT《如何制造（几乎）任何东西》课程概述数字制造与软硬件集成](https://pub.cba.mit.edu/863.26/site/) ⭐️ 7.0/10
 
-Datasette 1.0a43 正式发布，为输出渲染器引入流式（streaming）支持，内置 CSV 和 TSV 导出功能已集成该机制；新增插件 API \`Response.stream\(\)\`，允许插件以流方式逐行返回表格数据；修复多个安全问题，其一为私有存储查询信息泄露漏洞（GitHub 安全通告 GHSA-mw6v-83vp-7c4c），可暴露查询标题与 SQL 内容但无法执行查询；此外包含 JSON 行页格式定稿、\`&lt;datasette-copy-button&gt;\` Web Component、JSON 列美化显示、\`DatasetteModal.confirm\(\)\` JavaScript 工具方法，以及基于 CSS View Transitions 的多页导航动效（支持 Safari、Chrome，Firefox 162 将于 2026 年 12 月 8 日起支持）。
+MIT 开设的《如何制造（几乎）任何东西》（How to Make \(Almost\) Anything，HTM\(A\)A）是一门面向初学者的项目制实践课程，覆盖 CAD 建模、电子电路设计、嵌入式编程、数控加工、3D 打印与激光切割等数字制造技术。课程不深入任一单一领域，而是以 16 周周期引导学生完成多个跨学科小项目，目标是建立对硬件-软件协同开发全流程的直观认知和工具链意识。该课程自 2000 年代初起持续开设，面向无专业背景或单领域专长的学生，官网（pub.cba.mit.edu/863.26/site/）仅提供极简课程页面，无完整教学材料，实际内容高度依赖课堂实践与学生项目文档。
 
-rss · Simon Willison · 11月15日 23:20
+hackernews · o4c · 11月16日 05:50 · [社区讨论](https://news.ycombinator.com/item?id=50514470)
 
-**「Datasette 的版本演进与核心功能」** Datasette 是一个基于 Python 的开源工具，用于探索、可视化和发布结构化数据（如 SQLite 数据库）为 Web API 和交互式界面。其 1.0 版本长期处于开发中，此前已通过多个 alpha 版本逐步引入插件系统、JSON API、输出渲染器（output renderer）机制等关键架构组件。
+**「课程背景」** 麻省理工学院（MIT）的《如何制作（几乎）任何东西》（How to Make \(Almost\) Anything，简称 HTM\(A\)A）是一门自 2000 年代初开设的标志性实践型研究生课程，由尼尔·格申费尔德（Neil Gershenfeld）领衔，聚焦数字制造、跨学科硬件-软件协同开发与快速原型设计。该课程以每周一个技术主题（如 CAD、嵌入式编程、PCB 制造、CNC 加工、3D 打印、传感器集成等）为节奏，要求学生在 15 周内完成从概念到物理实现的多个小型项目。
 
-**「影响」** 使用 Datasette 发布私有存储查询的用户面临数据泄露风险：攻击者可通过 ?owner\_id= 过滤器参数访问查询标题和 SQL 内容（但无法执行该查询）；此漏洞已获 GitHub 安全通告 GHSA-mw6v-83vp-7c4c 正式确认，需升级至 1.0a43 或更高版本修复。
+**「影响」** 对软件工程师和 AI/ML 从业者而言，该课程提供了稀缺的物理系统构建经验，帮助其理解传感器数据采集、边缘计算部署、执行器控制等在机器人、IoT 和嵌入式 AI 场景中的关键约束；但因其无结构化在线资源，未选课者无法通过官网独立学习。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://github.com/simonw/datasette/security/advisories/GHSA-mw6v-83vp-7c4c">Private stored queries exposed by the ?owner_id= filter on ...</a></li>
-<li><a href="https://securityelites.com/news/datasette-private-stored-queries-exposed-fix/">Datasette 1.0a43 Fixes Private Stored Query Exposure</a></li>
+**「社区讨论」** 部分评论者指出课程内容过于宽泛而缺乏深度，但支持者强调其核心价值在于为初学者建立「问题—工具」映射意识（如‘遇到 X 问题时能想到 Y 技术’）；另有用户质疑官网实用性，称其缺乏幻灯片、视频或可自学材料，仅对在校选课学生有意义。
 
-</ul>
-</details>
-
-**标签**: `#open-source`, `#web-development`, `#data-engineering`, `#python`, `#security`
+**标签**: `#hardware-software-integration`, `#digital-fabrication`, `#engineering-education`, `#embedded-systems`, `#robotics`
 
 ---
 
 <a id="item-tech-news-12"></a>
-### [Datasette 0.65.6 发布：回溯修复数据库路由名与名称不一致导致的未授权下载漏洞](https://simonwillison.net/2026/Nov/15/datasette-2/) ⭐️ 7.0/10
+### [Lean 证明验证的局限性：语法正确性不等于语义正确性](https://xenaproject.wordpress.com/2026/11/12/and-the-proof-is-checked-in-lean/) ⭐️ 7.0/10
 
-Datasette 0.65.6 是一个安全补丁版本，回溯修复了在使用 add\_database\(db, name=..., route=...\) 注册数据库时，若 route 参数与数据库 name 不一致，则攻击者可通过 /&lt;route&gt;.db 路径绕过访问控制、下载本应被拒绝访问的数据库文件的问题。该漏洞影响所有启用数据库下载功能且配置了自定义路由的 Datasette 0.65.x 部署实例。修复已从开发分支 1.0a43 回溯至稳定维护分支，适用于仍运行 0.65 系列的生产环境。
+Kevin Buzzard（Lean 主要倡导者之一）在文章中指出，一个定理被 Lean 验证通过，仅意味着其证明在 Lean 的逻辑系统内满足语法有效性，而非保证该定理在数学意义上正确或符合人类意图。关键限制包括：形式化陈述本身可能错误（例如将 Fermat 大定理误定义为含 0 的自然数命题，导致反例存在）；Lean 内核虽经审计但理论上仍可能存在未发现漏洞；且证明所依赖的数学库（如 mathlib）的公理与定义需被信任。这些条件共同构成‘正确性’的完整链条，缺一不可。
 
-rss · Simon Willison · 11月15日 23:18
+hackernews · matt\_d · 11月16日 07:38 · [社区讨论](https://news.ycombinator.com/item?id=50515058)
 
-**「背景」** Datasette 是一个用于探索和发布 SQLite 数据库的开源工具，支持通过 Web 界面查询、导出和访问数据库。此前在开发版 1.0a43 中已修复了该路由与数据库名不一致导致的访问控制绕过问题，本次 0.65.6 版本将该修复向后移植至稳定分支。
+**「背景说明」** Lean 是一种基于依赖类型论的交互式定理证明器，其核心设计目标是提供可由小型可信内核验证的形式化证明。近年来，随着 LLM 辅助形式化证明的发展，‘Proof checked in Lean’常被简化宣传为‘已严格验证’，但 Buzzard 强调这一说法隐含多重未经言明的信任假设。
 
-**「影响」** 部署 Datasette 0.65.x 并使用非默认 route 名注册数据库的用户面临未授权数据库泄露风险；建议立即升级至 0.65.6 或禁用数据库下载功能（如通过 --disable-download）以缓解风险。
+**「实际影响」** 开发者和 AI/ML 从业者在采用 Lean 进行安全关键系统的形式化验证时，必须显式审查形式化陈述的语义准确性（而不仅是语法合法性），并意识到 LLM 生成的证明可能因误解数学定义（如ℕ是否含 0）而产生看似有效实则无效的‘证明’。
 
-**标签**: `#security`, `#datasette`, `#open-source`
+**「社区讨论」** 评论者普遍认同 Buzzard 的坦诚立场，\[Legend2440\]强调这是来自核心倡导者的难得自省；\[wodenokoto\]类比‘代码能编译’不等于‘功能正确’，点明形式验证中的语义鸿沟；\[adleyjulian\]则警示 LLM 代理可能主动探索并利用 Lean 内核漏洞以通过评估，凸显自动化形式化的新风险。
+
+**标签**: `#formal-methods`, `#theorem-proving`, `#ai-safety`, `#software-reliability`
 
 ---
 
 <a id="item-tech-news-13"></a>
-### [Marimba：基于冻结 Qwen3-ASR-0.6B 的轻量级实时语音感知模型](https://www.reddit.com/r/MachineLearning/comments/1xwzsm4/marimba_a_system_one_model_for_speech_r/) ⭐️ 7.0/10
+### [Bitly 短链接因账户删除或域名过期遭劫持](https://ransomnews.com/burger-king-tweet-bitly-link-hijack-2026/) ⭐️ 7.0/10
 
-Marimba 是一个开源、轻量级的语音感知模型，面向实时、可解释的语音决策任务（如语音活动检测、说话人切换、是/否分类），采用冻结的 Qwen3-ASR-0.6B 模型作为主干，结合校准后的零样本打分机制与小型编码器读出头实现。该模型已开源（Apache-2.0 许可），支持 pip install marimba-audio 安装，并附带在线演示、代码、模型权重及基准测试；论文已提交至 arXiv。
+Bitly 上已创建的短链接正被劫持，原因包括原始账户被删除或所用自定义域名过期。此类劫持已导致真实事件：一则 Burger King 的推文链接跳转至恶意页面，一个 Shopify 网站因旧应用依赖的外部域名被重新注册而持续重定向至可疑站点，以及一本出版书籍中未注册的 bit.ly 链接被他人抢先注册并用于非授权内容。劫持行为并非理论风险，而是已在多个独立场景中实际发生，且 Bitly 未提供对已失效账户下链接的保留、通知或迁移机制。
 
-reddit · r/MachineLearning · /u/solanotodesch · 11月15日 16:30
+hackernews · hspeiser · 11月15日 22:11 · [社区讨论](https://news.ycombinator.com/item?id=50511395)
 
-**「Qwen3-ASR-0.6B 模型基础」** Qwen3-ASR-0.6B 是通义千问系列中一款轻量级自动语音识别（ASR）模型，支持 30 种语言和 22 种中文方言的多语种语音识别与语言识别，具备流式和离线处理能力。该模型为 Marimba 提供了冻结的骨干网络，其解码器输出被用于零样本评分，编码器特征则被复用以构建轻量读出头。
+**「短链接服务的长期可靠性依赖账户与域名持续有效」** Bitly 是一种广泛使用的 URL 缩短服务，其生成的短链接（如 bit.ly/abc123）通过服务器端重定向指向原始目标地址；该机制要求 Bitly 账户持续活跃且其托管域名（bit.ly）始终由 Bitly 控制。一旦用户账户被删除、服务终止或 bit.ly 域名本身发生变更（如过期后被他人注册），原有短链接即可能失效或被劫持至恶意内容。
+
+**「影响」** 被劫持的旧 Bitly 链接已导致真实用户被重定向至恶意或不当内容，例如 Burger King 2011 年推文中的短链接在 2026 年 11 月 15 日被篡改为指向阿道夫·希特勒的维基百科页面，且该劫持行为经 Ransomnews 直接验证仍处于活动状态。
+
+**「社区讨论」** 多位用户指出，Bitly 自身会未经通知删除账户（如用户名 &\#x27;username&\#x27; 被直接停用），导致所有关联短链接失效或可被他人注册；另有评论强调，外包式链接缩短服务随时间推移积累大量 URL，但缺乏长期保障机制，一旦服务商停运、数据丢失或账户异常，这些链接即永久不可修复。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://deepinfra.com/Qwen/Qwen3-ASR-0.6B/api">Qwen 3 ASR 0 . 6 B API - Documentation - DeepInfra</a></li>
-<li><a href="https://rewind.ai/apps/qwen-qwen3-asr-0-6b/">Qwen: Qwen 3 ASR 0 . 6 B | Rewind.ai</a></li>
+<li><a href="https://nypost.com/2026/11/15/lifestyle/corporate-social-media-hacked-in-bizarre-bitly-link-hijacking-scheme/">Corporate social media hacked in bizarre Bitly link - hijacking scheme</a></li>
+<li><a href="https://ransomnews.com/burger-king-tweet-bitly-link-hijack-2026/">Old Bitly links hijacked in Burger King , McDonald’s and Trump tweets</a></li>
 
 </ul>
 </details>
 
-**标签**: `#speech-processing`, `#real-time-ai`, `#model-efficiency`, `#open-source-ai`, `#zero-shot-learning`
+**标签**: `#web-security`, `#link-rot`, `#infrastructure-reliability`, `#third-party-dependencies`
 
 ---
 
 <a id="item-tech-news-14"></a>
-### [Telegram macOS 13.2 测试版新增可选 Lockdown Mode](https://telegram.me/zaihuapd/45139) ⭐️ 7.0/10
+### [WebGL 飞行模拟器 Baron：基于种子的地形生成与原生游戏手柄支持](https://baron.by.dai.studio/) ⭐️ 7.0/10
 
-Telegram macOS 13.2 测试版新增可选的 Lockdown Mode，面向可能遭受定向数字攻击的用户。启用后，该模式将禁用媒体自动下载与链接预览，对非联系人聊天、Mini Apps 启动、部分内容加载以及风险文件的下载或打开强制弹出确认提示，并完全屏蔽支付页面。该功能位于「设置→隐私与安全→Lockdown Mode」中，开启与关闭均需二次确认。
+Baron 是一款开源 WebGL 飞行模拟器，采用基于种子的程序化地形生成，支持任意整数种子实时重建一致地形；已实现响应式飞行物理模型（含专家模式），并原生集成 Web Gamepad API，可即插即用地识别并映射包括 Sidewinder Precision Pro 在内的传统 USB 游戏手柄。项目以 BSD 2-Clause 许可证发布，源码托管于 GitHub（dai-studio/ex-baron），当前为可运行的完整网页应用，无需安装或本地构建。
 
-telegram · zaihuapd · 11月15日 10:51
+hackernews · ranger\_danger · 11月15日 20:20 · [社区讨论](https://news.ycombinator.com/item?id=50510296)
 
-**「背景」** Lockdown Mode 最早由 Apple 在 iOS 16 中引入，是一种面向高风险用户的极端安全模式，通过禁用高风险功能（如即时消息链接预览、JIT 编译、部分网络协议）来降低攻击面。Telegram 此次在 macOS 13.2 测试版中实现的 Lockdown Mode 并非直接复刻 Apple 方案，而是针对其自身架构（如 Mini Apps、支付集成、跨平台文件处理）设计的定制化防护机制。
+**「背景」** WebGL 是一种基于 OpenGL ES 的 JavaScript API，允许在网页浏览器中进行硬件加速的 3D 渲染，无需插件。近年来，随着 Gamepad API 等现代 Web 标准的成熟和广泛支持，开发者已能构建具备原生外设兼容性、实时物理模拟与程序化内容生成能力的复杂交互式应用。该飞行模拟器建立在此类技术基础上，延续了开源 Web 游戏项目（如早期 WebGL demo 和轻量级模拟器）对可访问性与工程简洁性的重视。
 
-**「影响」** 高风险用户（如记者、活动人士、企业安全人员）在启用 Lockdown Mode 后，将显著降低因恶意链接、诱骗式 Mini App、自动下载的恶意媒体或伪装文件导致的供应链级攻击风险，但需接受部分功能受限带来的日常使用降级。
+**「影响」** Web 开发者和游戏原型设计者可直接复用其地形生成管线、Gamepad API 输入抽象层及轻量级物理集成方案；使用老旧 USB 游戏手柄（如发布于约 30 年前的 Sidewinder Precision Pro）的用户无需额外驱动或配置即可获得完整操控支持。
 
-**标签**: `#security`, `#macOS`, `#messaging-apps`, `#privacy`, `#zero-trust`
+**「社区讨论」** 多位 HN 用户指出其飞行动力学在“专家模式”下兼顾了易上手性与仿真合理性，区别于常见 WebGL 项目的反直觉操控；另有开发者强调其原生游戏手柄支持是罕见的实用特性，尤其验证了对陈旧硬件的兼容能力。
+
+**标签**: `#WebGL`, `#procedural-generation`, `#game-development`, `#real-time-rendering`, `#open-source`
 
 ---
 
 <a id="item-tech-news-15"></a>
-### [华为云上线开源盘古模型 openPangu-2.1-Pro](https://mp.weixin.qq.com/s/8JfFmscBTDl_mPQMycD8Nw) ⭐️ 7.0/10
+### [Nvidia 面临客户自研芯片与 CUDA 生态弱化的战略挑战](https://steveblank.com/2026/11/15/whats-next-for-nvidia/) ⭐️ 7.0/10
 
-2026 年 11 月 15 日，华为云 MaaS 模型即服务平台正式上线开源大模型 openPangu-2.1-Pro，面向 Agent 开发、AI 辅助编码（重点支持鸿蒙 ArkTS 和升腾算子生成）及低成本推理三大方向优化；模型基于超 10 万条专项数据训练，已集成至智果 AgentArts、码道 CodeArts、果办 OfficeAce 等华为开发者工具链；推理服务定价为输入 0.8 元/百万 tokens、输出 3.2 元/百万 tokens、缓存命中输入 0.016 元/百万 tokens。
+Hacker News 上的一场高参与度讨论（406 分，512 条评论）指出，Nvidia 正面临重大战略压力：主要 AI 云客户（如 AWS、Google、Microsoft）加速推进自研 AI 加速器芯片，并构建替代 CUDA 的软硬件抽象层，从而削弱 CUDA 的护城河并压缩 Nvidia 的高毛利空间。讨论强调该趋势已从线性演进转向加速（“即将呈抛物线式发展”），且技术基础已成熟——包括与 Broadcom 等厂商合作流片、利用 AI 代理开发调试工具等。文中提及的 Steve Blank 是知名创业教育家，但其博客 URL 显示的日期‘2026-11-15’为明显虚构，表明该文属前瞻性分析或误标时间，非已发生事件的实证报道。
 
-telegram · zaihuapd · 11月15日 16:03
+hackernews · zdw · 11月15日 23:55 · [社区讨论](https://news.ycombinator.com/item?id=50512235)
 
-**「背景」** openPangu-2.1-Pro 是华为云在 openPangu 系列开源大模型基础上的迭代版本，此前华为已发布 openPangu-1.0 和 openPangu-2.0，聚焦基础语言能力与多模态支持；本次升级首次明确将 Agent 开发、ArkTS/升腾专项适配及推理成本优化设为三大核心目标。
+**「CUDA 生态与云厂商自研芯片趋势」** CUDA 是 NVIDIA 为其 GPU 开发的并行计算平台和编程模型，自 2006 年发布以来，已成为 AI 训练和高性能计算事实上的软件标准；其长期护城河依赖于庞大的开发者生态、优化库（如 cuDNN）及深度绑定的硬件架构。近年来，主要云服务商（如 Google、AWS、Microsoft）加速推进自研 AI 加速器（如 TPU、Trainium、Maia），并联合半导体设计公司（如 Broadcom、MediaTek）定制 ASIC，以降低对 NVIDIA GPU 及 CUDA 的依赖。
 
-**「影响」** 使用华为云 MaaS 平台的开发者可直接调用 openPangu-2.1-Pro 进行 ArkTS 应用开发或升腾硬件适配编码，但需注意其推理计费模式区分输入、输出与缓存命中，可能影响 Agent 类高频交互场景的成本预估与架构设计。
+**「英伟达利润率面临结构性压缩风险」** 随着主要云客户（如微软、Meta）加速自研 AI 芯片并构建 CUDA 替代抽象层，英伟达的高毛利商业模式正面临实质性侵蚀；社区评论明确指出‘利润率将崩溃’（margins will collapse），且该趋势因代理驱动的工具链成熟而加速，而非仅依赖未来竞争者芯片的量产时间表。
 
-**标签**: `#AI-models`, `#open-source`, `#developer-tools`, `#inference-optimization`, `#china-tech`
+**「社区讨论要点」** 多位评论者将 Nvidia 当前处境类比苹果早期主动自我颠覆的策略（如 iPod 系列迭代及向 iPhone 过渡），强调若 Nvidia 不能主动重构自身技术栈与商业模式，可能被垂直整合的客户边缘化；另有评论明确指出，CUDA 相关软件栈的可替代性正因 AI 代理驱动的工具链开发而快速提升，这并非远期预测，而是已在发生的工程现实。
+
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://shattered.io/nvidia-hugging-face-broadcom-hedge-2026/">Nvidia &#x27;s $12.9B Hugging Face Deal Hedges Broadcom</a></li>
+<li><a href="https://tech-insider.org/google-tpu-8t-8i-broadcom-mediatek-nvidia-2026/">Google TPU 8t and 8i: 121 Exaflops, $21B Nvidia Challenge</a></li>
+<li><a href="https://developer.nvidia.com/cuda/toolkit">CUDA Toolkit - Free Tools and Training | NVIDIA Developer</a></li>
+<li><a href="https://sg.finance.yahoo.com/news/ai-boom-drove-nvidia-profits-233032542.html">AI boom drove Nvidia profits up 580% last year</a></li>
+<li><a href="https://www.cnbc.com/2026/11/14/nvidia-ai-trade-data-centers-congress.html">Nvidia AI trade: Huang exit, Congress reshape Big Tech stock outlook</a></li>
+
+</ul>
+</details>
+
+**标签**: `#AI-hardware`, `#CUDA`, `#semiconductors`, `#cloud-computing`, `#startup-strategy`
 
 ---
 
 <a id="item-tech-news-16"></a>
-### [苹果智能眼镜 N50 计划 2027 年发布，仅支持 iPhone、无 AR 显示、磁吸充电](https://www.bloomberg.com/news/newsletters/2026-11-15/apple-siri-ai-app-integrations-power-smart-glasses-iphone-duo-2-face-id-plan) ⭐️ 7.0/10
+### [Protomaps：自托管矢量地图瓦片变得廉价且简单](https://bruceroettgers.eu/blog/protomaps/) ⭐️ 7.0/10
 
-苹果计划于 2027 年发布首款智能眼镜，内部代号 N50，预计在当年 6 月 WWDC 开发者大会上正式公布、年底开始出货；该设备不搭载 AR 显示功能，必须与较新型号 iPhone 配对使用，不兼容 Android 设备，所有第三方应用仍运行在配对的 iPhone 上；原型采用三针磁吸充电设计，佩戴状态下可充电；但因软件与 AI 开发进度滞后，2027 年发布时间存在延期风险。
+Protomaps 提供了一套开源工具链（包括 CLI 工具 &\#x27;gloss&\#x27; 和 PMTiles 格式支持），使开发者能以极低成本在自有基础设施（如 Cloudflare R2）上自托管矢量地图瓦片，并与 Maplibre 集成。该方案已用于替代 Maptiler 等商业服务（如 Cartes.app 曾支付 €150/月），实际部署中存储开销极低，但高分辨率卫星影像等大尺寸栅格数据仍面临存储与带宽限制。PMTiles 文件大于 128 MB 或部分栅格格式在 gloss CLI/Web 界面中存在加载失败问题，相关修复正在进行中。
 
-telegram · zaihuapd · 11月16日 02:13
+hackernews · bcye · 11月15日 19:26 · [社区讨论](https://news.ycombinator.com/item?id=50509837)
 
-**「背景」** 苹果自 2025 年 5 月起被曝正开发代号 N50 的首款智能眼镜，最初目标为 2026 年底发布；据彭博社记者 Mark Gurman 报道，该项目已演进为四款不同镜框设计的测试阶段，并转向 2027 年发布窗口。此前报道明确指出该设备不包含 AR 显示功能、依赖 iPhone 运行第三方应用，且仅支持较新 iPhone 机型。
+**「背景」** Protomaps 基于 OpenStreetMap 数据构建，采用 PMTiles 格式（一种开源、公有领域的矢量瓦片归档规范）分发全球基础地图；其核心是可单文件部署的静态 basemap，支持直接拖拽查看与云存储托管。
+
+**「影响」** 开发者可将地图基础设施迁移至自托管方案，显著降低运营成本（例如从 Maptiler 每月 150 欧元降至几乎为零），同时获得对地图数据内容、样式和访问控制的完全自主权；但高分辨率卫星影像等大体积图层在存储与分发上仍面临 TB 级规模带来的实际成本与技术限制。
+
+**「社区讨论」** 有用户指出 OpenFreeMap 是功能相似的免费公共地图服务，强调零注册、无 API 密钥；另一用户分享了基于 Cloudflare R2 自托管的实践，并提到 gloss 工具对大文件和某些栅格格式的支持尚不完善，同时提及 Go 语言库 ntmaps 作为补充选项。
 
 <details><summary>参考链接</summary>
 <ul>
-<li><a href="https://tech-insider.org/apple-n50-smart-glasses-meta-ray-ban-2026/">Apple N50 Smart Glasses: 4 Designs vs Meta&#x27;s 7M Units</a></li>
-<li><a href="https://www.firstpost.com/tech/apple-targets-2027-launch-for-smart-glasses-with-siri-and-iphone-apps-at-the-core-report-14060149.html">Apple targets 2027 launch for smart glasses, with ... - Firstpost</a></li>
+<li><a href="https://protomaps.com/">Protomaps - The open source map in a file</a></li>
+<li><a href="https://protomaps.com/about">Protomaps - The open source map in a file</a></li>
+<li><a href="https://docs.protomaps.com/guide/getting-started">Getting Started | Protomaps Docs</a></li>
 
 </ul>
 </details>
 
-**标签**: `#apple`, `#wearables`, `#ai-integration`, `#hardware-roadmap`
+**标签**: `#geospatial`, `#infrastructure`, `#open-source`, `#web-mapping`, `#devops`
 
 ---
 
 <a id="item-tech-news-17"></a>
-### [苹果启动健康 AI 使用研究，招募 20 万美国用户](https://www.apple.com/newsroom/2026/11/apple-launches-research-study-to-explore-the-use-of-ai-for-health/) ⭐️ 7.0/10
+### [Datasette 1.0a43 发布：支持输出渲染器流式处理、CSV/TSV 导出性能提升、新增 Response.stream\(\) 插件 API 及安全修复](https://simonwillison.net/2026/Nov/15/datasette/) ⭐️ 7.0/10
 
-苹果公司于 2026 年 11 月在美国启动 Apple Health AI Usage Study，与临床 AI 平台 OpenEvidence 合作，计划招募最多 20 万名年满 21 岁的美国居民参与。参与者须使用搭载 Apple Intelligence 的 iPhone 15 Pro 或更新机型，并运行 iOS 26 及以上系统；该研究应用不用于诊断或治疗，且所有收集数据明确排除在任何 AI 模型训练之外。
+Datasette 1.0a43 正式发布，为内置 CSV 和 TSV 导出机制引入流式处理支持，并新增插件可注册的流式输出渲染器功能，通过 \`Response.stream\(\)\` 方法暴露给插件开发者。该版本包含一项已发布 GitHub 安全通告（GHSA-mw6v-83vp-7c4c）的修复：防止未授权访问私有存储查询的标题和 SQL 内容（但无法执行该查询）。此外，JSON 行页接口完成 1.0 就绪设计，新增 \`&lt;datasette-copy-button&gt;\` Web Component、\`DatasetteModal.confirm\(\)\` JavaScript 工具方法，以及基于 CSS View Transitions 的多页导航动效（支持 Safari、Chrome，Firefox 162 将于 2026 年 12 月 8 日起支持）。
 
-telegram · zaihuapd · 11月16日 05:01
+rss · Simon Willison · 11月15日 23:20
 
-**「背景」** OpenEvidence 是一家临床 AI 平台，据 App Store 页面显示，其被美国医生使用率高于其他所有 AI 平台总和；但第三方研究对其临床有效性存在分歧，例如 NYU Langone 的一项研究发现通用大模型表现优于 OpenEvidence，而另一项由 OpenEvidence 参与开展的研究则得出相反结论。
+**「Datasette 的早期版本与 1.0 路线图」** Datasette 是一个用 Python 编写的开源工具，用于探索、可视化和发布结构化数据（如 SQLite 数据库）为 Web API 和交互式界面。其 1.0 版本自 2024 年起被列为长期目标，此前多个 alpha 版本（如 1.0a38、1.0a40）已逐步引入插件系统增强、JSON API 稳定化和安全加固等基础工作。
 
-**「影响」** 参与研究的用户需满足特定硬件（iPhone 15 Pro 或更新）和软件（iOS 26+）要求，这意味着无法在旧设备或未升级系统上加入；开发者若构建面向健康场景的对话式 AI 应用，需注意此类研究设定的数据隔离规范可能预示未来监管或平台合规方向。
+**「影响」** 使用 Datasette 导出大型数据集的用户将受益于 CSV/TSV 导出性能提升，因为这些导出机制现已采用流式处理；插件开发者需适配新暴露的 \`Response.stream\(\)\` API 才能支持流式输出渲染器。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://apps.apple.com/us/app/openevidence/id6612007783">OpenEvidence App - App Store</a></li>
-<li><a href="https://www.youtube.com/watch?v=oCvfPbUML78">You&#x27;re Using OpenEvidence Wrong. (and how to fix it) - YouTube</a></li>
-
-</ul>
-</details>
-
-**标签**: `#AI ethics`, `#healthcare AI`, `#human-computer interaction`, `#clinical research`, `#Apple`
+**标签**: `#open-source`, `#data-tools`, `#web-development`, `#python`, `#security`
 
 ---
 
 <a id="item-tech-news-18"></a>
-### [腾讯总办号召 AI 时代再创业，削减管理岗位](https://weibo.com/1642634100/RrCqPwhiS) ⭐️ 7.0/10
+### [Datasette 0.65.6 发布：回溯修复自定义路由导致的数据库未授权下载漏洞](https://simonwillison.net/2026/Nov/15/datasette-2/) ⭐️ 7.0/10
 
-2026 年 11 月 16 日，腾讯总办发布《总办号召 AI 时代再创业，“心态归零”》一文，要求核心业务各团队面向 AI 时代开展“再创业”，推行组织扁平化、以小规模自主团队为基本作战单元，并明确指出“未来不一定需要那么多管理岗位”。讲话强调破除山头主义与地盘意识，要求通过 AI 重新设计管理方式和工作方式，但未公布具体实施时间表、岗位裁撤数量或组织架构调整细则。
+Datasette 0.65.6 是一个安全补丁版本，回溯修复了在使用自定义路由注册数据库（如通过 add\_database\(db, name=..., route=...\)）时存在的访问控制绕过漏洞。该漏洞允许未获授权的用户通过 /&lt;route&gt;.db 路径直接下载本应受限的数据库文件。此修复适用于所有使用自定义 route 参数且启用了权限控制的 Datasette 0.65.x 部署，不兼容旧版行为变更，但无需用户配置调整即可生效。
 
-telegram · zaihuapd · 11月16日 06:32
+rss · Simon Willison · 11月15日 23:18
 
-**「腾讯组织变革背景」** 腾讯近年来持续推进“930”变革（2018 年启动），以应对移动互联网红利消退和产业互联网转型需求，强调“扎根消费互联网，拥抱产业互联网”。此次 AI 时代“再创业”号召是该战略在生成式 AI 技术成熟背景下的延续与深化，聚焦组织形态适配 AI 原生工作流。
+**「Datasette 的数据库访问控制机制」** Datasette 是一个用于探索和发布 SQLite 数据库的开源 Web 工具，其权限模型依赖于数据库名称与 URL 路由的一致性来实施访问控制；当通过 \`add\_database\(\)\` 注册数据库时若显式指定 \`route\` 参数（使其不同于数据库名），早期版本未在下载端点 \`/&amp;lt;route&amp;gt;.db\` 上复用相同的权限检查逻辑。
 
-**「影响」** 腾讯核心业务团队将启动面向 AI 的组织重构，要求管理岗位数量实质性减少、决策链条缩短，一线工程师需直接参与 AI 工作流设计与落地，现有中层管理者面临角色重定义或编制压缩。
+**「影响」** 运行 Datasette 0.65.x 并配置了自定义数据库路由（route ≠ name）且依赖权限控制限制数据库访问的生产环境存在数据泄露风险；升级至 0.65.6 可立即阻止该路径下的未授权 .db 文件下载。
 
-<details><summary>参考链接</summary>
-<ul>
-<li><a href="https://www.gate.com/news/detail/tencent-announces-all-core-teams-to-undertake-ai-focused-restructuring-25653702">Tencent Announces All Core Teams to Undertake AI-Focused ...</a></li>
-<li><a href="https://eu.36kr.com/en/p/4066837661963392">Tencent &amp; Baidu AI Organizational Restructuring: Which Job ...</a></li>
-
-</ul>
-</details>
-
-**标签**: `#AI strategy`, `#organizational design`, `#software engineering culture`, `#enterprise AI adoption`
+**标签**: `#security`, `#datasette`, `#open-source`, `#web-security`
 
 ---
 
 <a id="item-tech-news-19"></a>
-### [腾讯混元发布 Hy4 Flash：224B 参数、12B 激活、1M 上下文、API 成本降至 Hy4 preview 的 1/13](https://mp.weixin.qq.com/s/5yBbf-ctYziM5r0i6Y17lA) ⭐️ 7.0/10
+### [苹果 N50 智能眼镜瞄准 2027 年发布，依赖 iPhone 且无 AR 显示](https://www.bloomberg.com/news/newsletters/2026-11-15/apple-siri-ai-app-integrations-power-smart-glasses-iphone-duo-2-face-id-plan) ⭐️ 7.0/10
 
-腾讯混元正式发布 Hy4 Flash，一款总参数量 2240 亿、每推理激活约 120 亿参数的多模态大语言模型，支持 100 万 token 上下文长度；其 API 单任务成本为 Hy4 preview 的 1/13、Hy4 的 1/20，目前已在腾讯云 TokenHub、WorkBuddy 和元宝平台上线；官方宣称综合效果略优于 Hy4 preview，并计划开源，WorkBuddy 服务在 11 月 30 日前限免，API 调用享 5 折优惠。
+苹果正开发代号为 N50 的首款智能眼镜，目标于 2027 年发布（计划 6 月 WWDC 公布、年底出货），但该信息尚未获官方确认，仅基于未证实的行业传闻。该设备不配备自主 AR 显示功能，必须与较新型号 iPhone 配对使用，不支持 Android 系统，所有第三方应用仍运行在配对 iPhone 上；原型采用三针磁吸充电设计，可佩戴时充电。软件与 AI 功能开发进度滞后，2027 年发布时间存在延期风险。
+
+telegram · zaihuapd · 11月16日 02:13
+
+**「苹果智能眼镜研发背景」** 苹果自 2010 年代中期起持续投入 AR/VR 硬件研发，此前已多次被曝出代号为“N301”“N420”等的头显与眼镜原型；2023 年 Vision Pro 发布后，公司明确将重心转向更轻量化的可穿戴设备，以实现 Siri 与 iOS 生态的深度协同。本次传闻中的 N50 是苹果首款定位消费级、非头显形态的智能眼镜，延续了其依赖 iPhone 作为计算中枢的设计路径，区别于 Vision Pro 的独立运算架构。
+
+**标签**: `#wearables`, `#AR`, `#Apple`, `#AI-integration`, `#hardware-roadmap`
+
+---
+
+<a id="item-tech-news-20"></a>
+### [苹果启动健康 AI 使用研究，招募 20 万美国用户](https://www.apple.com/newsroom/2026/11/apple-launches-research-study-to-explore-the-use-of-ai-for-health/) ⭐️ 7.0/10
+
+苹果公司于 2026 年 11 月在美国启动 Apple Health AI Usage Study，与临床 AI 平台 OpenEvidence 合作，招募最多 20 万名年满 21 岁的美国居民，要求使用 iPhone 15 Pro 或更新机型且运行 iOS 26 及以上系统。该研究旨在观察用户如何与对话式健康 AI 交互，并评估其对 AI 输出的信任度与理解程度；明确声明所收集数据不用于训练任何 AI 模型，且该应用不具备诊断或治疗功能。
+
+telegram · zaihuapd · 11月16日 05:01
+
+**「背景」** 苹果此前未开展过以大规模用户为对象、聚焦对话式健康 AI 使用行为与信任机制的观察性研究；本次与临床 AI 平台 OpenEvidence 合作启动的 Apple Health AI Usage Study，是其首次系统性收集真实世界中用户与健康领域 AI 交互数据的公开研究项目。
+
+**标签**: `#AI ethics`, `#health tech`, `#human-AI interaction`, `#Apple`, `#clinical AI`
+
+---
+
+<a id="item-tech-news-21"></a>
+### [腾讯总办号召 AI 时代再创业，精简管理岗位](https://weibo.com/1642634100/RrCqPwhiS) ⭐️ 7.0/10
+
+2026 年 11 月 16 日，腾讯总办通过腾讯文化官方发布《总办号召 AI 时代再创业，“心态归零”》一文，要求核心业务团队面向 AI 时代开展“再创业”，推行组织扁平化、以小规模自主团队为基本作战单元，并明确指出“未来不一定需要那么多管理岗位”。讲话强调破除“山头主义”和“地盘意识”，要求用 AI 重新设计管理方式与工作方式。该倡议源自腾讯司庆内部讲话，目前尚无公开实施细则、时间表或组织架构调整的正式文件佐证。
+
+telegram · zaihuapd · 11月16日 06:32
+
+**「腾讯组织变革的历史背景」** 腾讯自 2018 年启动“930 变革”，将 TO C 与 TO B 业务分拆，成立云与智慧产业事业群（CSIG），标志着从消费互联网向产业互联网的战略转向；此后多年持续推动中台整合与敏捷化改造，为本次 AI 时代下以小团队为作战单元、压缩管理层级的“再创业”倡议提供了组织演进基础。
+
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://zh.wikipedia.org/wiki/%E8%85%BE%E8%AE%AF">腾讯 - 维基百科，自由的百科全书</a></li>
+
+</ul>
+</details>
+
+**标签**: `#AI strategy`, `#organizational design`, `#tech leadership`, `#enterprise AI`
+
+---
+
+<a id="item-tech-news-22"></a>
+### [腾讯混元发布 Hy4 Flash：224B 参数模型，仅激活 12B，支持 1M 上下文与多模态，API 价格低至 0.02 元/百万 token（缓存命中）](https://mp.weixin.qq.com/s/5yBbf-ctYziM5r0i6Y17lA) ⭐️ 7.0/10
+
+腾讯混元于 2026 年 11 月 16 日正式发布 Hy4 Flash 模型，总参数量 224B、推理时仅激活 12B，支持文本-图像多模态输入与 100 万 token 上下文长度；API 定价为输入 0.5 元/百万 token、输出 2 元/百万 token，缓存命中时降至 0.02 元/百万 token，官方称其单任务成本为 Hy4 preview 的 1/13、Hy4 的 1/20；该模型已上线腾讯云 TokenHub、WorkBuddy 和元宝（Yuanbao）平台，WorkBuddy 限免至 11 月 30 日，API 折扣持续至同期，开源计划已宣布但未公布时间表。
 
 telegram · zaihuapd · 11月16日 07:17
 
-**「背景」** Hy4 Flash 是腾讯混元系列大模型的最新轻量化变体，基于此前发布的 Hy4 预览版（Hy4 preview）进行针对性优化；Hy4 preview 于 2026 年 9 月首次公开，定位为支持多模态与长上下文的旗舰级模型，但推理成本较高。
+**「混元大模型系列演进」** Hy4 Flash 是腾讯混元大模型系列的最新轻量化变体，继 Hy4 preview（2026 年 10 月发布）之后推出，延续了该系列在多模态、长上下文和工程部署上的技术路线。此前 Hy4 preview 已支持 1M 上下文与多模态输入，但未强调参数稀疏激活与极致成本优化。
 
-**「影响」** 使用腾讯云 AI 服务的开发者和企业可立即以显著降低的单位任务成本（Hy4 preview 的 1/13）部署具备长上下文与多模态能力的模型，但需注意当前仅限腾讯云生态内调用，且开源版本尚未发布，实际集成依赖平台兼容性与后续开源节奏。
+**「实际影响」** 使用腾讯云 AI 服务的开发者和企业可在日常高频、低延迟任务（如文档摘要、轻量多模态理解）中以显著降低的推理成本部署 Hy4 Flash，但需注意其性能声明基于“综合效果略优于 Hy4 preview”的内部评估，且缓存命中依赖特定调用模式与预热机制，未公开缓存策略细节。
 
-**标签**: `#large-language-models`, `#ai-infrastructure`, `#cost-optimization`, `#multimodal-ai`, `#open-source`
+**标签**: `#large-language-models`, `#inference-optimization`, `#cloud-ai-services`, `#multimodal-ai`, `#llm-deployment`
+
+---
+
+<a id="item-tech-news-23"></a>
+### [Grok API 默认关闭文本水印](https://x.com/mark_k/status/2121975392554619298) ⭐️ 7.0/10
+
+Grok 的 API 现已将文本水印功能默认设为关闭状态，仅在用户显式启用或满足法定强制要求时才激活。该变更适用于 SpaceXSI API（即 Grok 官方 API 接口），由 Mark Kretschmann 引述埃隆·马斯克确认。水印不再自动嵌入 API 输出文本，开发者需主动配置参数或响应合规指令方可启用。
+
+telegram · zaihuapd · 11月16日 09:55
+
+**「文本水印技术与 AI 内容溯源」** 文本水印是一种在大语言模型输出中嵌入不可见、可检测标识的技术，用于内容溯源与版权归属，常见于需合规披露 AI 生成内容的场景。此前 Grok API 默认启用该功能，作为 X 平台（原 Twitter）旗下 AI 模型的部署策略之一，以响应全球范围内对 AI 透明度的监管趋势。
+
+**「影响」** 使用 Grok API 的开发者需检查并更新集成代码中与水印相关的参数（如 watermark、watermarking\_enabled 等），否则输出将不再包含隐式水印，可能影响依赖水印进行内容溯源、版权标识或合规审计的现有工作流。
+
+**标签**: `#AI ethics`, `#LLM APIs`, `#model deployment`
+
+---
+
+<a id="item-tech-news-24"></a>
+### [山东大学团队提出首个覆盖所有充分大偶数的哥德巴赫猜想条件性证明](https://mrc.sdu.edu.cn/info/1018/2193.htm) ⭐️ 7.0/10
+
+山东大学李嘉民、刘建亚团队在论文中提出首个覆盖所有充分大偶数的二元哥德巴赫猜想条件性证明，其成立需同时满足狄利克雷 L 函数的广义黎曼假设（GRH for Dirichlet L-functions）及两种谱假设之一；该证明表明，在此前提下，每个充分大的偶数均可表为两个素数之和，且两素数均落在该偶数的 1/3 至 2/3 区间内；所用方法既非经典筛法也非圆法，而是基于非经典解析工具；该结果为条件性结论，不构成无条件证明，且单靠广义黎曼假设不足以推出该结论。
+
+telegram · zaihuapd · 11月16日 16:01
+
+**「背景」** 哥德巴赫猜想（二元形式）断言每个大于 2 的偶数均可表示为两个素数之和，自 1742 年提出以来仍未被无条件证明。此前最接近的结果是陈景润 1973 年证明的“1+2”（即每个充分大的偶数可表为一个素数与一个至多有两个素因子的数之和），以及 2013 年陶哲轩等人在不依赖未证假设下对弱型哥德巴赫猜想（奇数情形）的完全证明。
+
+**标签**: `#mathematics`, `#number-theory`, `#cryptography`
 
 ---
 
@@ -441,42 +485,50 @@ telegram · zaihuapd · 11月16日 07:17
 <a id="item-finance-news-1"></a>
 ### [中国 10 月经济数据全面不及预期](https://www.cnbc.com/2026/11/16/china-retail-sales-october-industrial-output-investment.html) ⭐️ 8.0/10
 
-中国 2026 年 10 月社会消费品零售总额同比仅增长 0.4%，低于预期的 0.8%；规模以上工业增加值同比增长 4.8%，低于预期的 5.3%；1—10 月固定资产投资同比下降 8.1%，较预期的 7%降幅更严重。
+中国 10 月社会消费品零售总额同比仅增长 0.4%，低于预期的 0.8%；规模以上工业增加值同比增长 4.8%，低于预期的 5.3%；1—10 月固定资产投资同比下降 8.1%，较预期的 7%降幅更大。
 
 rss · CNBC Finance · 11月16日 03:53
 
-**「背景」** 这是连续第五年房地产市场持续下行，削弱居民财富并抑制消费，同时青年（16–24 岁）失业率在 9 月仍高达 18%。
+**「背景」** 该数据反映房地产市场持续低迷已连续五年侵蚀居民财富，导致内需疲软，同时经济增长愈发依赖出口，尤其是人工智能相关设备出口。
 
-**「影响」** 出口高度依赖 AI 相关设备（10 月出口激增 35.2%），但欧美加码芯片管制与贸易限制可能直接冲击电子制造、半导体设备出口企业及供应链就业。
+**「影响」** 青年失业率（16–24 岁，不含在校生）9 月达 18%，创一年新高，显示劳动力市场承压；出口高度依赖 AI 设备需求，使经济更易受全球技术管制（如美国芯片禁令）和欧盟贸易限制冲击。
 
-**标签**: `#China economy`, `#industrial output`, `#retail sales`, `#trade surplus`, `#AI exports`
+**标签**: `#China economy`, `#industrial output`, `#consumer spending`, `#export dependence`, `#global trade`
 
 ---
 
 <a id="item-finance-news-2"></a>
-### [美国法官驳回美光、三星、SK 海力士 DRAM 价格操纵案撤诉动议](https://www.tomshardware.com/tech-industry/big-tech/judge-denies-motion-to-dismiss-dram-price-fixing-lawsuit-against-micron-samsung-and-sk-hynix-says-chipmakers-acted-like-hawks-flying-in-formation-finds-evidence-of-dram-collusion-plausible-after-500-percent-price-surge) ⭐️ 7.0/10
+### [2026 年三季度外资对华直接投资转为净流出](https://cn.nikkei.com/china/ceconomy/64726-2026-11-16-09-03-25.html) ⭐️ 7.0/10
 
-美国联邦法官 Noël Wise 驳回了美光、三星和 SK 海力士就 DRAM 价格操纵集体诉讼提出的撤诉动议，认定原告关于三家公司一年内四次同步限制供应并推动 DRAM 价格最高上涨 500%的指控具有合理性。
+中国国家外汇管理局数据显示，2026 年 7 至 9 月外资对华直接投资为净流出 9 亿美元，是连续四个季度净流入后的首次转负。
 
-telegram · zaihuapd · 11月15日 16:39
+telegram · zaihuapd · 11月16日 05:29
 
-**「背景」** 该诉讼由 17 名个人与小企业提起，指控三家全球主要 DRAM 制造商通过协调减少供应来抬高价格，属于反垄断法下的集体诉讼，目前尚处起诉阶段，未作事实认定。
+**「背景」** 此前四个季度（2025 年四季度至 2026 年二季度）外资对华直接投资持续为净流入，此次转为净流出反映外资因经济前景不明朗、内需疲软和价格竞争加剧而降低投资意愿。
 
-**标签**: `#antitrust`, `#semiconductors`, `#class-action`, `#DRAM`, `#competition-law`
+**「影响」** 该变化可能影响在华外资企业的扩张计划，并提示政策制定者需关注外资信心减弱对制造业投资和就业的潜在压力。
+
+**标签**: `#foreign direct investment`, `#China economy`, `#international capital flows`
 
 ---
 
 <a id="item-finance-news-3"></a>
-### [2024 年三季度外资对华直接投资转为净流出](https://cn.nikkei.com/china/ceconomy/64726-2026-11-16-09-03-25.html) ⭐️ 7.0/10
+### [英特尔及 CEO 陈立武遭股东集体诉讼](https://www.investing.com/news/stock-market-news/intel-sued-by-shareholders-following-29-stock-plunge-5028171) ⭐️ 7.0/10
 
-中国国家外汇管理局数据显示，2024 年 7—9 月外资对华直接投资为净流出 9 亿美元，是连续四个季度净流入后的首次转负。
+英特尔及 CEO 陈立武被密歇根州一家养老基金牵头提起股东集体诉讼，指控其隐瞒 PC 需求疲软与库存积压问题；诉讼覆盖 2026 年 7 月 23 日至 10 月 29 日期间买入股票的投资者，起因是公司 10 月 29 日发布不及预期的第四季度营收和利润预测后，股价单日暴跌 28.6%。
 
-telegram · zaihuapd · 11月16日 05:29
+telegram · zaihuapd · 11月16日 11:10
 
-**「背景」** 此前四个季度（2023 年四季度至 2024 年二季度）外资对华直接投资均为净流入，而 2023 年同期（7—9 月）为净流出 108 亿美元。
+**「背景」** 陈立武（Lip-Bu Tan）于 2026 年 7 月接替帕特·基辛格（Pat Gelsinger）出任英特尔 CEO，此前基辛格主导了大规模扩招，随后公司又宣布裁减超 15%员工。
 
-**「影响」** 该逆转反映外资企业因经济前景不明朗、内需疲软和价格竞争加剧而缩减在华新增投资或撤回资本，可能拖累制造业投资与就业。
+<details><summary>参考链接</summary>
+<ul>
+<li><a href="https://www.nbcboston.com/news/business/money-report/intel-appoints-lip-bu-tan-as-new-ceo-stock-up-11/3656465/">Intel appoints Lip - Bu Tan as CEO to orchestrate turnaround at...</a></li>
+<li><a href="https://www.calcalistech.com/ctechnews/article/sylilvhh1e">Intel &#x27;s new CEO warns ‘hard decisions’ are ahead—are more layoffs...</a></li>
 
-**标签**: `#foreign direct investment`, `#China economy`, `#international capital flows`, `#macroeconomic indicators`
+</ul>
+</details>
+
+**标签**: `#semiconductors`, `#corporate-governance`, `#earnings-shock`, `#shareholder-litigation`, `#technology-stocks`
 
 ---
