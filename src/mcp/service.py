@@ -14,6 +14,7 @@ from rich.console import Console
 
 from ..ai.summarizer import DailySummarizer
 from ..ai.errors import AIProviderUnavailableError
+from ..digest_date import digest_date_str
 from ..models import AIProvider, Config, ContentItem
 from ..orchestrator import HorizonOrchestrator
 from ..processing import ProfileRegistry
@@ -556,7 +557,7 @@ class HorizonPipelineService:
         )
 
         total_fetched = self._total_fetched(run_id, fallback=len(items))
-        date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+        date_str = digest_date_str()
 
         summarizer = DailySummarizer(
             profile_names=self._profiles(ctx).names,

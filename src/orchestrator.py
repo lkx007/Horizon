@@ -12,6 +12,7 @@ import httpx
 from rich.console import Console
 
 from .console_icons import get_icons
+from .digest_date import digest_date_str
 from .models import Config, ContentItem
 from .storage.manager import StorageManager, safe_output_path
 from .services.email import EmailManager
@@ -259,6 +260,10 @@ class HorizonOrchestrator:
             self.email_manager.check_subscriptions(self.storage)
 
         try:
+            # Pages posts and data/summaries use the Asia/Shanghai date so an
+            # overnight run still writes today's filename.
+            today = digest_date_str()
+
             # 1. Determine time window
             since = self._determine_time_window(force_hours)
             self.console.print(
@@ -313,7 +318,6 @@ class HorizonOrchestrator:
             await self.enrich_items(important_items)
 
             # 7. Generate and save daily summaries for each configured language
-            today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
             for lang in self.config.ai.languages:
                 summarizer = DailySummarizer(
                     profile_names=self.profiles.names,
@@ -417,12 +421,12 @@ class HorizonOrchestrator:
             # Send webhook failure notification if configured
             if self.webhook_notifier:
                 await self.webhook_notifier.send_failure(
-                    date=datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                    date=today,
                     error_message=str(e),
                 )
             if self.wechat_notifier:
                 await self.wechat_notifier.send_failure(
-                    date=datetime.now(timezone.utc).strftime("%Y-%m-%d"),
+                    date=today,
                     error_message=str(e),
                 )
 

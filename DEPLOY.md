@@ -6,19 +6,24 @@ GitHub Actions workflow: [`.github/workflows/daily-summary.yml`](.github/workflo
 
 ## Schedule / 时间
 
-Weekdays / 工作日, `timezone: "Asia/Shanghai"`:
+Every day, including Saturday and Sunday / 每天（含周末）, `timezone: "Asia/Shanghai"`:
 
 | Slot | Asia/Shanghai | UTC | Cron | What it does |
 | --- | --- | --- | --- | --- |
-| Morning / 早间 | **08:52** | 00:52 Mon–Fri | `52 8 * * 1-5` | First attempt. Minute 52 avoids the top of the hour. A full run takes about 5 minutes, so an on-time start finishes near 08:57, before the ~09:15 mail routine. This UTC hour has been ~6.5h late on this repo. |
-| Midday / 午间 | **12:17** | 04:17 Mon–Fri | `17 12 * * 1-5` | Catch-up outside the 00:xx and 01:xx UTC hours. Skips Horizon when today's `_posts/YYYY-MM-DD-summary-<lang>.md` files are already on `gh-pages`. |
-| Afternoon / 午后 | **15:23** | 07:23 Mon–Fri | `23 15 * * 1-5` | Same-day catch-up in a later UTC hour, so a dropped morning slot can still publish by mid-afternoon. Skips Horizon when today's posts already exist. |
+| Overnight / 凌晨 | **00:17** | 16:17 previous day | `17 0 * * *` | Early slot for the 08:30 mail window. GitHub schedule dispatch on this repo is about 6.5–8 hours late, and the job then finishes in about 5 minutes. 00:17 + 6.5h ≈ 06:47; 00:17 + 8h ≈ 08:17. Minute 17 stays off :00. |
+| Morning / 早间 | **08:52** | 00:52 | `52 8 * * *` | Same-day catch-up. Skips Horizon when today's Asia/Shanghai `_posts/YYYY-MM-DD-summary-<lang>.md` files are already on `gh-pages`. |
+| Midday / 午间 | **12:17** | 04:17 | `17 12 * * *` | Same-day catch-up. Skips Horizon when today's posts already exist. |
+| Afternoon / 午后 | **15:23** | 07:23 | `23 15 * * *` | Same-day catch-up. Skips Horizon when today's posts already exist. |
 
-08:52 是早间第一次尝试，分钟设在 52；正常大约 5 分钟跑完，赶在约 09:15 的邮件检查之前。12:17 和 15:23 是同一天的补跑，只有当天各语言的 Pages 帖子还没齐时才会调用 Horizon。15:23（07:23 UTC）离开已经测到会晚约 6.5 小时的 00 点和 01 点 UTC。
+00:17 是给 08:30 邮件留出的凌晨槽：GitHub 在这个仓库上的定时触发大约晚 6.5–8 小时，任务本身大约 5 分钟跑完。00:17 加上 6.5 小时约 06:47，加上 8 小时约 08:17。08:52、12:17、15:23 是同一天的补跑，只有当天（Asia/Shanghai）各语言的 Pages 帖子还没齐时才会调用 Horizon。
 
-`timezone: "Asia/Shanghai"` is honored. The 2026-11-09 runs were created at 07:16Z and 07:52Z, before 08:52 UTC, so those crons were not read as UTC. Moving the minute inside 00:xx UTC did not help (`38 0` → 07:20Z on 2026-11-05 and 07:18Z on 2026-11-06). The 09:07 Shanghai slot is 01:07 UTC; the second 2026-11-09 run was 07:52Z, still about six hours late, so that slot is gone. Do not move any trigger earlier than 08:00 Shanghai. Horizon names the page with the UTC date, so an on-time 07:xx Shanghai start would publish the previous day's filename.
+Pages posts (`docs/_posts/YYYY-MM-DD-summary-<lang>.md`), the `data/summaries/` digest files, and the Pages deploy `DATE` use the Asia/Shanghai calendar date. An overnight run still writes today's filename. A schedule slot skips only when every configured language post for Shanghai today is already on `gh-pages`. A slot that starts after Shanghai midnight generates Shanghai today when those posts are missing, and skips when they exist.
 
-`timezone: "Asia/Shanghai"` 会生效，不是被忽略。不要把触发改到北京时间 08:00 以前：Horizon 用 UTC 日期给页面命名，07:xx 会写成前一天。
+页面文件、`data/summaries/` 日报和 Pages 部署用的 `DATE` 都按 Asia/Shanghai 取日期，所以凌晨运行写的仍是当天文件名。定时槽位只在当天各语言帖子都已在 `gh-pages` 上时跳过。上海午夜之后才启动的延迟槽位：当天帖子已在就跳过，不在就生成当天，不会写成或跳过错误的一天。
+
+`timezone: "Asia/Shanghai"` is honored. The 2026-11-09 runs were created at 07:16Z and 07:52Z, before 08:52 UTC, so those crons were not read as UTC. Moving the minute inside 00:xx UTC did not help (`38 0` → 07:20Z on 2026-11-05 and 07:18Z on 2026-11-06). The same 6.5–8 hour dispatch delay is why the overnight slot is 00:17 rather than a morning-only schedule.
+
+`timezone: "Asia/Shanghai"` 会生效，不是被忽略。把分钟挪到 UTC 00 点内并不能消掉这几小时的延迟，所以用 00:17 提前触发，让晚到的运行仍然通常赶在 08:30 之前。
 
 Manual run / 手动运行: **Actions → Daily Horizon Summary → Run workflow**. A manual run always generates, even if today's page already exists. / 手动运行总会重新生成，即使当天页面已经存在。
 

@@ -19,6 +19,7 @@ from src.models import (
     SourceType,
 )
 from src.ai.summarizer import DailySummarizer
+from src.digest_date import digest_date_str
 from src.ai.enricher import EnrichmentBatchResult
 from src.mcp.server import hz_get_metrics
 from src.mcp.errors import HorizonMcpError
@@ -482,7 +483,7 @@ def test_generate_summary_persists_informative_empty_summary(
         )
     )
 
-    date_str = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    date_str = digest_date_str()
     expected = asyncio.run(
         DailySummarizer().generate_summary([], date_str, 0, language="en")
     )
