@@ -1075,7 +1075,7 @@ docker compose run --rm --entrypoint uv horizon run horizon-wechat test --lang z
 
 ## Static Site
 
-Horizon writes generated summaries to `data/summaries/` (or `<data-dir>/summaries/` when `--data-dir` is set) and copies publishable Markdown into `docs/` for the GitHub Pages site. This fork runs scheduled generation with [`.github/workflows/daily-summary.yml`](../.github/workflows/daily-summary.yml) on weekdays at 08:52, 12:17, and 15:23 Asia/Shanghai. Later slots skip Horizon when that day's Pages posts already exist. See [DEPLOY.md](../DEPLOY.md) for the required secrets and Pages setup.
+Horizon writes generated summaries to `data/summaries/` (or `<data-dir>/summaries/` when `--data-dir` is set) and copies publishable Markdown into `docs/` for the GitHub Pages site. Digest filenames and Pages posts use the Asia/Shanghai date (`docs/_posts/YYYY-MM-DD-summary-<lang>.md`). This fork runs scheduled generation with [`.github/workflows/daily-summary.yml`](../.github/workflows/daily-summary.yml) every day, including weekends, at 00:17, 08:52, 12:17, and 15:23 Asia/Shanghai. The 00:17 slot is there so a late GitHub start still publishes today's page before 08:30. Later slots skip Horizon when that day's Pages posts already exist. See [DEPLOY.md](../DEPLOY.md) for the required secrets and Pages setup.
 
 To use GitHub Pages, enable Pages for the repository and run the scheduled workflow or trigger it manually. The generated site is built from the `docs/` directory.
 

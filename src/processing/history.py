@@ -3,7 +3,7 @@
 import asyncio
 from collections import Counter
 from dataclasses import dataclass
-from datetime import date, datetime, timedelta, timezone
+from datetime import date, timedelta
 import html
 import logging
 import math
@@ -11,6 +11,8 @@ from pathlib import Path
 import re
 from typing import Any
 from urllib.parse import urldefrag
+
+from ..digest_date import digest_calendar_date
 
 logger = logging.getLogger(__name__)
 
@@ -141,7 +143,9 @@ class HistorySearchTool:
             if self._entries is None:
                 self._entries = await asyncio.to_thread(_read_entries, self.summaries_dir)
 
-        today = datetime.now(timezone.utc).date()
+        # Filename dates are Asia/Shanghai. Use that calendar for "today" so
+        # an overnight run still treats yesterday's digest as history.
+        today = digest_calendar_date()
         before = min(before, today) if before else today
         since = before - timedelta(days=days)
         entries = [entry for entry in self._entries if since <= entry.digest_date < before]

@@ -307,7 +307,8 @@ Tool arguments:
 - `query` is required. Prefer specific product, project, or event names; include
   useful aliases rather than broad terms such as "AI news".
 - `days` is optional, defaults to 90, and accepts 1–365. Only digests before the
-  current item's UTC publication date (and before today) are eligible.
+  current item's UTC publication date, and before today in Asia/Shanghai (the
+  digest filename date), are eligible.
 - Dates come from filenames and identify the **digest**, not necessarily the
   original event date.
 - Each item gets at most one history search, shared across output languages.

@@ -304,7 +304,7 @@ docker compose run --rm horizon [OPTIONS]
 
 ### 4. Automate (Optional)
 
-Schedule Horizon with **GitHub Actions** using the [daily workflow](.github/workflows/daily-summary.yml). This fork runs it on weekdays at 08:52, 12:17, and 15:23 Asia/Shanghai. Later slots skip generation when that day's page is already published. See [DEPLOY.md](DEPLOY.md) for secrets and GitHub Pages.
+Schedule Horizon with **GitHub Actions** using the [daily workflow](.github/workflows/daily-summary.yml). This fork runs it every day, including weekends, at 00:17, 08:52, 12:17, and 15:23 Asia/Shanghai. Posts are dated in Asia/Shanghai, so the 00:17 slot still publishes today's page in time for an 08:30 mail check even when GitHub starts the job several hours late. Later slots skip generation when that day's page is already published. See [DEPLOY.md](DEPLOY.md) for secrets and GitHub Pages.
 
 ## Supported Sources
 

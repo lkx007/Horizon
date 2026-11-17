@@ -15,6 +15,7 @@ from ..logging_config import configure_logging
 
 from ..ai.summarizer import DailySummarizer
 from ..console_icons import IconStyle, get_icons
+from ..digest_date import digest_date_str
 from ..models import (
     ClassificationResult,
     ContentAnalysis,
@@ -136,7 +137,7 @@ async def _run_test(
     icon_style: IconStyle = "emoji",
 ) -> None:
     """Execute the webhook test."""
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    today = digest_date_str()
     items = _make_test_items()
     summarizer = DailySummarizer()
     summary = await summarizer.generate_summary(items, today, len(items), language=lang)

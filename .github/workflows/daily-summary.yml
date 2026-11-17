@@ -2,53 +2,52 @@ name: Daily Horizon Summary
 
 on:
   schedule:
-    # Weekdays, Asia/Shanghai (no DST). GitHub honors timezone on each cron
-    # (workflow syntax; GA March 2026). It is not ignored here: the 2026-11-09
-    # runs were created at 07:16Z and 07:52Z, which is before 08:52 UTC, so
-    # `52 8` / `7 9` were not evaluated as UTC. Equivalent UTC times are noted
-    # on each slot below.
+    # Every day, including Saturday and Sunday, Asia/Shanghai (no DST).
+    # GitHub honors timezone on each cron (workflow syntax; GA March 2026).
+    # It is not ignored here: the 2026-11-09 runs were created at 07:16Z and
+    # 07:52Z, which is before 08:52 UTC, so those crons were not evaluated as
+    # UTC. Equivalent UTC times are noted on each slot below.
     #
-    # Do not add a slot before 08:00 Asia/Shanghai. Horizon names Pages posts
-    # with datetime.now(timezone.utc) (docs/_posts/YYYY-MM-DD-summary-<lang>.md).
-    # An on-time 07:xx Shanghai start is still the previous UTC date and would
-    # publish yesterday's filename. Every cron below is 08:52 or later.
+    # Pages posts are named with the Asia/Shanghai date
+    # (docs/_posts/YYYY-MM-DD-summary-<lang>.md). An overnight run still
+    # writes today's filename. GitHub schedule dispatch on this repo is
+    # consistently 6.5–8 hours late, and the job then finishes in about
+    # 5 minutes (createdAt ≈ startedAt; the delay is schedule dispatch, not
+    # DashScope). The 00:17 slot is the one aimed at the 08:30 mail window:
+    # 00:17 + 6.5h ≈ 06:47, +8h ≈ 08:17. Later slots are same-day catch-ups.
+    # The already-published gate skips Horizon once every configured language
+    # post for Shanghai today exists on gh-pages. workflow_dispatch always
+    # generates.
     #
-    # Schedules in the 00:xx and 01:xx UTC hours have been created about 6.5h
-    # late on this repo, and the job itself then finishes in about 5 minutes
-    # (createdAt ≈ startedAt; the delay is schedule dispatch, not DashScope):
+    # Measured delay, createdAt ≈ startedAt:
     #   00:38 UTC → 2026-11-05 07:20Z (+6h42m), 2026-11-06 07:18Z (+6h40m)
     #   00:52 and 01:07 UTC → 2026-11-09 07:16Z and 07:52Z (about +6.5h).
     #   Those runs did not record github.event.schedule; in schedule order
-    #   that is +6h24m and +6h45m. Either pairing is still a 6–7h delay.
-    # Moving the minute inside the midnight hour did not help, and the 09:07
-    # Shanghai / 01:07 UTC fallback was in the same delay bucket, so it missed
-    # the ~09:15 mail check too. Later slots are separate schedule events
-    # outside those two hours. The already-published gate skips Horizon once
-    # today's gh-pages posts exist, so a catch-up does not call DashScope again.
+    #   that is +6h24m and +6h45m. The same 6.5–8h pattern held through
+    #   2026-11-16. Moving the minute inside the midnight UTC hour did not
+    #   help, which is why the early slot is 00:17 Shanghai rather than a
+    #   morning-only schedule.
     #
-    # 08:52 Shanghai (00:52 UTC). Morning attempt. Minute 52 stays off :00.
-    # On time, the run finishes near 08:57, before the ~09:15 mail routine.
-    # In the slow queue this slot has landed mid-afternoon; it stays so a
-    # fast day still makes the morning check.
-    - cron: '52 8 * * 1-5'
+    # 00:17 Shanghai (16:17 UTC, previous day). Early slot. Minute 17 stays
+    # off :00. A 6.5–8h dispatch delay still usually publishes before 08:30.
+    - cron: '17 0 * * *'
       timezone: "Asia/Shanghai"
-    # 12:17 Shanghai (04:17 UTC). Midday catch-up, outside the 00:xx and 01:xx
-    # UTC hours measured above, and not minute 0. If this hour is not in that
-    # same queue, the digest is published around midday. If it is queued with
-    # the morning slot, the gate no-ops once that slot has published.
-    - cron: '17 12 * * 1-5'
+    # 08:52 Shanghai (00:52 UTC). Same-day catch-up if 00:17 has not published.
+    # The gate skips Horizon when Shanghai today's posts are already on gh-pages.
+    - cron: '52 8 * * *'
       timezone: "Asia/Shanghai"
-    # 15:23 Shanghai (07:23 UTC). Same-afternoon catch-up in a later UTC hour
-    # (public schedule measurements treat 07:00 UTC onward as quieter than
-    # 00:00–06:59). Covers a dropped 08:52 and a dropped 12:17, and still
-    # publishes the same afternoon when it starts near on time. If an earlier
-    # slot already published, the gate skips Horizon.
-    - cron: '23 15 * * 1-5'
+    # 12:17 Shanghai (04:17 UTC). Midday catch-up, not minute 0. Skips Horizon
+    # when Shanghai today's posts already exist.
+    - cron: '17 12 * * *'
+      timezone: "Asia/Shanghai"
+    # 15:23 Shanghai (07:23 UTC). Afternoon catch-up. Covers a dropped 00:17,
+    # 08:52, and 12:17. Skips Horizon when an earlier slot already published.
+    - cron: '23 15 * * *'
       timezone: "Asia/Shanghai"
   workflow_dispatch:      # Allow manual trigger
 
-# A delayed morning run can overlap a later catch-up. Publish one at a time;
-# the waiter then sees today's posts and skips.
+# A delayed overnight run can overlap a later catch-up. Publish one at a time;
+# the waiter then sees today's Shanghai posts and skips.
 concurrency:
   group: daily-horizon-summary
   cancel-in-progress: false
@@ -83,15 +82,10 @@ jobs:
             exit 0
           fi
 
+          # Filenames use the Asia/Shanghai date. A delayed slot after Shanghai
+          # midnight checks that date: skip when those posts already exist,
+          # and generate Shanghai today when they do not.
           shanghai_today="$(TZ=Asia/Shanghai date +%Y-%m-%d)"
-          utc_today="$(date -u +%Y-%m-%d)"
-          # These crons are after 00:00 UTC, so the dates match on an on-time
-          # run. Horizon's filename uses the UTC date. If a delay crosses
-          # midnight in Shanghai, generate rather than skip the wrong day.
-          if [ "$shanghai_today" != "$utc_today" ]; then
-            emit true "Shanghai date ${shanghai_today} != UTC date ${utc_today}; not skipping."
-            exit 0
-          fi
 
           if [ -z "${GH_TOKEN:-}" ]; then
             emit true "GITHUB_TOKEN is empty; generating."
@@ -128,7 +122,7 @@ jobs:
           missing=0
           while IFS= read -r lang; do
             [ -n "$lang" ] || continue
-            path="_posts/${utc_today}-summary-${lang}.md"
+            path="_posts/${shanghai_today}-summary-${lang}.md"
             code="000"
             if code="$(curl -sS --max-time 20 -o /dev/null -w '%{http_code}' \
               -H "Authorization: Bearer ${GH_TOKEN}" \
@@ -146,9 +140,9 @@ jobs:
           done <<< "$langs"
 
           if [ "$missing" = "0" ]; then
-            emit false "All ${utc_today} summary posts are already on gh-pages; skipping Horizon."
+            emit false "All ${shanghai_today} summary posts are already on gh-pages; skipping Horizon."
           else
-            emit true "Today's summary is not fully published; running Horizon."
+            emit true "Shanghai ${shanghai_today} summary is not fully published; running Horizon."
           fi
 
   daily-summary:
@@ -193,7 +187,10 @@ jobs:
         run: uv run horizon --hours 24
 
       - name: Set current date as environment variable
-        run: echo "DATE=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+        # Match the Pages post filename, which is the Asia/Shanghai date.
+        # The runner clock is UTC, so an unzoned `date` would be yesterday
+        # during an overnight slot.
+        run: echo "DATE=$(TZ=Asia/Shanghai date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
