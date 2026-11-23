@@ -562,6 +562,7 @@ class HorizonPipelineService:
         summarizer = DailySummarizer(
             profile_names=self._profiles(ctx).names,
             profile_order=ctx.config.digest.profile_order,
+            topic_sections=getattr(ctx.config.digest, "topic_sections", None),
         )
         summary = await summarizer.generate_summary(
             items,

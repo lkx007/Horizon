@@ -1,0 +1,118 @@
+{
+  "digest_date": "2026-11-23",
+  "live_page": "https://lkx007.github.io/Horizon/2026/11/23/summary-zh.html",
+  "retrieved_on": "2026-11-23",
+  "retrieval": "Public HTTP GET of each article URL. Dates below are the dates printed on those pages. None of the three articles is a 2026-11-23 digest item.",
+  "sections": [
+    {
+      "id": "ai-native-product",
+      "name": "AI-native product design",
+      "display_names": {
+        "zh": "AI Native 产品设计",
+        "en": "AI-native product design"
+      }
+    },
+    {
+      "id": "ai-native-workflow",
+      "name": "Team workflows and human-AI collaboration",
+      "display_names": {
+        "zh": "团队工作流与人机协作",
+        "en": "Team workflows and human-AI collaboration"
+      }
+    },
+    {
+      "id": "ai-native-cases",
+      "name": "Implementation cases, methods, and failures",
+      "display_names": {
+        "zh": "落地案例、方法与失败教训",
+        "en": "Implementation cases, methods, and failures"
+      }
+    }
+  ],
+  "items": [
+    {
+      "section": "ai-native-product",
+      "title": "围绕模型能力重做，而不是补模型的短板",
+      "url": "https://hex.tech/blog/bitter-lessons-building-ai-in-hex-product-management/",
+      "author": "Olivia Koshy",
+      "feed_name": "Hex",
+      "published_on": "2025-10-09",
+      "page_date_text": "October 9, 2025",
+      "tags": ["notebook-agent", "failure-lesson"],
+      "blocks": {
+        "why_read": {
+          "title": "为什么值得读",
+          "content": "Hex 产品负责人 Olivia Koshy 在 2025-10-09 复盘了团队两年多的 AI 功能。2023 年的 Notebook Agent 要让人用自然语言提出数据问题，再由模型生成 SQL、图表和 Python。当时模型做不好多步推理，还会在自己选择下一格时不断创建单元格，团队就改成先选模板再一次性生成。演示能看，复杂问题站不住。这篇文章值得读，是因为它记录了一次用巧工程去补模型缺陷、而不是按模型能力重做产品的失败。"
+        },
+        "applicability": {
+          "title": "适用条件",
+          "content": "适用于已经在产品里做 AI 功能、并且会为当前模型的缺陷写专用流程的团队。文中的产品是数据分析笔记本，不限定编程语言，也没有 Java 示例。还在评估要不要接模型 API 的阶段用不上。作者的判断是：若一个功能只能靠补智能缺口才能成立，就该停，而不是继续打磨演示。"
+        },
+        "how_to_try": {
+          "title": "怎样试",
+          "content": "对照作者现在会问的三件事：这个功能有没有别人不容易复制的价值；新模型出来时它能不能直接变强；你是在用模型能力，还是在补模型缺陷。作者写下的做法还有三条：让早期用户直接使用半成品，而不是看演示；把模型能力变化当成路线图信号；大约每三个月或每次主要模型发布时，重试曾经失败的想法。这些是作者给出的工作方式，原文没有配对照实验。"
+        },
+        "evidence": {
+          "title": "结果与说法",
+          "content": "2023 年版本在复杂问题上失败，以及模型会不断创建单元格，是作者描述的内部经历，不是外部复现。Explore 可视化用了推理模型加一个很小的微调模型做两段生成，作者说效果还行；后来改成简单的工具调用，作者判断显然好了 10 倍。10 倍，以及 Threads 用几周做出过去要几个月的能力，都是作者对内部工期和效果的说法，原文没有公布测量方法。Sonnet 3.5 被作者视为能力拐点，文中没有附评测表。"
+        }
+      }
+    },
+    {
+      "section": "ai-native-workflow",
+      "title": "人审漏过的一次智能体改码故障",
+      "url": "https://sketch.dev/blog/our-first-outage-from-llm-written-code",
+      "author": "Josh Bleecher Snyder and Sean McCullough",
+      "feed_name": "sketch.dev",
+      "published_on": "2025-07-31",
+      "page_date_text": "2025-07-31, outage on July 15",
+      "tags": ["code-review", "incident"],
+      "blocks": {
+        "why_read": {
+          "title": "为什么值得读",
+          "content": "Josh Bleecher Snyder 和 Sean McCullough 在 2025-07-31 写下 sketch.dev 于 7 月 15 日的一串短故障。他们用自己的编程智能体改 Sketch，人审过补丁。一次跨文件搬动把 Go 里的 break 写成了 continue，错误路径变成死循环，数据库出现全表扫描，服务逐渐变慢。值得读的是分工：模型写的是删除再插入的补丁，人看的是大段几乎相同的 diff，一个控制流词就漏了。"
+        },
+        "applicability": {
+          "title": "适用条件",
+          "content": "适用于已经让编程智能体提交补丁、并由人做代码审查的工程团队。故障发生在他们自己的 Go 服务。原文没有给出 Java 清单。最相关的条件是大块代码搬移，以及注释和代码不一致。作者也写明，这种看走眼在没有 LLM 时也会发生，智能体用补丁搬移代码让它更容易出现。"
+        },
+        "how_to_try": {
+          "title": "怎样试",
+          "content": "下一次审查智能体做的代码搬移时，核对错误处理分支的控制流词是否与原代码和注释一致，不要只看 diff 是否大体相同。原文的预防是给智能体环境加剪贴板，搬移时按字节复制，并允许粘贴时调整缩进。作者写明这个办法还没有多少实际里程，只是在更强的模型上初步看起来有希望。可以在自己的审查里加上同样的核对，不要把剪贴板当成已经验证的控制。"
+        },
+        "evidence": {
+          "title": "结果与说法",
+          "content": "故障经过和两段 Go 代码是作者公布的现场记录：break 变成 continue。根因是他们的分析：注释写着 continue，原代码是 break，模型在照抄和按注释预测之间选了后者。剪贴板方案没有量化结果。初步看起来有希望是作者判断。希望 Git 增加跨 hunk 的改动检测，是建议，不是已有工具。"
+        }
+      }
+    },
+    {
+      "section": "ai-native-cases",
+      "title": "多阶段流水线读两年事故报告",
+      "url": "https://engineering.zalando.com/posts/2025/09/dead-ends-or-data-goldmines-ai-powered-postmortem-analysis.html",
+      "author": "Dmitry Kolesnikov",
+      "feed_name": "Zalando Engineering",
+      "published_on": "2025-09-25",
+      "page_date_text": "Posted on Sep 25, 2025",
+      "tags": ["postmortem", "map-fold"],
+      "blocks": {
+        "why_read": {
+          "title": "为什么值得读",
+          "content": "Zalando 高级首席工程师 Dmitry Kolesnikov 在 2025-09-25 写了他们用 LLM 阅读数千份事故报告、寻找数据存储反复失效原因的做法。值得读的不是用模型把文档缩短，而是他们放弃大上下文一次读完，改成摘要、分类、分析、模式、机会五段，每段只做一件事，中间结果给人看，并写下幻觉和表面归因没有被消灭。"
+        },
+        "applicability": {
+          "title": "适用条件",
+          "content": "适用于已经积累大量事故或工单文本、想从中找重复投资点的后端或可靠性团队。原文范围是 Postgres、DynamoDB、S3、ElastiCache 和 Elasticsearch。事故报告含值班人信息和业务数字，他们在使用 Bedrock 之前先做了法律对齐。没有可人工抽查的内部语料时，原文的质量结论不适用。流水线处理的是文档，不依赖某一种编程语言。"
+        },
+        "how_to_try": {
+          "title": "怎样试",
+          "content": "原文说无代码代理原型因为性能、不准确和幻觉很快被放弃。可复用的结构是 map-fold：每篇文档单独抽取，再聚合。摘要阶段要求原文没写就标明缺失，不许猜测。开发时他们对每批输出做 100% 人工标注，稳定后降到每批随机 10% 到 20%，最终报告仍由人修改。数字类事实他们没能可靠抽出，改回内部事故数据集。若要试，先限定一个技术范围，并留一份可对照原文的小样本。"
+        },
+        "evidence": {
+          "title": "结果与说法",
+          "content": "以下都是作者报告的内部观察，不是第三方复现。人工精读一份事故报告大约 15 到 20 分钟。NotebookLM 路线被放弃，原因包括幻觉和丢失上下文；作者称读摘要约 5 分钟、生产力约提高到三倍，但规模上仍要数周。3B 到 12B 的早期模型在摘要和分析阶段幻觉概率最高到 40%，人工筛选后降到 15% 以下，换到更大模型后作者认为幻觉变得可以忽略。表面归因在 Claude Sonnet 4 上仍大约 10%，负向提示没有完全消除。S3 误配置洞察能够挡住后续 25% 的数据存储事故，是作者对内部回报的说法，原文没有给出对照实验设计。分析时间从数天到数小时同样是内部观察。早期 27B 模型单阶段大约 90 到 120 秒；map-fold 后分类大约 20 秒一篇、分析大约 60 秒一起，年度数据可在 24 小时内跑完；Sonnet 4 大约 30 秒一篇。GMV、受影响客户和修复时间没有可靠抽出。"
+        }
+      }
+    }
+  ]
+}

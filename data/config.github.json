@@ -29,6 +29,10 @@
       "finance-news": {
         "threshold": 7.0,
         "topic_dedup": true
+      },
+      "ai-native": {
+        "threshold": 7.0,
+        "topic_dedup": false
       }
     }
   },
@@ -120,6 +124,41 @@
         "enabled": true,
         "category": "linux-kernel",
         "profile": "tech-news"
+      },
+      {
+        "name": "Eugene Yan",
+        "url": "https://eugeneyan.com/rss/",
+        "enabled": true,
+        "profile": "ai-native",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Hamel Husain",
+        "url": "https://hamel.dev/index.xml",
+        "enabled": true,
+        "profile": "ai-native",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Phil Calçado",
+        "url": "https://philcalcado.com/feed.xml",
+        "enabled": true,
+        "profile": "ai-native",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Zalando Engineering",
+        "url": "https://engineering.zalando.com/atom.xml",
+        "enabled": true,
+        "profile": "ai-native",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Chip Huyen",
+        "url": "https://huyenchip.com/feed.xml",
+        "enabled": true,
+        "profile": "ai-native",
+        "content_extractor": "trafilatura"
       }
     ],
     "reddit": {
@@ -167,8 +206,37 @@
     "profile_order": [
       "tech-news",
       "tech-blog",
-      "finance-news"
+      "finance-news",
+      "ai-native"
     ],
+    "topic_sections": {
+      "ai-native": [
+        {
+          "id": "ai-native-product",
+          "name": "AI-native product design",
+          "display_names": {
+            "zh": "AI Native 产品设计",
+            "en": "AI-native product design"
+          }
+        },
+        {
+          "id": "ai-native-workflow",
+          "name": "Team workflows and human-AI collaboration",
+          "display_names": {
+            "zh": "团队工作流与人机协作",
+            "en": "Team workflows and human-AI collaboration"
+          }
+        },
+        {
+          "id": "ai-native-cases",
+          "name": "Implementation cases, methods, and failures",
+          "display_names": {
+            "zh": "落地案例、方法与失败教训",
+            "en": "Implementation cases, methods, and failures"
+          }
+        }
+      ]
+    },
     "category_groups": {},
     "default_group": "other",
     "default_group_limit": null

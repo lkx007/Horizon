@@ -673,6 +673,14 @@ digest limits:
   When empty or omitted, sections follow their first appearance in the selected
   items. Unknown or duplicate IDs are rejected. The example prioritizes the
   three listed profiles in that order.
+- `topic_sections`: Optional map from a profile ID to an ordered list of
+  subsections. Each entry needs an `id`, a `name`, and optional
+  `display_names`. When a profile is listed, its digest section groups items
+  under these headings and renders each item one level deeper. A source
+  `category` equal to a section id wins; otherwise the first analysis tag
+  equal to a section id is used. Empty sections are omitted. Items that match
+  none of the ids are grouped under “Other” / “其他”. Profiles that are not
+  listed stay a single section. Unknown profile IDs are rejected at startup.
 - `category_groups`: Optional map of quota groups. Each group requires a positive
   `limit` and a non-empty `categories` list. Items within each group are kept by
   analysis score, highest first.

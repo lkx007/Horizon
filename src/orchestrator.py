@@ -13,6 +13,7 @@ from rich.console import Console
 
 from .console_icons import get_icons
 from .digest_date import digest_date_str
+from .replay import ReplayRefusal, parse_digest_date
 from .models import Config, ContentItem
 from .storage.manager import StorageManager, safe_output_path
 from .services.email import EmailManager
@@ -220,6 +221,12 @@ class HorizonOrchestrator:
                 for profile in self.profiles.profiles
                 if profile.id not in configured_profiles
             )
+        unknown_topic_profiles = set(config.digest.topic_sections) - self.profiles.ids
+        if unknown_topic_profiles:
+            raise ValueError(
+                "digest.topic_sections contains unknown profiles "
+                f"({', '.join(sorted(unknown_topic_profiles))})"
+            )
         self.profiles.validate_digest_references(config.digest)
         self.email_manager = EmailManager(config.email, console=self.console) if config.email else None
         self.webhook_notifier = (
@@ -239,19 +246,36 @@ class HorizonOrchestrator:
         """Share one client and account selection across the run's AI stages."""
         return create_ai_client(self.config.ai)
 
-    async def run(self, force_hours: int = None) -> None:
+    async def run(
+        self,
+        force_hours: int = None,
+        *,
+        digest_date: str | None = None,
+        dry_run: bool = False,
+    ) -> None:
         """Execute the complete workflow.
 
         Args:
             force_hours: Optional override for time window in hours
+            digest_date: Optional YYYY-MM-DD label. A past date is refused
+                because live collection cannot reconstruct that day.
+            dry_run: Skip Pages files and every delivery channel.
         """
         self.console.print(
             f"[bold cyan]{self.icons['start']} Horizon - Starting aggregation...[/bold cyan]\n"
         )
+        shanghai_today = digest_date_str()
+        today = shanghai_today if digest_date is None else parse_digest_date(digest_date)
+        if today != shanghai_today:
+            raise ReplayRefusal(
+                f"Refusing to collect live sources for {today}. "
+                f"Asia/Shanghai today is {shanghai_today}."
+            )
 
         # Check email subscriptions if configured
         if (
-            self.email_manager
+            not dry_run
+            and self.email_manager
             and self.config.email
             and self.config.email.enabled
             and self.config.email.imap_enabled
@@ -260,9 +284,6 @@ class HorizonOrchestrator:
             self.email_manager.check_subscriptions(self.storage)
 
         try:
-            # Pages posts and data/summaries use the Asia/Shanghai date so an
-            # overnight run still writes today's filename.
-            today = digest_date_str()
 
             # 1. Determine time window
             since = self._determine_time_window(force_hours)
@@ -322,8 +343,23 @@ class HorizonOrchestrator:
                 summarizer = DailySummarizer(
                     profile_names=self.profiles.names,
                     profile_order=self.config.digest.profile_order,
+                    topic_sections=self.config.digest.topic_sections,
                 )
                 summary = await summarizer.generate_summary(important_items, today, len(all_items), language=lang)
+
+                if dry_run:
+                    preview_dir = self.storage.data_dir / "previews"
+                    preview_dir.mkdir(parents=True, exist_ok=True)
+                    preview_path = safe_output_path(
+                        preview_dir, f"horizon-{today}-{lang}.md"
+                    )
+                    preview_path.write_text(summary, encoding="utf-8")
+                    self.console.print(
+                        f"{self.icons['save']} Dry run saved {lang.upper()} "
+                        f"preview to: {preview_path}\n"
+                        "Did not write docs/_posts or send mail.\n"
+                    )
+                    continue
 
                 # Save to data/summaries/
                 summary_path = self.storage.save_daily_summary(today, summary, language=lang)
@@ -419,12 +455,12 @@ class HorizonOrchestrator:
             )
 
             # Send webhook failure notification if configured
-            if self.webhook_notifier:
+            if self.webhook_notifier and not dry_run:
                 await self.webhook_notifier.send_failure(
                     date=today,
                     error_message=str(e),
                 )
-            if self.wechat_notifier:
+            if self.wechat_notifier and not dry_run:
                 await self.wechat_notifier.send_failure(
                     date=today,
                     error_message=str(e),

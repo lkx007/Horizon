@@ -399,27 +399,30 @@ class WebhookNotifier:
         view = summarizer.build_view(important_items, lang)
         for group in view.groups:
             elements.append(_markdown(f"## {group.name}"))
-            for view_item in group.items:
-                score_suffix = (
-                    f" ⭐️ {view_item.score}/10"
-                    if view_item.score != "?"
-                    else ""
-                )
-                panel_title = f"{view_item.index}. {view_item.title}{score_suffix}"
-                item_content = summarizer.generate_webhook_item(
-                    view_item.item,
-                    language=lang,
-                    index=view_item.index,
-                    total=view_item.group_count,
-                    title=view_item.title,
-                    score=view_item.score,
-                )
-                elements.append(
-                    _collapsible_panel(
-                        panel_title,
-                        _format_markdown_for_webhook(item_content),
+            for bucket in group.buckets():
+                if bucket.name:
+                    elements.append(_markdown(f"### {bucket.name}"))
+                for view_item in bucket.items:
+                    score_suffix = (
+                        f" ⭐️ {view_item.score}/10"
+                        if view_item.score != "?"
+                        else ""
                     )
-                )
+                    panel_title = f"{view_item.index}. {view_item.title}{score_suffix}"
+                    item_content = summarizer.generate_webhook_item(
+                        view_item.item,
+                        language=lang,
+                        index=view_item.index,
+                        total=view_item.group_count,
+                        title=view_item.title,
+                        score=view_item.score,
+                    )
+                    elements.append(
+                        _collapsible_panel(
+                            panel_title,
+                            _format_markdown_for_webhook(item_content),
+                        )
+                    )
 
         return {
             "msg_type": "interactive",
@@ -525,37 +528,38 @@ class WebhookNotifier:
             }
             view = summarizer.build_view(important_items, lang)
             for group in view.groups:
-                for view_item in group.items:
-                    item_summary = summarizer.generate_webhook_item(
-                        view_item.item,
-                        language=lang,
-                        index=view_item.index,
-                        total=view_item.group_count,
-                        title=view_item.title,
-                        score=view_item.score,
-                    )
-                    item_messages.append(
-                        {
-                            **base_vars,
-                            "message_title": (
-                                f"{group.name} {view_item.index}/"
-                                f"{view_item.group_count} {view_item.title}"
-                            ),
-                            "message_kind": "item",
-                            "item_index": view_item.global_index,
-                            "item_count": view.item_count,
-                            "profile_item_index": view_item.index,
-                            "profile_item_count": view_item.group_count,
-                            "item_profile": group.profile_id,
-                            "item_profile_name": group.name,
-                            "item_title": view_item.title,
-                            "item_url": str(view_item.item.url),
-                            "item_score": (
-                                view_item.score if view_item.score != "?" else ""
-                            ),
-                            "summary": item_summary,
-                        }
-                    )
+                for bucket in group.buckets():
+                    for view_item in bucket.items:
+                        item_summary = summarizer.generate_webhook_item(
+                            view_item.item,
+                            language=lang,
+                            index=view_item.index,
+                            total=view_item.group_count,
+                            title=view_item.title,
+                            score=view_item.score,
+                        )
+                        item_messages.append(
+                            {
+                                **base_vars,
+                                "message_title": (
+                                    f"{group.name} {view_item.index}/"
+                                    f"{view_item.group_count} {view_item.title}"
+                                ),
+                                "message_kind": "item",
+                                "item_index": view_item.global_index,
+                                "item_count": view.item_count,
+                                "profile_item_index": view_item.index,
+                                "profile_item_count": view_item.group_count,
+                                "item_profile": group.profile_id,
+                                "item_profile_name": group.name,
+                                "item_title": view_item.title,
+                                "item_url": str(view_item.item.url),
+                                "item_score": (
+                                    view_item.score if view_item.score != "?" else ""
+                                ),
+                                "summary": item_summary,
+                            }
+                        )
 
             if getattr(self.config, "overview_position", "first") == "last":
                 return list(reversed(item_messages)) + [overview_message]

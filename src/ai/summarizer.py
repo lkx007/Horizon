@@ -2,7 +2,7 @@
 
 import html
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Dict, List, Optional
 from urllib.parse import quote, urlsplit
 
@@ -55,6 +55,7 @@ LABELS = {
         "discussion": "Discussion",
         "references": "References",
         "tags": "Tags",
+        "other_section": "Other",
         "selected_items": "From {total} items, {selected} important content pieces were selected",
         "empty_analyzed": "Analyzed {total} items, but none met the importance threshold.",
         "empty_body": (
@@ -75,6 +76,7 @@ LABELS = {
         "discussion": "社区讨论",
         "references": "参考链接",
         "tags": "标签",
+        "other_section": "其他",
         "selected_items": "从 {total} 条内容中筛选出 {selected} 条重要资讯。",
         "empty_analyzed": "已分析 {total} 条内容，但没有达到重要性阈值的条目。",
         "empty_body": (
@@ -103,10 +105,23 @@ class SummaryItemView:
 
 
 @dataclass(frozen=True)
+class SummarySubgroupView:
+    section_id: str
+    name: str
+    items: List[SummaryItemView]
+
+
+@dataclass(frozen=True)
 class SummaryGroupView:
     profile_id: str
     name: str
     items: List[SummaryItemView]
+    subgroups: List[SummarySubgroupView] = field(default_factory=list)
+
+    def buckets(self) -> List[SummarySubgroupView]:
+        if self.subgroups:
+            return list(self.subgroups)
+        return [SummarySubgroupView(section_id="", name="", items=self.items)]
 
 
 @dataclass(frozen=True)
@@ -122,9 +137,11 @@ class DailySummarizer:
         self,
         profile_names: Optional[Dict[str, Dict[str, str]]] = None,
         profile_order: Optional[List[str]] = None,
+        topic_sections: Optional[Dict[str, list]] = None,
     ):
         self.profile_names = profile_names or {}
         self.profile_order = profile_order or []
+        self.topic_sections = topic_sections or {}
 
     @staticmethod
     def _profile_id(item: ContentItem) -> str:
@@ -164,33 +181,78 @@ class DailySummarizer:
 
         groups = []
         global_index = 1
+        labels = LABELS.get(language, LABELS["en"])
         for profile_id, profile_items in ordered_groups:
-            view_items = []
-            for index, item in enumerate(profile_items, start=1):
-                artifact = (
-                    item.processing.artifacts.get(language)
-                    if item.processing
-                    else None
-                )
-                analysis = item.processing.analysis if item.processing else None
-                view_items.append(
-                    SummaryItemView(
-                        item=item,
-                        index=index,
-                        global_index=global_index,
-                        group_count=len(profile_items),
-                        title=normalize_language(
-                            artifact.title if artifact else item.title, language
-                        ),
-                        score=(
-                            analysis.score
-                            if analysis and analysis.score is not None
-                            else "?"
-                        ),
-                        anchor_id=self._item_anchor(profile_id, index),
+            sections = self.topic_sections.get(profile_id) or []
+            subgroups: List[SummarySubgroupView] = []
+            if sections:
+                known = {
+                    str(self._section_value(section, "id"))
+                    for section in sections
+                }
+                buckets: Dict[str, List[ContentItem]] = {
+                    section_id: [] for section_id in known
+                }
+                unmatched: List[ContentItem] = []
+                for item in profile_items:
+                    section_id = self._matching_section_id(item, known)
+                    if section_id is None:
+                        unmatched.append(item)
+                    else:
+                        buckets[section_id].append(item)
+                ordered_buckets = []
+                for section in sections:
+                    section_id = str(self._section_value(section, "id"))
+                    if buckets[section_id]:
+                        ordered_buckets.append(
+                            (
+                                section_id,
+                                self._section_heading(section, language),
+                                buckets[section_id],
+                            )
+                        )
+                if unmatched:
+                    ordered_buckets.append(
+                        ("other", labels["other_section"], unmatched)
                     )
-                )
-                global_index += 1
+                flat_items: List[SummaryItemView] = []
+                for section_id, heading, bucket_items in ordered_buckets:
+                    view_items = []
+                    for index, item in enumerate(bucket_items, start=1):
+                        view_item = self._view_item(
+                            item,
+                            language,
+                            index=index,
+                            group_count=len(bucket_items),
+                            global_index=global_index,
+                            profile_id=profile_id,
+                            section_id=section_id,
+                        )
+                        view_items.append(view_item)
+                        flat_items.append(view_item)
+                        global_index += 1
+                    subgroups.append(
+                        SummarySubgroupView(
+                            section_id=section_id,
+                            name=normalize_language(heading, language),
+                            items=view_items,
+                        )
+                    )
+                view_items = flat_items
+            else:
+                view_items = []
+                for index, item in enumerate(profile_items, start=1):
+                    view_items.append(
+                        self._view_item(
+                            item,
+                            language,
+                            index=index,
+                            group_count=len(profile_items),
+                            global_index=global_index,
+                            profile_id=profile_id,
+                        )
+                    )
+                    global_index += 1
             groups.append(
                 SummaryGroupView(
                     profile_id=profile_id,
@@ -198,14 +260,102 @@ class DailySummarizer:
                         self.profile_name(profile_id, language), language
                     ),
                     items=view_items,
+                    subgroups=subgroups,
                 )
             )
         return DailySummaryView(groups=groups, item_count=len(items))
 
+    def _view_item(
+        self,
+        item: ContentItem,
+        language: str,
+        *,
+        index: int,
+        group_count: int,
+        global_index: int,
+        profile_id: str,
+        section_id: Optional[str] = None,
+    ) -> SummaryItemView:
+        artifact = (
+            item.processing.artifacts.get(language) if item.processing else None
+        )
+        analysis = item.processing.analysis if item.processing else None
+        return SummaryItemView(
+            item=item,
+            index=index,
+            global_index=global_index,
+            group_count=group_count,
+            title=normalize_language(
+                artifact.title if artifact else item.title, language
+            ),
+            score=(
+                analysis.score
+                if analysis and analysis.score is not None
+                else "?"
+            ),
+            anchor_id=self._item_anchor(profile_id, index, section_id),
+        )
+
     @staticmethod
-    def _item_anchor(profile_id: str, index: int) -> str:
+    def _section_value(section: object, key: str) -> object:
+        if isinstance(section, dict):
+            return section.get(key)
+        return getattr(section, key)
+
+    def _section_heading(self, section: object, language: str) -> str:
+        names = self._section_value(section, "display_names") or {}
+        if not isinstance(names, dict):
+            names = {}
+        return (
+            names.get(language)
+            or names.get("default")
+            or self._section_value(section, "name")
+            or self._section_value(section, "id")
+            or ""
+        )
+
+    @staticmethod
+    def _matching_section_id(
+        item: ContentItem, section_ids: set[str]
+    ) -> Optional[str]:
+        """Prefer an explicit source category, then an analysis tag."""
+        category = item.metadata.get("category")
+        if isinstance(category, str) and category in section_ids:
+            return category
+        analysis = item.processing.analysis if item.processing else None
+        if analysis is None:
+            return None
+        for tag in analysis.tags:
+            normalized = re.sub(
+                r"[^a-z0-9_-]+", "-", str(tag).strip().lower()
+            ).strip("-")
+            if normalized in section_ids:
+                return normalized
+        return None
+
+    @staticmethod
+    def _item_anchor(
+        profile_id: str, index: int, section_id: Optional[str] = None
+    ) -> str:
         safe_profile_id = re.sub(r"[^a-zA-Z0-9_-]+", "-", profile_id).strip("-")
-        return f"item-{safe_profile_id or 'unclassified'}-{index}"
+        prefix = f"item-{safe_profile_id or 'unclassified'}"
+        if section_id:
+            safe_section_id = re.sub(r"[^a-zA-Z0-9_-]+", "-", section_id).strip("-")
+            prefix = f"{prefix}-{safe_section_id or 'section'}"
+        return f"{prefix}-{index}"
+
+    @staticmethod
+    def _render_label(text: str, language: str) -> str:
+        rendered = _escape_markdown(text)
+        if language == "zh":
+            rendered = _pangu(rendered)
+        return rendered
+
+    @staticmethod
+    def _score_suffix(view_item: SummaryItemView) -> str:
+        if view_item.item.metadata.get("unscored"):
+            return ""
+        return f" \u2b50\ufe0f {view_item.score}/10"
 
     async def generate_summary(
         self,
@@ -242,33 +392,34 @@ class DailySummarizer:
         body_sections = []
         view = self.build_view(items, language)
         for group in view.groups:
-            profile_name = _escape_markdown(group.name)
-            if language == "zh":
-                profile_name = _pangu(profile_name)
+            profile_name = self._render_label(group.name, language)
             toc_entries = [f"**{profile_name}**"]
-            for view_item in group.items:
-                title = _escape_markdown(view_item.title)
-                if language == "zh":
-                    title = _pangu(title)
-                toc_entries.append(
-                    f"{view_item.index}. [{title}](#{view_item.anchor_id}) "
-                    f"\u2b50\ufe0f {view_item.score}/10"
-                )
-            toc_sections.append("\n".join(toc_entries))
             body_sections.append(f"## {profile_name}\n\n")
-            body_sections.extend(
-                self._format_item(
-                    view_item.item,
-                    labels,
-                    language,
-                    view_item.index,
-                    heading_level=3,
-                    anchor_id=view_item.anchor_id,
-                    title_override=view_item.title,
-                    score_override=view_item.score,
-                )
-                for view_item in group.items
-            )
+            heading_level = 4 if group.subgroups else 3
+            for bucket in group.buckets():
+                if bucket.name:
+                    section_name = self._render_label(bucket.name, language)
+                    toc_entries.extend(["", f"**{section_name}**"])
+                    body_sections.append(f"### {section_name}\n\n")
+                for view_item in bucket.items:
+                    title = self._render_label(view_item.title, language)
+                    toc_entries.append(
+                        f"{view_item.index}. [{title}](#{view_item.anchor_id})"
+                        f"{self._score_suffix(view_item)}"
+                    )
+                    body_sections.append(
+                        self._format_item(
+                            view_item.item,
+                            labels,
+                            language,
+                            view_item.index,
+                            heading_level=heading_level,
+                            anchor_id=view_item.anchor_id,
+                            title_override=view_item.title,
+                            score_override=view_item.score,
+                        )
+                    )
+            toc_sections.append("\n".join(toc_entries))
 
         toc = "\n\n".join(toc_sections) + "\n\n---\n\n"
         return normalize_language(header + toc + "".join(body_sections), language)
@@ -301,20 +452,21 @@ class DailySummarizer:
         sections = []
         view = self.build_view(items, language)
         for group in view.groups:
-            profile_name = _escape_markdown(group.name)
-            if language == "zh":
-                profile_name = _pangu(profile_name)
+            profile_name = self._render_label(group.name, language)
             entries = [f"**{profile_name}**"]
-            for view_item in group.items:
-                title = _escape_markdown(view_item.title)
-                if language == "zh":
-                    title = _pangu(title)
-                url = _safe_url(view_item.item.url)
-                title_link = f"[{title}]({url})" if url else title
-                entries.append(
-                    f"{view_item.index}. {title_link} "
-                    f"\u2b50\ufe0f {view_item.score}/10"
-                )
+            for bucket in group.buckets():
+                if bucket.name:
+                    entries.extend(
+                        ["", f"**{self._render_label(bucket.name, language)}**"]
+                    )
+                for view_item in bucket.items:
+                    title = self._render_label(view_item.title, language)
+                    url = _safe_url(view_item.item.url)
+                    title_link = f"[{title}]({url})" if url else title
+                    entries.append(
+                        f"{view_item.index}. {title_link}"
+                        f"{self._score_suffix(view_item)}"
+                    )
             sections.append("\n".join(entries))
 
         return normalize_language(header + "\n\n".join(sections), language)
@@ -417,10 +569,15 @@ class DailySummarizer:
                 source_line += f' · [{labels["discussion"]}]({safe_discussion_url})'
 
         title_link = f"[{title}]({url})" if url else title
+        score_suffix = (
+            ""
+            if item.metadata.get("unscored")
+            else f" \u2b50\ufe0f {score}/10"
+        )
 
         lines = [
             f'<a id="{anchor_id or f"item-{index}"}"></a>',
-            f"{'#' * heading_level} {title_link} \u2b50\ufe0f {score}/10",  # ⭐️
+            f"{'#' * heading_level} {title_link}{score_suffix}",
         ]
         if summary.strip():
             lines.extend(["", summary])
