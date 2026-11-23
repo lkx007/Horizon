@@ -25,7 +25,11 @@ Pages posts (`docs/_posts/YYYY-MM-DD-summary-<lang>.md`), the `data/summaries/` 
 
 `timezone: "Asia/Shanghai"` 会生效，不是被忽略。把分钟挪到 UTC 00 点内并不能消掉这几小时的延迟，所以用 00:17 提前触发，让晚到的运行仍然通常赶在 08:30 之前。
 
-Manual run / 手动运行: **Actions → Daily Horizon Summary → Run workflow**. A manual run always generates, even if today's page already exists. / 手动运行总会重新生成，即使当天页面已经存在。
+Manual run / 手动运行: **Actions → Daily Horizon Summary → Run workflow**. A manual run with both inputs left empty still generates Asia/Shanghai today, even if today's page already exists. / 两个输入都留空时，手动运行仍生成上海今天的日报，即使当天页面已经存在。
+
+A `digest_date` other than Asia/Shanghai today does not call Horizon or DashScope. The job downloads that day's already published HTML and writes `previews/replay/<date>-ai-native.html` on the runner. It does not deploy to `gh-pages`. Live RSS is not a reconstruction of that day. The same guard is `horizon --digest-date YYYY-MM-DD --dry-run --from-published page.html`.
+
+填了不是上海今天的 `digest_date` 时，任务不会调用 Horizon 或 DashScope，只下载该日已经发布的页面并在运行器里写出预览，不会部署到 `gh-pages`。今天的 RSS 不能当成那天的采集结果。
 
 The job copies `data/config.github.json` to `data/config.json`, then runs `uv run horizon --hours 24`, and publishes `docs/` to the `gh-pages` branch.
 

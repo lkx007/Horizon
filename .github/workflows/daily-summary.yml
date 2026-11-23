@@ -16,8 +16,8 @@ on:
     # DashScope). The 00:17 slot is the one aimed at the 08:30 mail window:
     # 00:17 + 6.5h ≈ 06:47, +8h ≈ 08:17. Later slots are same-day catch-ups.
     # The already-published gate skips Horizon once every configured language
-    # post for Shanghai today exists on gh-pages. workflow_dispatch always
-    # generates.
+    # post for Shanghai today exists on gh-pages. workflow_dispatch with
+    # empty inputs still generates today. A past digest_date is preview-only.
     #
     # Measured delay, createdAt ≈ startedAt:
     #   00:38 UTC → 2026-11-05 07:20Z (+6h42m), 2026-11-06 07:18Z (+6h40m)
@@ -45,6 +45,17 @@ on:
     - cron: '23 15 * * *'
       timezone: "Asia/Shanghai"
   workflow_dispatch:      # Allow manual trigger
+    inputs:
+      digest_date:
+        description: "Optional YYYY-MM-DD. A date other than Asia/Shanghai today is a published-page preview only and is not published."
+        required: false
+        type: string
+        default: ""
+      dry_run:
+        description: "Skip gh-pages publish and delivery. A past digest_date forces this."
+        required: false
+        type: boolean
+        default: false
 
 # A delayed overnight run can overlap a later catch-up. Publish one at a time;
 # the waiter then sees today's Shanghai posts and skips.
@@ -172,7 +183,39 @@ jobs:
       - name: Prepare GitHub Actions config
         run: cp data/config.github.json data/config.json
 
+      - name: Decide live run or historical preview
+        id: plan
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          REQUESTED_DATE: ${{ github.event_name == 'workflow_dispatch' && inputs.digest_date || '' }}
+          REQUESTED_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run && 'true' || 'false' }}
+        run: |
+          export SHANGHAI_TODAY="$(TZ=Asia/Shanghai date +%Y-%m-%d)"
+          uv run python - <<'PY'
+          import os
+          from src.replay import plan_digest_run
+
+          plan = plan_digest_run(
+              event=os.environ["EVENT_NAME"],
+              shanghai_today=os.environ["SHANGHAI_TODAY"],
+              requested_date=os.environ.get("REQUESTED_DATE") or None,
+              dry_run=os.environ.get("REQUESTED_DRY_RUN") == "true",
+          )
+          path = os.environ["GITHUB_OUTPUT"]
+          with open(path, "a", encoding="utf-8") as handle:
+              handle.write(f"mode={plan.mode}\n")
+              handle.write(f"digest_date={plan.digest_date}\n")
+              handle.write(f"run_live={str(plan.run_live_horizon).lower()}\n")
+              handle.write(f"publish={str(plan.publish).lower()}\n")
+              handle.write(f"dry_run={str(plan.dry_run).lower()}\n")
+          print(
+              f"mode={plan.mode} date={plan.digest_date} "
+              f"live={plan.run_live_horizon} publish={plan.publish}"
+          )
+          PY
+
       - name: Run Horizon
+        if: steps.plan.outputs.run_live == 'true'
         env:
           # config.github.json uses provider "ali" (DashScope / 通义,
           # api_key_env DASHSCOPE_API_KEY, model qwen-plus,
@@ -184,7 +227,38 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           LWN_KEY: ${{ secrets.LWN_KEY }}
-        run: uv run horizon --hours 24
+        run: |
+          if [ "${{ steps.plan.outputs.dry_run }}" = "true" ]; then
+            uv run horizon --hours 24 --dry-run --digest-date "${{ steps.plan.outputs.digest_date }}"
+          else
+            uv run horizon --hours 24
+          fi
+
+      - name: Replay the published page without fetching
+        if: steps.plan.outputs.mode == 'historical-preview'
+        run: |
+          set -eu
+          date="${{ steps.plan.outputs.digest_date }}"
+          year="${date%%-*}"
+          rest="${date#*-}"
+          month="${rest%%-*}"
+          day="${rest#*-}"
+          owner="${GITHUB_REPOSITORY%%/*}"
+          base="https://${owner}.github.io/Horizon"
+          mkdir -p previews/replay
+          curl -fsSL -o "previews/replay/${date}-published.html" \
+            "${base}/${year}/${month}/${day}/summary-zh.html"
+          curl -fsSL -o previews/replay/style.css \
+            "${base}/assets/css/style.css"
+          uv run python scripts/render_ai_native_preview.py \
+            --live-html "previews/replay/${date}-published.html" \
+            --sources previews/2026-11-23-ai-native-sources.json \
+            --theme-css previews/replay/style.css \
+            --horizon-css docs/assets/css/horizon.css \
+            --horizon-js docs/assets/js/horizon.js \
+            --replay-date "$date" \
+            --out "previews/replay/${date}-ai-native.html"
+          echo "Wrote previews/replay/${date}-ai-native.html. Did not call DashScope or publish."
 
       - name: Set current date as environment variable
         # Match the Pages post filename, which is the Asia/Shanghai date.
@@ -193,6 +267,7 @@ jobs:
         run: echo "DATE=$(TZ=Asia/Shanghai date +'%Y-%m-%d')" >> $GITHUB_ENV
 
       - name: Deploy to GitHub Pages
+        if: steps.plan.outputs.publish == 'true'
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

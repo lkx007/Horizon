@@ -11,7 +11,9 @@ from rich.console import Console
 
 from ._cli import add_data_dir_arguments, add_log_level_argument
 from .console_icons import get_icons
+from .digest_date import digest_date_str
 from .logging_config import configure_logging
+from .replay import ReplayRefusal, resolve_cli_action
 from .storage.manager import ConfigError, StorageManager
 from .orchestrator import HorizonOrchestrator
 from .models import AIProvider
@@ -44,11 +46,67 @@ def main():
 
     parser = argparse.ArgumentParser(description="Horizon - AI-Driven Information Aggregation System")
     parser.add_argument("--hours", type=int, help="Force fetch from last N hours")
+    parser.add_argument(
+        "--digest-date",
+        default=None,
+        metavar="YYYY-MM-DD",
+        help=(
+            "Label the output with this Asia/Shanghai date. "
+            "A date other than today requires --dry-run and --from-published."
+        ),
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Do not write docs/_posts, publish, or send mail or webhooks.",
+    )
+    parser.add_argument(
+        "--from-published",
+        default=None,
+        metavar="PATH",
+        help="Published HTML page to replay. Required for a past --digest-date.",
+    )
+    parser.add_argument(
+        "--preview-out",
+        default=None,
+        metavar="PATH",
+        help="Where a published-page replay writes its HTML preview.",
+    )
     add_data_dir_arguments(parser)
     add_log_level_argument(parser)
     args = parser.parse_args()
 
     configure_logging(console, level=args.log_level)
+
+    try:
+        action = resolve_cli_action(
+            requested_date=args.digest_date,
+            dry_run=args.dry_run,
+            from_published=args.from_published,
+            shanghai_today=digest_date_str(),
+        )
+    except ReplayRefusal as exc:
+        console.print(f"[bold red]{icons['error']} {exc}[/bold red]")
+        sys.exit(2)
+
+    if action == "published-replay":
+        from scripts.render_ai_native_preview import write_replay_preview
+
+        destination = Path(
+            args.preview_out
+            or f"previews/replay-{args.digest_date}-ai-native.html"
+        )
+        write_replay_preview(
+            published_html=Path(args.from_published),
+            digest_date=args.digest_date,
+            destination=destination,
+        )
+        console.print(
+            f"[bold cyan]Replay preview written to {destination}.[/bold cyan]\n"
+            "This is the published page plus the approved AI Native section. "
+            "It did not fetch sources, call the model, send mail, or write gh-pages."
+        )
+        return
 
     try:
         # Load environment variables from .env file
@@ -106,7 +164,13 @@ def main():
 
         # Create and run orchestrator
         orchestrator = HorizonOrchestrator(config, storage, console=console)
-        asyncio.run(orchestrator.run(force_hours=args.hours))
+        asyncio.run(
+            orchestrator.run(
+                force_hours=args.hours,
+                digest_date=args.digest_date,
+                dry_run=action == "live-dry-run",
+            )
+        )
 
     except KeyboardInterrupt:
         console.print(f"\n[yellow]{icons['warning']} Interrupted by user[/yellow]")

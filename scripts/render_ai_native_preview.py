@@ -45,6 +45,7 @@ def splice_preview(
     theme_css: str,
     horizon_css: str,
     horizon_js: str,
+    banner_comment: str | None = None,
 ) -> str:
     """Insert a section into a saved Pages HTML file and inline its assets."""
     if NEWS_HEADING not in live_html or FOOTER not in live_html:
@@ -81,11 +82,11 @@ def splice_preview(
     )
     rendered = rendered.replace("</head>", extra_css + "</head>", 1)
     if not rendered.startswith("<!--"):
-        rendered = (
+        comment = banner_comment or (
             "<!-- Local Horizon preview. Does not publish to gh-pages. "
-            "The AI Native items are supplemental reading, not 2026-11-23 news. -->\n"
-            + rendered
+            "The AI Native items are supplemental reading, not 2026-11-23 news. -->"
         )
+        rendered = comment.rstrip() + "\n" + rendered
     return rendered
 
 
@@ -186,6 +187,16 @@ def markdown_fragment(source: str) -> str:
     return markdown.markdown(source, extensions=["extra", "sane_lists"])
 
 
+def replay_note(published_date: str) -> str:
+    """Banner for a preview that keeps a published page and does not re-collect."""
+    return (
+        f"重放预览，不是重新采集。正文是已发布的 {published_date} 中文日报，"
+        "原有条目和筛选数量保持原样。下面的 AI Native 三栏是已核对的补充阅读，"
+        f"不是 {published_date} 当天抓到的新闻，也不是用今天的 RSS 回填的历史。"
+        "本文件没有调用 DashScope，没有发邮件，没有写入 gh-pages。"
+    )
+
+
 def build_preview_html(
     live_html: str,
     payload: dict,
@@ -193,9 +204,11 @@ def build_preview_html(
     theme_css: str,
     horizon_css: str,
     horizon_js: str,
+    supplement_note: str | None = None,
+    banner_comment: str | None = None,
 ) -> str:
     toc_md, body_md = render_section_markdown(payload)
-    note = f"\n\n> {SUPPLEMENT_NOTE}\n"
+    note = f"\n\n> {supplement_note or SUPPLEMENT_NOTE}\n"
     heading, rest = body_md.split("\n\n", 1)
     body_md = f"{heading}{note}\n{rest}"
     section_html = markdown_fragment(body_md).replace(
@@ -210,7 +223,46 @@ def build_preview_html(
         theme_css=theme_css,
         horizon_css=horizon_css,
         horizon_js=horizon_js,
+        banner_comment=banner_comment,
     )
+
+
+def write_replay_preview(
+    *,
+    published_html: Path,
+    digest_date: str,
+    destination: Path,
+    sources: Path | None = None,
+) -> Path:
+    """Write a standalone replay of one published page. Does not fetch or call a model."""
+    root = Path(__file__).resolve().parents[1]
+    payload = json.loads(
+        (sources or root / "previews" / "2026-11-23-ai-native-sources.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    payload["digest_date"] = digest_date
+    theme_css = (root / "docs" / "assets" / "css" / "horizon.css").read_text(encoding="utf-8")
+    # The Cayman theme stylesheet is not in the repo. Callers that already
+    # inlined it can pass HTML; this helper embeds the Horizon stylesheet and
+    # leaves a downloaded theme file beside the published HTML when present.
+    theme_path = published_html.with_name("style.css")
+    theme = theme_path.read_text(encoding="utf-8") if theme_path.exists() else ""
+    html = build_preview_html(
+        published_html.read_text(encoding="utf-8"),
+        payload,
+        theme_css=theme,
+        horizon_css=theme_css,
+        horizon_js=(root / "docs" / "assets" / "js" / "horizon.js").read_text(encoding="utf-8"),
+        supplement_note=replay_note(digest_date),
+        banner_comment=(
+            f"<!-- Replay preview of the published {digest_date} page. "
+            "Not a pipeline rerun. Does not publish to gh-pages. -->"
+        ),
+    )
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    destination.write_text(html, encoding="utf-8")
+    return destination
 
 
 def main() -> None:
@@ -221,15 +273,31 @@ def main() -> None:
     parser.add_argument("--horizon-css", type=Path, required=True)
     parser.add_argument("--horizon-js", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
+    parser.add_argument(
+        "--replay-date",
+        default=None,
+        help="Mark the file as a replay of this published date. Does not fetch.",
+    )
     args = parser.parse_args()
 
     payload = json.loads(args.sources.read_text(encoding="utf-8"))
+    note = None
+    comment = None
+    if args.replay_date:
+        payload["digest_date"] = args.replay_date
+        note = replay_note(args.replay_date)
+        comment = (
+            f"<!-- Replay preview of the published {args.replay_date} page. "
+            "Not a pipeline rerun. Does not publish to gh-pages. -->"
+        )
     html = build_preview_html(
         args.live_html.read_text(encoding="utf-8"),
         payload,
         theme_css=args.theme_css.read_text(encoding="utf-8"),
         horizon_css=args.horizon_css.read_text(encoding="utf-8"),
         horizon_js=args.horizon_js.read_text(encoding="utf-8"),
+        supplement_note=note,
+        banner_comment=comment,
     )
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(html, encoding="utf-8")
