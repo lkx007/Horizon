@@ -220,6 +220,12 @@ class HorizonOrchestrator:
                 for profile in self.profiles.profiles
                 if profile.id not in configured_profiles
             )
+        unknown_topic_profiles = set(config.digest.topic_sections) - self.profiles.ids
+        if unknown_topic_profiles:
+            raise ValueError(
+                "digest.topic_sections contains unknown profiles "
+                f"({', '.join(sorted(unknown_topic_profiles))})"
+            )
         self.profiles.validate_digest_references(config.digest)
         self.email_manager = EmailManager(config.email, console=self.console) if config.email else None
         self.webhook_notifier = (
@@ -322,6 +328,7 @@ class HorizonOrchestrator:
                 summarizer = DailySummarizer(
                     profile_names=self.profiles.names,
                     profile_order=self.config.digest.profile_order,
+                    topic_sections=self.config.digest.topic_sections,
                 )
                 summary = await summarizer.generate_summary(important_items, today, len(all_items), language=lang)
 

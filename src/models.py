@@ -591,6 +591,16 @@ class CollectionConfig(BaseModel):
     time_window_hours: int = 24
 
 
+class TopicSectionConfig(BaseModel):
+    """One subsection inside a profile section of the digest."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    id: str = Field(pattern=r"^[a-z][a-z0-9_-]*$")
+    name: str = Field(min_length=1)
+    display_names: Dict[str, str] = Field(default_factory=dict)
+
+
 class DigestConfig(BaseModel):
     """Controls grouping and limits in the final digest."""
 
@@ -602,6 +612,7 @@ class DigestConfig(BaseModel):
     default_group: str = "other"
     default_group_limit: Optional[int] = Field(default=None, gt=0)
     profile_order: List[str] = Field(default_factory=list)
+    topic_sections: Dict[str, List[TopicSectionConfig]] = Field(default_factory=dict)
 
     @field_validator("profile_order")
     @classmethod
@@ -611,6 +622,22 @@ class DigestConfig(BaseModel):
         if len(value) != len(set(value)):
             raise ValueError("digest.profile_order entries must be unique")
         return value
+
+    @model_validator(mode="after")
+    def validate_topic_sections(self) -> "DigestConfig":
+        for profile_id, sections in self.topic_sections.items():
+            if not profile_id.strip():
+                raise ValueError("digest.topic_sections profile ids must be non-empty")
+            if not sections:
+                raise ValueError(
+                    f"digest.topic_sections.{profile_id} must list at least one section"
+                )
+            section_ids = [section.id for section in sections]
+            if len(section_ids) != len(set(section_ids)):
+                raise ValueError(
+                    f"digest.topic_sections.{profile_id} section ids must be unique"
+                )
+        return self
 
 
 class Config(BaseModel):

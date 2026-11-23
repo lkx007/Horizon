@@ -22,6 +22,7 @@ rather than process the item with all of them.
 | `tech-blog` | Engineering deep dives, tutorials, investigations, and retrospectives | Background, solution, and takeaways |
 | `finance-news` | Markets, macroeconomics, company finance, and economically material policy | Summary and background; direct impact when useful |
 | `ai-creator` | AI developments with potential for content creation | Summary; timely hooks, content angles, and community discussion when useful |
+| `ai-native` | First-hand AI-native product design, human-AI team workflows, and implementation cases with failures | Why it is worth reading, when it applies, how to try it, and which outcomes are sourced versus claimed |
 
 Start with a built-in profile, then adjust its prompts or blocks to match your reading needs.
 

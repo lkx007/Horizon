@@ -1,0 +1,41 @@
+{
+  "id": "ai-native",
+  "name": "AI-native practice",
+  "display_names": {
+    "zh": "AI Native 实践",
+    "en": "AI-native practice"
+  },
+  "match": "match.md",
+  "analysis": "analysis.md",
+  "content": {
+    "analysis_max_chars": 16000,
+    "enrichment_max_chars": 24000,
+    "sampling": "head-middle-tail"
+  },
+  "enrichment": {
+    "prompt": "enrichment.md",
+    "blocks": [
+      {
+        "id": "why_read",
+        "type": "section",
+        "tools": [],
+        "primary": true
+      },
+      {
+        "id": "applicability",
+        "type": "section",
+        "tools": []
+      },
+      {
+        "id": "how_to_try",
+        "type": "section",
+        "tools": []
+      },
+      {
+        "id": "evidence",
+        "type": "section",
+        "tools": []
+      }
+    ]
+  }
+}

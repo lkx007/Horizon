@@ -4,7 +4,7 @@
   /** Replace ⭐️ N/10 with a colored badge in h2, h3, and li elements */
   function processScoreBadges() {
     var scoreRe = /⭐️\s*(\d+(?:\.\d+)?)\/10/;
-    var targets = document.querySelectorAll('.main-content h2, .main-content h3, .main-content li');
+    var targets = document.querySelectorAll('.main-content h2, .main-content h3, .main-content h4, .main-content li');
     targets.forEach(function (el) {
       var m = el.innerHTML.match(scoreRe);
       if (!m) return;
