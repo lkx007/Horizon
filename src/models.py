@@ -563,6 +563,9 @@ class ProfileSettingsConfig(BaseModel):
 
     threshold: Optional[float] = Field(default=None, ge=0, le=10)
     topic_dedup: bool = True
+    # None uses collection.time_window_hours. A longer value does not widen
+    # other profiles; items outside this window cannot be selected for it.
+    time_window_hours: Optional[int] = Field(default=None, gt=0)
 
 
 class ProcessingConfig(BaseModel):

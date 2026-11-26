@@ -639,7 +639,11 @@ The runtime `collection` section controls the fetch window and contains only
 }
 ```
 
-- `time_window_hours`: Fetch content from last N hours
+- `time_window_hours`: Default fetch window, in hours. A profile can override
+  it with `processing.profile_settings.<id>.time_window_hours`. That override
+  does not change the default for other profiles. A source eligible for more
+  than one profile is fetched with the widest of those windows, and an item
+  older than a profile's window is not selected for that profile.
 
 The runtime `digest` section controls final section order and optional balanced
 digest limits:

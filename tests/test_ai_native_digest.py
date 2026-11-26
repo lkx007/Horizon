@@ -136,6 +136,10 @@ def test_github_runtime_keeps_schedule_model_and_adds_ai_native(monkeypatch):
     assert config.email is None
     assert config.processing.profile_settings["ai-native"].threshold == 7.0
     assert config.processing.profile_settings["ai-native"].topic_dedup is False
+    assert config.processing.profile_settings["ai-native"].time_window_hours == 168
+    assert config.collection.time_window_hours == 24
+    for profile_id in ("tech-news", "tech-blog", "finance-news"):
+        assert config.processing.profile_settings[profile_id].time_window_hours is None
     assert config.digest.profile_order == [
         "tech-news",
         "tech-blog",
@@ -171,6 +175,110 @@ def test_github_runtime_keeps_schedule_model_and_adds_ai_native(monkeypatch):
     assert "DASHSCOPE_API_KEY" in workflow
     assert "publish_branch: gh-pages" in workflow
     assert "smtp" not in workflow.lower()
+
+
+_BLOG = ["tech-blog", "ai-native"]
+_NEWS = ["tech-news", "ai-native"]
+
+
+def test_github_runtime_routes_trending_and_core_official_sources(monkeypatch):
+    monkeypatch.setenv("LWN_KEY", "test")
+    config = StorageManager(
+        str(ROOT / "data"), str(ROOT / "data" / "config.github.json")
+    ).load_config()
+    registry = ProfileRegistry.load(ROOT / "profiles", config.processing.default_profile)
+    registry.validate_source_references(config.sources.model_dump(mode="json"))
+
+    assert config.collection.time_window_hours == 24
+    assert config.sources.ossinsight.enabled is False
+
+    feeds = [
+        (source.name, str(source.url), source.profile, source.content_extractor)
+        for source in config.sources.rss
+    ]
+    assert feeds == [
+        ("Simon Willison", "https://simonwillison.net/atom/everything/", "tech-news", None),
+        ("vLLM Blog", "https://vllm.ai/blog/rss.xml", "tech-blog", "trafilatura"),
+        ("Sean Goedecke", "https://www.seangoedecke.com/rss.xml", "tech-blog", "trafilatura"),
+        (
+            "CNBC Finance",
+            "https://search.cnbc.com/rs/search/combinedcms/view.xml?partnerId=wrss01&id=10000664",
+            "finance-news",
+            "trafilatura",
+        ),
+        (
+            "GitHub Trending - Daily",
+            "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",
+            _NEWS,
+            None,
+        ),
+        ("Semianalysis", "https://newsletter.semianalysis.com/feed", "tech-news", None),
+        ("LWN.net", "https://lwn.net/headlines/full_text?key=test", "tech-news", None),
+        ("Eugene Yan", "https://eugeneyan.com/rss/", "ai-native", "trafilatura"),
+        ("Hamel Husain", "https://hamel.dev/index.xml", "ai-native", "trafilatura"),
+        ("Phil Calçado", "https://philcalcado.com/feed.xml", "ai-native", "trafilatura"),
+        ("Zalando Engineering", "https://engineering.zalando.com/atom.xml", "ai-native", "trafilatura"),
+        ("Chip Huyen", "https://huyenchip.com/feed.xml", "ai-native", "trafilatura"),
+        ("LoopForge Blog", "https://loopforge.cn/blog/feed.xml", "ai-native", "trafilatura"),
+        ("Meituan Tech", "https://tech.meituan.com/atom.xml", _BLOG, "trafilatura"),
+        ("QwenLM Blog", "https://qwenlm.github.io/blog/index.xml", _BLOG, "trafilatura"),
+        ("Google DeepMind Blog", "https://deepmind.google/blog/rss.xml", _BLOG, "trafilatura"),
+        ("Google Research Blog", "https://research.google/blog/rss/", _BLOG, "trafilatura"),
+        (
+            "Google AI Blog",
+            "https://blog.google/innovation-and-ai/technology/ai/rss/",
+            _NEWS,
+            "trafilatura",
+        ),
+        ("Engineering at Meta", "https://engineering.fb.com/feed/", _BLOG, "trafilatura"),
+        ("Microsoft Research", "https://www.microsoft.com/en-us/research/feed/", _BLOG, "trafilatura"),
+        ("GitHub Engineering", "https://github.blog/engineering/feed/", _BLOG, "trafilatura"),
+        ("GitHub AI and ML", "https://github.blog/ai-and-ml/feed/", _NEWS, "trafilatura"),
+        ("AWS Architecture Blog", "https://aws.amazon.com/blogs/architecture/feed/", _BLOG, "trafilatura"),
+        ("Amazon Science", "https://www.amazon.science/index.rss", _BLOG, "trafilatura"),
+        ("Apple Machine Learning", "https://machinelearning.apple.com/rss.xml", _BLOG, "trafilatura"),
+        ("OpenAI News", "https://openai.com/news/rss.xml", "tech-news", "trafilatura"),
+        ("Mistral AI News", "https://mistral.ai/news/rss", _NEWS, "trafilatura"),
+        ("NVIDIA Technical Blog", "https://developer.nvidia.com/blog/feed", _BLOG, "trafilatura"),
+        ("Cloudflare Blog", "https://blog.cloudflare.com/rss/", _BLOG, "trafilatura"),
+        ("Netflix TechBlog", "https://netflixtechblog.com/feed", _BLOG, "trafilatura"),
+        ("Airbnb Engineering", "https://airbnb.tech/feed/", _BLOG, "trafilatura"),
+        ("Stripe Blog", "https://stripe.com/blog/feed.rss", _NEWS, "trafilatura"),
+        ("Stripe Developer Blog", "https://stripe.dev/blog/feed", _BLOG, "trafilatura"),
+        ("Shopify Engineering", "https://shopify.engineering/blog.atom", _BLOG, "trafilatura"),
+        ("Spotify Engineering", "https://engineering.atspotify.com/feed", _BLOG, "trafilatura"),
+        ("Hugging Face Blog", "https://huggingface.co/blog/feed.xml", _BLOG, "trafilatura"),
+        ("Together AI Blog", "https://www.together.ai/blog/rss.xml", _BLOG, "trafilatura"),
+        ("Pinterest Engineering", "https://medium.com/feed/pinterest-engineering", _BLOG, "trafilatura"),
+        ("Lyft Engineering", "https://eng.lyft.com/feed", _BLOG, "trafilatura"),
+        ("Dropbox Tech", "https://dropbox.tech/feed", _BLOG, "trafilatura"),
+        ("Salesforce Engineering", "https://engineering.salesforce.com/feed/", _BLOG, "trafilatura"),
+        ("Atlassian How We Build", "https://www.atlassian.com/blog/how-we-build/feed", _BLOG, "trafilatura"),
+    ]
+    trending_urls = [url for _, url, _, _ in feeds if "GitHubTrendingRSS" in url]
+    assert trending_urls == [
+        "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml"
+    ]
+
+    releases = [
+        (source.type, source.owner, source.repo, source.profile)
+        for source in config.sources.github
+        if source.type == "repo_releases"
+    ]
+    assert releases == [
+        ("repo_releases", "vllm-project", "vllm", "tech-news"),
+        ("repo_releases", "sgl-project", "sglang", "tech-news"),
+        ("repo_releases", "triton-lang", "triton", "tech-news"),
+        ("repo_releases", "Tencent", "LoopForge", _NEWS),
+        ("repo_releases", "Tencent", "WeKnora", _NEWS),
+        ("repo_releases", "Tencent", "BrowserSkill", _NEWS),
+        ("repo_releases", "QwenLM", "qwen-code", _NEWS),
+        ("repo_releases", "agentscope-ai", "agentscope", _NEWS),
+        ("repo_releases", "anthropics", "claude-code", _NEWS),
+        ("repo_releases", "google-gemini", "gemini-cli", _NEWS),
+        ("repo_releases", "ml-explore", "mlx", _NEWS),
+        ("repo_releases", "NVIDIA", "TensorRT-LLM", "tech-news"),
+    ]
 
 
 def test_topic_sections_group_without_disturbing_news_items():

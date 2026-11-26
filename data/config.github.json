@@ -32,7 +32,8 @@
       },
       "ai-native": {
         "threshold": 7.0,
-        "topic_dedup": false
+        "topic_dedup": false,
+        "time_window_hours": 168
       }
     }
   },
@@ -62,6 +63,69 @@
         "type": "repo_releases",
         "owner": "triton-lang",
         "repo": "triton",
+        "enabled": true,
+        "profile": "tech-news"
+      },
+      {
+        "type": "repo_releases",
+        "owner": "Tencent",
+        "repo": "LoopForge",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "Tencent",
+        "repo": "WeKnora",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "Tencent",
+        "repo": "BrowserSkill",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "QwenLM",
+        "repo": "qwen-code",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "agentscope-ai",
+        "repo": "agentscope",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "anthropics",
+        "repo": "claude-code",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "google-gemini",
+        "repo": "gemini-cli",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "ml-explore",
+        "repo": "mlx",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"]
+      },
+      {
+        "type": "repo_releases",
+        "owner": "NVIDIA",
+        "repo": "TensorRT-LLM",
         "enabled": true,
         "profile": "tech-news"
       }
@@ -109,7 +173,7 @@
         "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",
         "enabled": true,
         "category": "github-trending",
-        "profile": "tech-news"
+        "profile": ["tech-news", "ai-native"]
       },
       {
         "name": "Semianalysis",
@@ -158,6 +222,216 @@
         "url": "https://huyenchip.com/feed.xml",
         "enabled": true,
         "profile": "ai-native",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "LoopForge Blog",
+        "url": "https://loopforge.cn/blog/feed.xml",
+        "enabled": true,
+        "profile": "ai-native",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Meituan Tech",
+        "url": "https://tech.meituan.com/atom.xml",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "QwenLM Blog",
+        "url": "https://qwenlm.github.io/blog/index.xml",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Google DeepMind Blog",
+        "url": "https://deepmind.google/blog/rss.xml",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Google Research Blog",
+        "url": "https://research.google/blog/rss/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Google AI Blog",
+        "url": "https://blog.google/innovation-and-ai/technology/ai/rss/",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Engineering at Meta",
+        "url": "https://engineering.fb.com/feed/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Microsoft Research",
+        "url": "https://www.microsoft.com/en-us/research/feed/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "GitHub Engineering",
+        "url": "https://github.blog/engineering/feed/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "GitHub AI and ML",
+        "url": "https://github.blog/ai-and-ml/feed/",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "AWS Architecture Blog",
+        "url": "https://aws.amazon.com/blogs/architecture/feed/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Amazon Science",
+        "url": "https://www.amazon.science/index.rss",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Apple Machine Learning",
+        "url": "https://machinelearning.apple.com/rss.xml",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "OpenAI News",
+        "url": "https://openai.com/news/rss.xml",
+        "enabled": true,
+        "profile": "tech-news",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Mistral AI News",
+        "url": "https://mistral.ai/news/rss",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "NVIDIA Technical Blog",
+        "url": "https://developer.nvidia.com/blog/feed",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Cloudflare Blog",
+        "url": "https://blog.cloudflare.com/rss/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Netflix TechBlog",
+        "url": "https://netflixtechblog.com/feed",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Airbnb Engineering",
+        "url": "https://airbnb.tech/feed/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Stripe Blog",
+        "url": "https://stripe.com/blog/feed.rss",
+        "enabled": true,
+        "profile": ["tech-news", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Stripe Developer Blog",
+        "url": "https://stripe.dev/blog/feed",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Shopify Engineering",
+        "url": "https://shopify.engineering/blog.atom",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Spotify Engineering",
+        "url": "https://engineering.atspotify.com/feed",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Hugging Face Blog",
+        "url": "https://huggingface.co/blog/feed.xml",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Together AI Blog",
+        "url": "https://www.together.ai/blog/rss.xml",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Pinterest Engineering",
+        "url": "https://medium.com/feed/pinterest-engineering",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Lyft Engineering",
+        "url": "https://eng.lyft.com/feed",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Dropbox Tech",
+        "url": "https://dropbox.tech/feed",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Salesforce Engineering",
+        "url": "https://engineering.salesforce.com/feed/",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Atlassian How We Build",
+        "url": "https://www.atlassian.com/blog/how-we-build/feed",
+        "enabled": true,
+        "profile": ["tech-blog", "ai-native"],
         "content_extractor": "trafilatura"
       }
     ],

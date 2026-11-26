@@ -198,7 +198,7 @@ def test_fetch_items_uses_public_orchestrator_api(tmp_path: Path, monkeypatch) -
     class FakeOrchestrator:
         last_fetch_report = None
 
-        async def fetch_all_sources(self, since):  # type: ignore[no-untyped-def]
+        async def fetch_all_sources(self, since, **_kwargs):  # type: ignore[no-untyped-def]
             return [make_item("item-1"), make_item("item-2")]
 
         def merge_cross_source_duplicates(self, items):  # type: ignore[no-untyped-def]
@@ -251,7 +251,7 @@ def test_fetch_items_includes_fetch_report_in_response_and_metadata(
             ]
         )
 
-        async def fetch_all_sources(self, since):  # type: ignore[no-untyped-def]
+        async def fetch_all_sources(self, since, **_kwargs):  # type: ignore[no-untyped-def]
             return [make_item("item-1")]
 
         def merge_cross_source_duplicates(self, items):  # type: ignore[no-untyped-def]

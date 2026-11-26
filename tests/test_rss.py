@@ -52,6 +52,153 @@ def test_rss_ids_are_deterministic() -> None:
     assert first_item.profile == "rss-profile"
 
 
+def test_profile_candidate_list_is_preserved() -> None:
+    client = _make_feed_client(_FEED)
+    source = RSSSourceConfig(
+        name="Test",
+        url="https://example.com/feed.xml",
+        profile=["tech-news", "ai-native"],
+    )
+    scraper = RSSScraper([source], client)
+
+    items = asyncio.run(scraper.fetch(_SINCE)).items
+
+    assert len(items) == 1
+    assert items[0].profile == ["tech-news", "ai-native"]
+
+
+_RECENT = "Fri, 24 Apr 2026 12:00:00 GMT"
+_OLD = "Thu, 23 Apr 2026 12:00:00 GMT"
+_RECENT_AT = datetime(2026, 4, 24, 12, 0, tzinfo=timezone.utc)
+
+
+def _rss_item(
+    *,
+    guid: str = "entry-1",
+    title: str = "Item 1",
+    pub_date: str | None = None,
+) -> str:
+    date = f"<pubDate>{pub_date}</pubDate>" if pub_date is not None else ""
+    return f"""<item>
+    <guid>{guid}</guid>
+    <title>{title}</title>
+    <link>https://example.com/{guid}</link>
+    {date}
+    <description>Summary.</description>
+  </item>"""
+
+
+def _rss_channel(
+    *items: str,
+    pub_date: str | None = None,
+    last_build: str | None = None,
+) -> str:
+    dates = ""
+    if pub_date is not None:
+        dates += f"<pubDate>{pub_date}</pubDate>"
+    if last_build is not None:
+        dates += f"<lastBuildDate>{last_build}</lastBuildDate>"
+    return f"""<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0"><channel><title>Test</title>
+  {dates}
+  {''.join(items)}
+</channel></rss>
+"""
+
+
+def _fetch_feed(feed: str):
+    source = RSSSourceConfig(name="Test", url="https://example.com/feed.xml")
+    return asyncio.run(RSSScraper([source], _make_feed_client(feed)).fetch(_SINCE))
+
+
+def test_undated_items_use_channel_pubdate_inside_window() -> None:
+    feed = _rss_channel(
+        _rss_item(guid="entry-1", title="Repo One"),
+        _rss_item(guid="entry-2", title="Repo Two"),
+        pub_date=_RECENT,
+    )
+
+    result = _fetch_feed(feed)
+
+    assert result.status == "success"
+    assert [item.title for item in result.items] == ["Repo One", "Repo Two"]
+    assert [item.published_at for item in result.items] == [_RECENT_AT, _RECENT_AT]
+
+
+def test_undated_item_uses_last_build_date_without_channel_pubdate() -> None:
+    result = _fetch_feed(_rss_channel(_rss_item(), last_build=_RECENT))
+
+    assert result.status == "success"
+    assert len(result.items) == 1
+    assert result.items[0].published_at == _RECENT_AT
+
+
+def test_undated_atom_entry_uses_feed_updated() -> None:
+    feed = """<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Test</title><id>https://example.com/</id>
+  <updated>2026-04-24T12:00:00Z</updated>
+  <entry>
+    <id>entry-1</id><title>Item 1</title>
+    <link href="https://example.com/item-1"/>
+    <summary>Short summary from feed.</summary>
+  </entry>
+</feed>
+"""
+
+    result = _fetch_feed(feed)
+
+    assert result.status == "success"
+    assert len(result.items) == 1
+    assert result.items[0].published_at == _RECENT_AT
+
+
+def test_stale_channel_date_still_filters_undated_items() -> None:
+    result = _fetch_feed(_rss_channel(_rss_item(), pub_date=_OLD))
+
+    assert result.items == []
+    assert result.status == "empty"
+    assert result.successful == 1
+    assert result.failures == {}
+
+
+def test_item_pubdate_is_not_replaced_by_a_newer_channel_date() -> None:
+    result = _fetch_feed(
+        _rss_channel(_rss_item(pub_date=_OLD), pub_date=_RECENT)
+    )
+
+    assert result.items == []
+    assert result.status == "empty"
+
+
+def test_channel_pubdate_wins_over_a_newer_last_build_date() -> None:
+    result = _fetch_feed(
+        _rss_channel(_rss_item(), pub_date=_OLD, last_build=_RECENT)
+    )
+
+    assert result.items == []
+    assert result.status == "empty"
+
+
+def test_unusable_item_date_falls_back_to_channel_date() -> None:
+    result = _fetch_feed(
+        _rss_channel(_rss_item(pub_date="not a date"), pub_date=_RECENT)
+    )
+
+    assert result.status == "success"
+    assert len(result.items) == 1
+    assert result.items[0].published_at == _RECENT_AT
+
+
+def test_timezone_less_channel_pubdate_is_treated_as_utc() -> None:
+    result = _fetch_feed(
+        _rss_channel(_rss_item(), pub_date=_RECENT.replace(" GMT", ""))
+    )
+
+    assert len(result.items) == 1
+    assert result.items[0].published_at == _RECENT_AT
+
+
 def test_timezone_less_pubdate_is_treated_as_utc() -> None:
     client = _make_feed_client(_FEED.replace(" GMT", ""))
     source = RSSSourceConfig(name="Test", url="https://example.com/feed.xml")

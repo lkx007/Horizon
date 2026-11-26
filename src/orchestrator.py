@@ -38,6 +38,14 @@ from .ai.summarizer import DailySummarizer
 from .ai.enricher import ContentEnricher, EnrichmentBatchResult
 from .ai.tokens import get_usage_snapshot
 from .processing import ProfileRegistry
+from .processing.windows import (
+    default_window_hours,
+    fetch_hours_for_route,
+    group_by_fetch_hours,
+    profile_window_hours,
+    resolved_profile_accepts,
+    restrict_items,
+)
 from .processing.content import COMMENTS_MARKER, split_content
 from .processing.tools import ToolRegistry
 
@@ -256,7 +264,8 @@ class HorizonOrchestrator:
         """Execute the complete workflow.
 
         Args:
-            force_hours: Optional override for time window in hours
+            force_hours: Optional override for the default time window in hours.
+                Profiles that set time_window_hours keep that window.
             digest_date: Optional YYYY-MM-DD label. A past date is refused
                 because live collection cannot reconstruct that day.
             dry_run: Skip Pages files and every delivery channel.
@@ -285,15 +294,35 @@ class HorizonOrchestrator:
 
         try:
 
-            # 1. Determine time window
-            since = self._determine_time_window(force_hours)
+            # 1. Determine time window. --hours overrides the default only.
+            #    A profile's own time_window_hours still applies.
+            now = datetime.now(timezone.utc)
+            window_hours = default_window_hours(
+                self.config.collection.time_window_hours, force_hours
+            )
+            since = now - timedelta(hours=window_hours)
             self.console.print(
                 f"{self.icons['date']} Fetching content since: "
-                f"{since.strftime('%Y-%m-%d %H:%M:%S')}\n"
+                f"{since.strftime('%Y-%m-%d %H:%M:%S')} "
+                f"(default {window_hours}h)\n"
             )
+            loaded_profiles = getattr(self, "profiles", None)
+            longer = []
+            if loaded_profiles is not None:
+                longer = [
+                    f"{profile.id} {self._profile_window_hours(profile.id, window_hours)}h"
+                    for profile in loaded_profiles.profiles
+                    if self._profile_window_hours(profile.id, window_hours) != window_hours
+                ]
+            if longer:
+                self.console.print(
+                    f"   {self.icons['detail']} Profile windows: {', '.join(longer)}\n"
+                )
 
             # 2. Fetch content from all sources
-            all_items = await self.fetch_all_sources(since)
+            all_items = await self.fetch_all_sources(
+                since, default_window_hours=window_hours, now=now
+            )
             self.console.print(
                 f"{self.icons['fetched']} Fetched {len(all_items)} items from all sources\n"
             )
@@ -314,10 +343,27 @@ class HorizonOrchestrator:
                     f"→ {len(merged_items)} unique items\n"
                 )
 
-            # 4. Analyze with AI
-            analyzed_items = await self.analyze_items(merged_items)
+            # 4. Drop ages no routable profile accepts, and narrow dual-profile
+            #    routes so an older item cannot be classified into a 24h section.
+            windowed_items = self.restrict_to_profile_windows(
+                merged_items, window_hours, now
+            )
+            if len(windowed_items) < len(merged_items):
+                self.console.print(
+                    f"{self.icons['filter']} Removed "
+                    f"{len(merged_items) - len(windowed_items)} items outside "
+                    "every routable profile window\n"
+                )
+            if not windowed_items:
+                self.console.print("[yellow]No new content found. Exiting.[/yellow]")
+                return
+
+            analyzed_items = await self.analyze_items(windowed_items)
             self.console.print(
                 f"{self.icons['ai']} Analyzed {len(analyzed_items)} items with AI\n"
+            )
+            analyzed_items = self.drop_outside_resolved_window(
+                analyzed_items, window_hours, now
             )
 
             # 5. Filter, deduplicate, and balance the digest
@@ -469,57 +515,204 @@ class HorizonOrchestrator:
             raise
 
     def _determine_time_window(self, force_hours: int = None) -> datetime:
-        if force_hours:
-            since = datetime.now(timezone.utc) - timedelta(hours=force_hours)
-        else:
-            hours = self.config.collection.time_window_hours
-            since = datetime.now(timezone.utc) - timedelta(hours=hours)
-        return since
+        hours = default_window_hours(self.config.collection.time_window_hours, force_hours)
+        return datetime.now(timezone.utc) - timedelta(hours=hours)
 
-    async def fetch_all_sources(self, since: datetime) -> List[ContentItem]:
+    def _profile_window_hours(self, profile_id: str, default_hours: int) -> int:
+        return profile_window_hours(
+            profile_id, self.config.processing.profile_settings, default_hours
+        )
+
+    def _known_profile_ids(self) -> list[str]:
+        return [profile.id for profile in self.profiles.profiles]
+
+    def _fetch_hours_for_route(self, route, default_hours: int) -> int:
+        return fetch_hours_for_route(
+            route,
+            self._known_profile_ids(),
+            lambda profile_id: self._profile_window_hours(profile_id, default_hours),
+            default_hours,
+        )
+
+    def restrict_to_profile_windows(
+        self,
+        items: List[ContentItem],
+        default_hours: int,
+        now: datetime,
+    ) -> List[ContentItem]:
+        """Narrow each item to profiles whose window contains it."""
+        return restrict_items(
+            items,
+            now=now,
+            known_ids=self._known_profile_ids(),
+            window_for=lambda profile_id: self._profile_window_hours(
+                profile_id, default_hours
+            ),
+        )
+
+    def drop_outside_resolved_window(
+        self,
+        items: List[ContentItem],
+        default_hours: int,
+        now: datetime,
+    ) -> List[ContentItem]:
+        """Remove items the chosen profile can no longer accept."""
+        return [
+            item
+            for item in items
+            if resolved_profile_accepts(
+                item,
+                now=now,
+                default_profile=self.profiles.default_profile,
+                window_for=lambda profile_id: self._profile_window_hours(
+                    profile_id, default_hours
+                ),
+            )
+        ]
+
+    async def fetch_all_sources(
+        self,
+        since: datetime,
+        *,
+        default_window_hours: int | None = None,
+        now: datetime | None = None,
+    ) -> List[ContentItem]:
         """Fetch content from all configured sources.
 
         This is a stable stage entry point for integrations such as MCP.
 
         Args:
-            since: Fetch items published after this time
+            since: Fetch items published after this time. When
+                ``default_window_hours`` is omitted, every source uses this
+                cutoff.
+            default_window_hours: Default window that ``since`` represents.
+                When set, a source that can route to a profile with its own
+                window is fetched with that profile's cutoff instead.
+            now: Clock used to turn a profile window into a cutoff. Defaults
+                to the current UTC time.
 
         Returns:
             List[ContentItem]: All fetched items
         """
         self.last_fetch_report = None
+        clock = now or datetime.now(timezone.utc)
+        apply_windows = default_window_hours is not None
+
+        def hours_for(route) -> int | None:
+            if not apply_windows:
+                return None
+            return self._fetch_hours_for_route(route, default_window_hours)
+
+        def cutoff(hours: int | None) -> datetime:
+            if hours is None or hours == default_window_hours:
+                return since
+            return clock - timedelta(hours=hours)
+
         async with httpx.AsyncClient(timeout=30.0) as client:
             tasks = []
+            from .extractors import ExtractorRegistry
+            extractors = ExtractorRegistry(self.config.extractors)
+
+            def schedule_groups(name: str, grouped, build) -> None:
+                for hours, entries in grouped.items():
+                    if not entries:
+                        continue
+                    tasks.append(
+                        self._fetch_with_progress(name, build(entries), cutoff(hours))
+                    )
+
+            def schedule_list(name: str, entries, route_of, build) -> None:
+                if not entries:
+                    return
+                if not apply_windows:
+                    tasks.append(self._fetch_with_progress(name, build(entries), since))
+                    return
+                schedule_groups(
+                    name,
+                    group_by_fetch_hours(entries, route_of, hours_for),
+                    build,
+                )
+
+            def schedule_one(name: str, scraper, route) -> None:
+                chosen = since if not apply_windows else cutoff(hours_for(route))
+                tasks.append(self._fetch_with_progress(name, scraper, chosen))
 
             # GitHub sources
             if self.config.sources.github:
-                github_scraper = GitHubScraper(self.config.sources.github, client)
-                tasks.append(self._fetch_with_progress("GitHub", github_scraper, since))
+                schedule_list(
+                    "GitHub",
+                    self.config.sources.github,
+                    lambda source: source.profile,
+                    lambda entries: GitHubScraper(entries, client),
+                )
 
             # Hacker News
             if self.config.sources.hackernews.enabled:
-                hn_scraper = HackerNewsScraper(self.config.sources.hackernews, client)
-                tasks.append(self._fetch_with_progress("Hacker News", hn_scraper, since))
+                schedule_one(
+                    "Hacker News",
+                    HackerNewsScraper(self.config.sources.hackernews, client),
+                    self.config.sources.hackernews.profile if apply_windows else None,
+                )
 
             # RSS feeds
             if self.config.sources.rss:
-                from .extractors import ExtractorRegistry
-                rss_scraper = RSSScraper(
+                schedule_list(
+                    "RSS Feeds",
                     self.config.sources.rss,
-                    client,
-                    ExtractorRegistry(self.config.extractors),
+                    lambda source: source.profile,
+                    lambda entries: RSSScraper(entries, client, extractors),
                 )
-                tasks.append(self._fetch_with_progress("RSS Feeds", rss_scraper, since))
 
             # Reddit
             if self.config.sources.reddit.enabled:
-                reddit_scraper = RedditScraper(self.config.sources.reddit, client)
-                tasks.append(self._fetch_with_progress("Reddit", reddit_scraper, since))
+                reddit = self.config.sources.reddit
+                if not apply_windows:
+                    tasks.append(
+                        self._fetch_with_progress(
+                            "Reddit", RedditScraper(reddit, client), since
+                        )
+                    )
+                else:
+                    buckets: dict[int | None, dict[str, list]] = {}
+                    for field, children in (
+                        ("subreddits", reddit.subreddits),
+                        ("users", reddit.users),
+                    ):
+                        for child in children:
+                            hours = hours_for(child.profile)
+                            buckets.setdefault(hours, {}).setdefault(field, []).append(child)
+                    for hours, parts in buckets.items():
+                        scoped = reddit.model_copy(
+                            update={
+                                "subreddits": parts.get("subreddits", []),
+                                "users": parts.get("users", []),
+                            }
+                        )
+                        tasks.append(
+                            self._fetch_with_progress(
+                                "Reddit", RedditScraper(scoped, client), cutoff(hours)
+                            )
+                        )
 
             # Telegram
             if self.config.sources.telegram.enabled:
-                telegram_scraper = TelegramScraper(self.config.sources.telegram, client)
-                tasks.append(self._fetch_with_progress("Telegram", telegram_scraper, since))
+                telegram = self.config.sources.telegram
+                if not apply_windows:
+                    tasks.append(
+                        self._fetch_with_progress(
+                            "Telegram", TelegramScraper(telegram, client), since
+                        )
+                    )
+                else:
+                    schedule_groups(
+                        "Telegram",
+                        group_by_fetch_hours(
+                            telegram.channels, lambda source: source.profile, hours_for
+                        ),
+                        lambda entries: TelegramScraper(
+                            telegram.model_copy(update={"channels": entries}), client
+                        ),
+                    )
 
             # Twitter (Apify or Playwright mode)
             if self.config.sources.twitter and self.config.sources.twitter.enabled:
@@ -528,27 +721,55 @@ class HorizonOrchestrator:
                     twitter_scraper = TwitterPlaywrightScraper(tw_cfg)
                 else:
                     twitter_scraper = TwitterScraper(tw_cfg, client)
-                tasks.append(self._fetch_with_progress("Twitter", twitter_scraper, since))
+                schedule_one(
+                    "Twitter",
+                    twitter_scraper,
+                    tw_cfg.profile if apply_windows else None,
+                )
 
             # OpenBB (financial news / filings via the OpenBB Platform SDK)
             if self.config.sources.openbb and self.config.sources.openbb.enabled:
-                openbb_scraper = OpenBBScraper(self.config.sources.openbb, client)
-                tasks.append(self._fetch_with_progress("OpenBB", openbb_scraper, since))
+                openbb = self.config.sources.openbb
+                if not apply_windows:
+                    tasks.append(
+                        self._fetch_with_progress(
+                            "OpenBB", OpenBBScraper(openbb, client), since
+                        )
+                    )
+                else:
+                    schedule_groups(
+                        "OpenBB",
+                        group_by_fetch_hours(
+                            openbb.watchlists, lambda source: source.profile, hours_for
+                        ),
+                        lambda entries: OpenBBScraper(
+                            openbb.model_copy(update={"watchlists": entries}), client
+                        ),
+                    )
 
             # OSS Insight trending repos
             if self.config.sources.ossinsight and self.config.sources.ossinsight.enabled:
-                oss_scraper = OSSInsightScraper(self.config.sources.ossinsight, client)
-                tasks.append(self._fetch_with_progress("OSS Insight", oss_scraper, since))
+                schedule_one(
+                    "OSS Insight",
+                    OSSInsightScraper(self.config.sources.ossinsight, client),
+                    self.config.sources.ossinsight.profile if apply_windows else None,
+                )
 
             # GDELT 2.0 DOC API (key-less global news)
             if self.config.sources.gdelt and self.config.sources.gdelt.enabled:
-                gdelt_scraper = GDELTScraper(self.config.sources.gdelt, client)
-                tasks.append(self._fetch_with_progress("GDELT", gdelt_scraper, since))
+                schedule_one(
+                    "GDELT",
+                    GDELTScraper(self.config.sources.gdelt, client),
+                    self.config.sources.gdelt.profile if apply_windows else None,
+                )
 
             # Google News RSS (key-less news search)
             if self.config.sources.google_news and self.config.sources.google_news.enabled:
-                gn_scraper = GoogleNewsScraper(self.config.sources.google_news, client)
-                tasks.append(self._fetch_with_progress("Google News", gn_scraper, since))
+                schedule_one(
+                    "Google News",
+                    GoogleNewsScraper(self.config.sources.google_news, client),
+                    self.config.sources.google_news.profile if apply_windows else None,
+                )
 
             # Fetch all concurrently
             outcomes = await asyncio.gather(*tasks)

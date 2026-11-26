@@ -96,10 +96,14 @@ class RSSScraper(BaseScraper):
         if feed.bozo and not feed.entries:
             raise ValueError("Invalid RSS/Atom feed")
 
+        channel = getattr(feed, "feed", None)
+        if not isinstance(channel, dict):
+            channel = {}
+
         for ordinal, entry in enumerate(feed.entries, start=1):
             try:
-                published_at = self._parse_date(entry)
-                if not published_at or published_at < since:
+                published_at = self._published_at(entry, channel)
+                if published_at is None or published_at < since:
                     continue
 
                 feed_id = str(source.url).split("//")[1].replace("/", "_")
@@ -143,14 +147,28 @@ class RSSScraper(BaseScraper):
         result.successful = int(bool(result.items) or not result.failures)
         return result
 
-    def _parse_date(self, entry: dict) -> datetime:
-        """Parse publication date from feed entry.
+    def _published_at(self, entry: dict, channel: dict) -> Optional[datetime]:
+        """Use the item date, or the channel date when the item has none.
+
+        Item fields stay first. A missing or unusable item date falls back to
+        the same fields on the channel: RSS ``pubDate`` (``published``), then
+        ``lastBuildDate`` or Atom ``updated`` (``updated``), then ``created``.
+        The caller still applies the collection window, so a stale channel
+        date does not admit the item.
+        """
+        published_at = self._parse_date(entry)
+        if published_at is not None:
+            return published_at
+        return self._parse_date(channel)
+
+    def _parse_date(self, entry: dict) -> Optional[datetime]:
+        """Parse a publication date from a feed entry or channel.
 
         Args:
-            entry: Feed entry data
+            entry: Feed entry or channel data
 
         Returns:
-            datetime: Parsed publication date or None
+            datetime: Parsed publication date, or None when no field is usable
         """
         # Try different date fields
         for field in ["published", "updated", "created"]:

@@ -109,7 +109,8 @@ Collection and balanced digest settings remain in the runtime configuration:
 }
 ```
 
-`collection.time_window_hours` controls the fetch window. `category_groups`
+`collection.time_window_hours` is the default fetch window. A profile's
+`time_window_hours` overrides it for that profile only. `category_groups`
 limits each configured category group independently, and `max_items` caps the
 merged result. These digest limits run after per-profile filtering and topic
 deduplication, but before enrichment.
