@@ -147,7 +147,7 @@ def test_native_run_raises_when_every_attempted_source_failed(monkeypatch, chann
         ]
     )
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         orchestrator.last_fetch_report = report
         return []
 
@@ -169,7 +169,7 @@ def test_native_run_treats_all_success_empty_as_no_content(monkeypatch) -> None:
     send_failure = AsyncMock()
     orchestrator.webhook_notifier = SimpleNamespace(send_failure=send_failure)  # type: ignore[assignment]
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         orchestrator.last_fetch_report = FetchReport(
             [SourceFetchOutcome("RSS Feeds", "empty")]
         )

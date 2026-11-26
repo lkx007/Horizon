@@ -107,6 +107,12 @@ def test_profile_settings_default_to_no_filter_and_topic_dedup():
     defaults = ProfileSettingsConfig()
     assert defaults.threshold is None
     assert defaults.topic_dedup is True
+    assert defaults.time_window_hours is None
+
+
+def test_rejects_non_positive_profile_window():
+    with pytest.raises(ValidationError):
+        ProfileSettingsConfig(time_window_hours=0)
 
 
 def test_rejects_prompt_path_outside_profile_directory(tmp_path):

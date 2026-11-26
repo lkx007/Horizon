@@ -40,6 +40,7 @@ class _FrozenDateTime(datetime):
 
 def _freeze_digest_clock(monkeypatch) -> None:
     monkeypatch.setattr("src.digest_date.datetime", _FrozenDateTime)
+    monkeypatch.setattr("src.orchestrator.datetime", _FrozenDateTime)
 
 
 def test_digest_date_uses_asia_shanghai_across_the_utc_boundary() -> None:
@@ -127,7 +128,7 @@ def test_pages_posts_use_shanghai_date_when_utc_is_still_yesterday(tmp_path, mon
             seen_dates.append(date)
             return await super().generate_summary(items, date, total_fetched, language)
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         del since
         return [_item()]
 
@@ -180,7 +181,7 @@ def test_failure_notice_uses_shanghai_date(tmp_path, monkeypatch) -> None:
     orchestrator.webhook_notifier = notifier
     orchestrator.wechat_notifier = notifier
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         del since
         raise RuntimeError("fetch failed")
 

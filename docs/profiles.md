@@ -266,10 +266,14 @@ is greater than or equal to that threshold. Set it to `null` or omit settings fo
 a profile to bypass score filtering. An MCP threshold supplied for a single
 operation takes precedence over these configured values.
 
-The top-level `collection` configuration controls `time_window_hours`. Optional
-balanced digest limits such as `category_groups` and `max_items` belong to the
-top-level `digest` configuration and run after profile filtering and topic
-deduplication.
+The top-level `collection.time_window_hours` is the default fetch window. A
+profile may set `processing.profile_settings.<id>.time_window_hours` to use a
+different window. Sources that can route to several profiles are fetched with
+the widest of those windows. An item is then eligible only for profiles whose
+window still contains it, so an older item from a shared source cannot be
+selected for a shorter profile. Optional balanced digest limits such as
+`category_groups` and `max_items` belong to the top-level `digest` configuration
+and run after profile filtering and topic deduplication.
 
 ## Enrichment Blocks And Tools
 

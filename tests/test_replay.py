@@ -147,7 +147,7 @@ def test_live_run_rejects_a_historical_digest_date_before_fetch(tmp_path, monkey
     )
     called = []
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         called.append(since)
         return []
 
@@ -186,7 +186,7 @@ def test_dry_run_does_not_write_pages_or_notify(tmp_path, monkeypatch) -> None:
     orchestrator.webhook_notifier = Notifier()
     monkeypatch.chdir(tmp_path)
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         del since
         return [_item()]
 

@@ -386,7 +386,7 @@ def test_run_applies_balanced_digest_before_enrichment(tmp_path, monkeypatch) ->
     ]
     enriched_ids: list[str] = []
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         return items
 
     async def analyze_content(input_items):  # type: ignore[no-untyped-def]
@@ -428,7 +428,7 @@ def test_run_balances_after_twitter_reanalysis(tmp_path, monkeypatch) -> None:
     items = [make_item("first", 9.0, "ai"), make_item("second", 8.0, "ai")]
     enriched_ids: list[str] = []
 
-    async def fetch_all_sources(since):  # type: ignore[no-untyped-def]
+    async def fetch_all_sources(since, **_kwargs):  # type: ignore[no-untyped-def]
         return items
 
     async def analyze_content(input_items):  # type: ignore[no-untyped-def]

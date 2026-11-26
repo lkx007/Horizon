@@ -32,7 +32,8 @@
       },
       "ai-native": {
         "threshold": 7.0,
-        "topic_dedup": false
+        "topic_dedup": false,
+        "time_window_hours": 168
       }
     }
   },

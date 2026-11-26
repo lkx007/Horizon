@@ -136,6 +136,10 @@ def test_github_runtime_keeps_schedule_model_and_adds_ai_native(monkeypatch):
     assert config.email is None
     assert config.processing.profile_settings["ai-native"].threshold == 7.0
     assert config.processing.profile_settings["ai-native"].topic_dedup is False
+    assert config.processing.profile_settings["ai-native"].time_window_hours == 168
+    assert config.collection.time_window_hours == 24
+    for profile_id in ("tech-news", "tech-blog", "finance-news"):
+        assert config.processing.profile_settings[profile_id].time_window_hours is None
     assert config.digest.profile_order == [
         "tech-news",
         "tech-blog",

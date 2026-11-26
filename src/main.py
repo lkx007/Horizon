@@ -45,7 +45,14 @@ def main():
     icons = get_icons()
 
     parser = argparse.ArgumentParser(description="Horizon - AI-Driven Information Aggregation System")
-    parser.add_argument("--hours", type=int, help="Force fetch from last N hours")
+    parser.add_argument(
+        "--hours",
+        type=int,
+        help=(
+            "Override the default fetch window in hours. "
+            "A profile with time_window_hours keeps that window."
+        ),
+    )
     parser.add_argument(
         "--digest-date",
         default=None,
