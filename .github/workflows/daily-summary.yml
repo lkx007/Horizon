@@ -162,6 +162,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write  # Needed to commit changes
+      actions: write   # Needed to upload the dry-run digest artifact
 
     steps:
       - name: Checkout code
@@ -233,6 +234,25 @@ jobs:
           else
             uv run horizon --hours 24
           fi
+
+      # A live dry-run writes data/previews/horizon-<date>-<lang>.md and does
+      # not write docs/_posts, send mail, or publish. Keep that output. Scheduled
+      # and manual-live runs publish instead, so they do not upload here.
+      - name: Upload dry-run digest
+        if: >-
+          steps.plan.outputs.mode == 'dry-run' &&
+          steps.plan.outputs.dry_run == 'true' &&
+          steps.plan.outputs.run_live == 'true' &&
+          steps.plan.outputs.publish == 'false'
+        uses: actions/upload-artifact@v7
+        with:
+          name: horizon-preview-${{ steps.plan.outputs.digest_date }}
+          if-no-files-found: warn
+          path: |
+            data/previews/horizon-${{ steps.plan.outputs.digest_date }}-*.md
+            docs/_posts/${{ steps.plan.outputs.digest_date }}-summary-*.md
+            docs/_posts/${{ steps.plan.outputs.digest_date }}-summary-*.html
+            docs/**/*${{ steps.plan.outputs.digest_date }}*summary*.html
 
       - name: Replay the published page without fetching
         if: steps.plan.outputs.mode == 'historical-preview'

@@ -51,6 +51,22 @@ def test_dispatch_of_yesterday_does_not_fetch_or_publish() -> None:
     assert plan.dry_run is True
 
 
+def test_dispatch_dry_run_for_shanghai_today_collects_without_publishing() -> None:
+    for requested in (None, "", "2026-11-26"):
+        plan = plan_digest_run(
+            event="workflow_dispatch",
+            shanghai_today="2026-11-26",
+            requested_date=requested,
+            dry_run=True,
+        )
+
+        assert plan.mode == "dry-run"
+        assert plan.digest_date == "2026-11-26"
+        assert plan.run_live_horizon is True
+        assert plan.publish is False
+        assert plan.dry_run is True
+
+
 def test_manual_today_still_publishes() -> None:
     plan = plan_digest_run(
         event="workflow_dispatch",
@@ -100,11 +116,24 @@ def test_workflow_keeps_the_schedule_and_blocks_historical_publish() -> None:
     text = (ROOT / ".github/workflows/daily-summary.yml").read_text(encoding="utf-8")
 
     assert "uv run horizon --hours 24" in text
+    assert 'uv run horizon --hours 24 --dry-run --digest-date "${{ steps.plan.outputs.digest_date }}"' in text
     assert "steps.plan.outputs.publish == 'true'" in text
     assert "steps.plan.outputs.mode == 'historical-preview'" in text
     assert "render_ai_native_preview.py" in text
     assert "DASHSCOPE_API_KEY" in text
     assert text.index("uv run horizon --hours 24") < text.index("historical-preview")
+    assert text.index("name: Run Horizon") < text.index("name: Upload dry-run digest")
+    assert text.index("name: Upload dry-run digest") < text.index("name: Deploy to GitHub Pages")
+
+    upload = text.split("name: Upload dry-run digest", 1)[1].split("name: Replay the published page", 1)[0]
+    assert "steps.plan.outputs.mode == 'dry-run'" in upload
+    assert "steps.plan.outputs.dry_run == 'true'" in upload
+    assert "steps.plan.outputs.run_live == 'true'" in upload
+    assert "steps.plan.outputs.publish == 'false'" in upload
+    assert "horizon-preview-${{ steps.plan.outputs.digest_date }}" in upload
+    assert "data/previews/horizon-${{ steps.plan.outputs.digest_date }}-*.md" in upload
+    assert "docs/_posts/${{ steps.plan.outputs.digest_date }}-summary-*.md" in upload
+    assert "actions/upload-artifact@v7" in upload
 
 
 def test_live_run_rejects_a_historical_digest_date_before_fetch(tmp_path, monkeypatch) -> None:
