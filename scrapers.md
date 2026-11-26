@@ -92,7 +92,11 @@ Two source types are supported:
 
 **File**: `src/scrapers/rss.py`
 
-Fetches any Atom/RSS feed using the `feedparser` library. Tries multiple date fields (`published`, `updated`, `created`) with fallback parsing.
+Fetches any Atom/RSS feed using the `feedparser` library. Item dates are read from
+`published`, `updated`, and `created`, in that order. An item with no usable date
+inherits the channel `pubDate`, then `lastBuildDate` or Atom `updated`. That
+timestamp still has to fall inside the collection window, so a stale channel date
+does not bring the item in.
 
 Feed requests identify Horizon through a `User-Agent` header because some publishers
 reject the HTTP client default. This header is scoped to feed requests and does
